@@ -32,7 +32,9 @@ class CreateRolesTable extends F30Migration
       $table->string('name');
       $table->longText('description')
         ->nullable();
+
       $table->timestamps();
+      $table->softDeletes();
 
       // set the primary key
       $table->primary('id');
