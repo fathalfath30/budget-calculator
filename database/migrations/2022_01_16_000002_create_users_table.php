@@ -21,6 +21,10 @@ use Illuminate\Support\Facades\Schema;
  */
 class CreateUsersTable extends F30Migration
 {
+
+  /** @var null|\Illuminate\Database\Eloquent\Model|string $model */
+  protected string $model = User::class;
+
   /**
    * Run the migrations.
    *
@@ -28,7 +32,7 @@ class CreateUsersTable extends F30Migration
    */
   public function up()
   {
-    Schema::create((new User)->getTable(), function(Blueprint $table) {
+    Schema::create($this->getTable(), function(Blueprint $table) {
       $table->uuid('id');
       $table->string('name');
       $table->string('email')

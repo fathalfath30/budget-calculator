@@ -16,43 +16,33 @@
 //
 */
 
-namespace App\Helper;
 
-use Illuminate\Database\Migrations\Migration;
+namespace App\Models;
+
+use App\Domain\Model\IF30Model;
+use Illuminate\Database\Eloquent\Model;
 
 /**
- * F30Migration helper
+ * UserConfig Model
  *
  * @version 1.0.0
  * @since 0.1.0
+ * @see \App\Models\User
+ * @see \App\Models\Configuration
  *
  * @author Fathalfath30
+ *
+ * @property string id
+ * @property string user_id
+ * @property string configuration_id
+ * @property ?string user_value
+ * @property string created_at
+ * @property string updated_at
  */
-class F30Migration extends Migration
+class UserConfig extends Model implements IF30Model
 {
-  /** @var string $table */
-  private string $table;
+  protected $table = 'user_config';
+  protected $primaryKey = 'id';
 
-  /** @var null|\Illuminate\Database\Eloquent\Model|string $model */
-  protected string $model;
-
-  /**
-   * F30Migration constructor
-   *
-   * @version 1.0.0
-   * @since 0.1.0
-   *
-   * @author Fathalfath30
-   */
-  public function __construct()
-  {
-    if(!empty($this->model)) {
-      $this->table = (new $this->model)->getTable();
-    }
-  }
-
-  protected function getTable() : string
-  {
-    return $this->table;
-  }
+  public $incrementing = false;
 }

@@ -22,9 +22,9 @@ namespace App\Models;
 use App\Domain\Model\IF30Model;
 use Illuminate\Database\Eloquent\Model;
 
-class Setting extends Model implements IF30Model
+class Configuration extends Model implements IF30Model
 {
-  protected $table = 'settings';
+  protected $table = 'configurations';
   protected $primaryKey = 'id';
 
   public $incrementing = false;

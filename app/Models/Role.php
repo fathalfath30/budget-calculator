@@ -10,15 +10,14 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @version 1.0.0
  * @since 0.1.0
+ * @author Fathalfath30
  *
+ * @property string id
+ * @property string name
  * @property ?string short_description
  * @property string created_at
  * @property string updated_at
  * @property ?string deleted_at
- *
- * @property string id
- * @property string name
- * @author Fathalfath30
  */
 class Role extends Model implements IF30Model
 {
