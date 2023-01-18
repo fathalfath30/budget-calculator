@@ -44,7 +44,12 @@
     "hot": "mix watch --hot",
     "prod": "npm run production",
     "production": "mix --production",
-    "app:be:test": "php ./vendor/bin/phpunit --configuration=./phphpunit.xml",
+    "app:be:test": "php ./vendor/bin/phpunit --configuration=phpunit.xml",
     "app:be:test:coverage": "php -dzend_extension=xdebug -d xdebug.mode=coverage ./vendor/bin/phpunit --configuration=phpunit.xml --coverage-html ./reports"
+  },
+  "pre-commit": {
+    "run": [
+      "app:be:test"
+    ]
   }
 }
