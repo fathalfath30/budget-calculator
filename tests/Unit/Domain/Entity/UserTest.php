@@ -16,6 +16,10 @@
 //
 */
 
-namespace App\Helper;
+namespace Domain\Entity;
 
-define('DEFAULT_ENTITY_EXCEPTION_CODE', 500);
+use PHPUnit\Framework\TestCase;
+
+class UserTest extends TestCase {
+
+}

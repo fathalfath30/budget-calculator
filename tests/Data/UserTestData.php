@@ -16,6 +16,20 @@
 //
 */
 
-namespace App\Helper;
 
-define('DEFAULT_ENTITY_EXCEPTION_CODE', 500);
+namespace Tests\Data;
+
+
+class UserTestData {
+  public static function validUserPassword() : string {
+    return "password";
+  }
+
+  public static function validPasswordUpdatedAt() : string {
+    return "2022-01-01 00:00:00";
+  }
+
+  public static function validRememberToken() : string {
+    return "0kP4jik99ZcfnvEkocjiI1lIYqU1hSJ1";
+  }
+}

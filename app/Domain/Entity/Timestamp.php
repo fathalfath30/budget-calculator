@@ -32,9 +32,9 @@ use Illuminate\Support\Carbon;
  * @author Fathalfath30
  */
 class Timestamp {
-  private Carbon $created_at;
-  private Carbon $updated_at;
-  private ?Carbon $deleted_at;
+  private Carbon $createdAt;
+  private Carbon $updatedAt;
+  private ?Carbon $deletedAt;
 
   /**
    * @param string $value
@@ -50,7 +50,7 @@ class Timestamp {
       throw new EntityException("entity.created_at.required");
     }
 
-    $this->created_at = Carbon::parse($value);
+    $this->createdAt = Carbon::parse($value);
     return $this;
   }
 
@@ -61,7 +61,7 @@ class Timestamp {
    * @since 1.0.0
    */
   public function getCreatedAt() : Carbon {
-    return $this->created_at;
+    return $this->createdAt;
   }
 
   /**
@@ -78,7 +78,7 @@ class Timestamp {
       throw new EntityException("entity.updated_at.required");
     }
 
-    $this->updated_at = Carbon::parse($value);
+    $this->updatedAt = Carbon::parse($value);
     return $this;
   }
 
@@ -89,7 +89,7 @@ class Timestamp {
    * @since 1.0.0
    */
   public function getUpdatedAt() : Carbon {
-    return $this->updated_at;
+    return $this->updatedAt;
   }
 
   /**
@@ -102,11 +102,11 @@ class Timestamp {
    */
   public function setDeletedAt(?string $value) : self {
     if(empty($value)) {
-      $this->deleted_at = null;
+      $this->deletedAt = null;
       return $this;
     }
 
-    $this->deleted_at = Carbon::parse($value);
+    $this->deletedAt = Carbon::parse($value);
     return $this;
   }
 
@@ -117,13 +117,13 @@ class Timestamp {
    * @since 1.0.0
    */
   public function getDeletedAt() : ?Carbon {
-    return $this->deleted_at;
+    return $this->deletedAt;
   }
 
   /**
-   * @param string $created_at
-   * @param string $updated_at
-   * @param null|string $deleted_at
+   * @param string $createdAt
+   * @param string $updatedAt
+   * @param null|string $deletedAt
    *
    * @return static
    * @throws \App\Exceptions\EntityException
@@ -131,12 +131,12 @@ class Timestamp {
    * @version 1.0.0
    * @since 1.0.0
    */
-  public static function create(string $created_at, string $updated_at, ?string $deleted_at = null) : self {
+  public static function create(string $createdAt, string $updatedAt, ?string $deletedAt = null) : self {
     $class = new self;
 
-    $class->setCreatedAt($created_at);
-    $class->setUpdatedAt($updated_at);
-    $class->setDeletedAt($deleted_at);
+    $class->setCreatedAt($createdAt);
+    $class->setUpdatedAt($updatedAt);
+    $class->setDeletedAt($deletedAt);
 
     return $class;
   }

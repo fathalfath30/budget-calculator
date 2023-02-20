@@ -18,6 +18,8 @@
 
 namespace Tests\Data;
 
+use App\Domain\Entity\Role;
+
 /**
  * This class will hold all test data that will be used for testing purpose
  *
@@ -56,5 +58,22 @@ class RoleTestData {
    */
   public static function validRoleName() : string {
     return "Test Role";
+  }
+
+  /**
+   * This method will return a valid Role entity
+   *
+   * @throws \App\Exceptions\EntityException
+   * @version 1.0.0
+   * @since 1.0.0
+   *
+   * @author Fathalfath30
+   */
+  public static function validRoleEntity() : Role {
+    return Role::create(
+      RoleTestData::validRoleId(),
+      RoleTestData::validRoleName(),
+      TimestampTestData::validTimestampEntity()
+    );
   }
 }
