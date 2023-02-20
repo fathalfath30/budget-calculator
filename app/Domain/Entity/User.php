@@ -16,6 +16,15 @@
 //
 */
 
-namespace App\Helper;
+namespace App\Domain\Entity;
 
-define('DEFAULT_ENTITY_EXCEPTION_CODE', 500);
+use App\Traits\StandardEntity;
+use Carbon\Carbon;
+
+class User implements IStandardEntity {
+  use StandardEntity;
+
+  private string $email;
+  private ?Carbon $emailVerifiedAt;
+  private Authentication $authentication;
+}
