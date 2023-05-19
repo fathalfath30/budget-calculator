@@ -1,10 +1,19 @@
-/.phpunit.cache
-/node_modules
-/public/build
-/public/hot
-/public/storage
-/storage/*.key
-/vendor
+### JetBrains IDE (PhpStorm)
+.idea
+
+### Visual Studio IDE
+.vscode
+
+### NodeJS Module and lock
+node_modules
+*.lock
+
+.phpunit.cache
+public/build
+public/hot
+public/storage
+storage/*.key
+vendor
 .env
 .env.backup
 .env.production
@@ -14,6 +23,4 @@ Homestead.yaml
 auth.json
 npm-debug.log
 yarn-error.log
-/.fleet
-/.idea
-/.vscode
+.fleet

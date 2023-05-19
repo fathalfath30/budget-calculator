@@ -1,13 +1,39 @@
 {
-    "private": true,
-    "type": "module",
-    "scripts": {
-        "dev": "vite",
-        "build": "vite build"
-    },
-    "devDependencies": {
-        "axios": "^1.1.2",
-        "laravel-vite-plugin": "^0.7.5",
-        "vite": "^4.0.0"
+  "name": "budget-calculator",
+  "version": "1.0.0",
+  "repository": "git@github.com:fathalfath30/budget-calculator.git",
+  "author": "fathalfath <fathalfath30@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "npm": "please-use-yarn",
+    "yarn": ">= 1.19.1"
+  },
+  "devDependencies": {
+    "axios": "^1.1.2",
+    "laravel-vite-plugin": "^0.7.5",
+    "vite": "^4.0.0",
+    "@commitlint/cli": "^12.1.1",
+    "@commitlint/config-conventional": "^12.1.1",
+    "commitizen": "^4.2.3",
+    "custom-cz-conventional-changelog-for-jira": "^0.0.0-semantically-released",
+    "husky": "^6.0.0",
+    "pre-commit": "^1.2.2",
+    "cz-conventional-changelog": "^3.3.0",
+    "nodemon": "2.0.7"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/custom-cz-conventional-changelog-for-jira",
+      "jiraOptional": true
     }
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "pre-commit": {
+    "run": []
+  }
 }
