@@ -26,9 +26,13 @@ return new class extends F30_Migration {
       $table->timestamp('email_verified_at')
         ->nullable();
       $table->string('password');
-
       $table->rememberToken();
+
+      // add timestamp to users table
       $this->addTimestamp($table, true);
+
+      // add index into users
+      $this->addIndex($table, ['email']);
     });
   }
 

@@ -16,28 +16,21 @@
 //
 */
 
-use App\Models\Role;
-use App\Models\User;
-use App\Models\UserRole;
+use App\Models\Category;
 use Database\Helper\F30_Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 /**
- * create new user_roles table this table will put all roles for
- * some users
+ * New table to keep all transaction history category, this table has relation with itself to get parent category
  *
  * @version 1.0.0
  * @since 1.0.0
  * @author Fathalfath30
- *
  */
 return new class extends F30_Migration {
-  // set table name
-  protected string $table = 'user_roles';
-
   public function __construct() {
-    $this->table = (new UserRole())->getTable();
+    $this->table = (new Category())->getTable();
   }
 
   /**
@@ -45,21 +38,28 @@ return new class extends F30_Migration {
    */
   public function up() : void {
     Schema::create($this->getTable(), function(Blueprint $table) {
-      $table->uuid('id')
-        ->primary();
-      $table->uuid('user_id');
-      $table->uuid('role_id');
-      $table->tinyInteger('enabled', false, true)->default(0);
+      $table->uuid('id');
+      $table->uuid('parent_id')
+        ->nullable();
+      $table->string('name');
+      $table->longText('description')
+        ->nullable();
+      $table->tinyInteger('income', false, true)
+        ->default('0');
+      $table->tinyInteger('expense', false, true)
+        ->default('0');
 
-      // adding timestamp
-      $this->addTimestamp($table);
+      // add timestamp with soft_deletes
+      $this->addTimestamp($table, true);
+
+      // add primary key
+      $table->primary(['id']);
 
       // add index
-      $this->addIndex($table, ['user_id', 'role_id', 'enabled']);
+      $this->addIndex($table, ['parent_id', 'name']);
 
-      // adding foreign key
-      $this->addForeign($table, 'user_id', (new User())->getTable());
-      $this->addForeign($table, 'role_id', (new Role())->getTable());
+      // add foreign key
+      $this->addForeign($table, 'parent_id', $this->getTable());
     });
   }
 
