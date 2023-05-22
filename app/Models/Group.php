@@ -17,21 +17,19 @@
 */
 
 namespace App\Models;
-
-use Illuminate\Database\Eloquent\Model;
-
 /**
- * F30_Model
+ * Group
  *
- * This class is build for main migration parent class, it also extends default
- * laravel Model class
+ * This model will handle all accounts group and custom account groups, in case
+ * users want to add their own or change existing group name.
  *
  * @version 1.0.0
  * @since 1.0.0
+ * @see \App\Models\F30_Model
  * @see \Illuminate\Database\Eloquent\Model
  * @author Fathalfath30
- *
  */
-class F30_Model extends Model {
-  // todo: add something useful here
+class Group extends F30_Model {
+  /** @var string $table set the table name */
+  protected $table = 'groups';
 }

@@ -1,8 +1,23 @@
 <?php
+/*
+//
+//  ______    _   _           _  __      _   _     ____   ___
+// |  ____|  | | | |         | |/ _|    | | | |   |___ \ / _ \
+// | |__ __ _| |_| |__   __ _| | |_ __ _| |_| |__   __) | | | |
+// |  __/ _` | __| '_ \ / _` | |  _/ _` | __| '_ \ |__ <| | | |
+// | | | (_| | |_| | | | (_| | | || (_| | |_| | | |___) | |_| |
+// |_|  \__,_|\__|_| |_|\__,_|_|_| \__,_|\__|_| |_|____/ \___/
+//
+// Written by Fathalfath30.
+// Email : fathalfath30@gmail.com
+// Follow me on:
+//  Github : https://github.com/fathalfath30
+//  Gitlab : https://gitlab.com/Fathalfath30
+//
+*/
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -15,10 +30,31 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * This model will handle database operation for user
+ *
+ * @version 1.0.0
+ * @since 1.0.0
+ * @see \Illuminate\Contracts\Auth\Authenticatable
+ * @see \Illuminate\Contracts\Auth\Access\Authorizable
+ * @see \Illuminate\Contracts\Auth\CanResetPassword
+ * @see \Laravel\Sanctum\HasApiTokens
+ * @see \Illuminate\Database\Eloquent\Factories\HasFactory
+ * @see \Illuminate\Notifications\Notifiable
+ * @see \Illuminate\Auth\Authenticatable
+ * @see \Illuminate\Foundation\Auth\Access\Authorizable
+ * @see \Illuminate\Auth\Passwords\CanResetPassword
+ * @see \Illuminate\Auth\MustVerifyEmail
+ *
+ * @author Laravel's development team, modified byFathalfath30
+ *
+ */
 class User extends Model implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract {
   use HasApiTokens, HasFactory, Notifiable, Authenticatable, Authorizable, CanResetPassword, MustVerifyEmail;
 
+  /** @var string $table set the table name */
   protected $table = 'users';
+
   /**
    * The attributes that are mass assignable.
    *

@@ -17,21 +17,19 @@
 */
 
 namespace App\Models;
-
-use Illuminate\Database\Eloquent\Model;
-
 /**
- * F30_Model
+ * Account
  *
- * This class is build for main migration parent class, it also extends default
- * laravel Model class
+ * This model should handle all data such as bank, card and other account
+ * basic information
  *
  * @version 1.0.0
  * @since 1.0.0
+ * @see \App\Models\F30_Model
  * @see \Illuminate\Database\Eloquent\Model
  * @author Fathalfath30
- *
  */
-class F30_Model extends Model {
-  // todo: add something useful here
+class Account extends F30_Model {
+  /** @var string $table set the table name */
+  protected $table = 'accounts';
 }

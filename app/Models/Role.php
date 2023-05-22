@@ -1,20 +1,35 @@
 <?php
+/*
+//
+//  ______    _   _           _  __      _   _     ____   ___
+// |  ____|  | | | |         | |/ _|    | | | |   |___ \ / _ \
+// | |__ __ _| |_| |__   __ _| | |_ __ _| |_| |__   __) | | | |
+// |  __/ _` | __| '_ \ / _` | |  _/ _` | __| '_ \ |__ <| | | |
+// | | | (_| | |_| | | | (_| | | || (_| | |_| | | |___) | |_| |
+// |_|  \__,_|\__|_| |_|\__,_|_|_| \__,_|\__|_| |_|____/ \___/
+//
+// Written by Fathalfath30.
+// Email : fathalfath30@gmail.com
+// Follow me on:
+//  Github : https://github.com/fathalfath30
+//  Gitlab : https://gitlab.com/Fathalfath30
+//
+*/
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Auth\Authenticatable;
-use Illuminate\Auth\MustVerifyEmail;
-use Illuminate\Auth\Passwords\CanResetPassword;
-use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Auth\Access\Authorizable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
-
+/**
+ * This model is used to handle roles management that will be used for
+ * user permission
+ *
+ * @version 1.0.0
+ * @since 1.0.0
+ * @see \App\Models\F30_Model
+ * @see \Illuminate\Database\Eloquent\Model
+ * @author Fathalfath30
+ *
+ */
 class Role extends F30_Model {
+  /** @var string $table set the table name */
   protected $table = 'roles';
 }
