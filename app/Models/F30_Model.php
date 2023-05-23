@@ -26,11 +26,11 @@ use Illuminate\Database\Eloquent\Model;
  * This class is build for main migration parent class, it also extends default
  * laravel Model class
  *
+ * @author Fathalfath30
+ *
  * @version 1.0.0
  * @since 1.0.0
  * @see \Illuminate\Database\Eloquent\Model
- * @author Fathalfath30
- *
  */
 class F30_Model extends Model {
   // todo: add something useful here

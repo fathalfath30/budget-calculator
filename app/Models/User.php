@@ -33,6 +33,8 @@ use Laravel\Sanctum\HasApiTokens;
 /**
  * This model will handle database operation for user
  *
+ * @author Laravel's development team, modified byFathalfath30
+ *
  * @version 1.0.0
  * @since 1.0.0
  * @see \Illuminate\Contracts\Auth\Authenticatable
@@ -45,8 +47,6 @@ use Laravel\Sanctum\HasApiTokens;
  * @see \Illuminate\Foundation\Auth\Access\Authorizable
  * @see \Illuminate\Auth\Passwords\CanResetPassword
  * @see \Illuminate\Auth\MustVerifyEmail
- *
- * @author Laravel's development team, modified byFathalfath30
  *
  */
 class User extends Model implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract {

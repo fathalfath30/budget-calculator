@@ -24,9 +24,10 @@ use Illuminate\Support\Facades\Schema;
 /**
  * New table to keep all transaction history category, this table has relation with itself to get parent category
  *
+ * @author Fathalfath30
  * @version 1.0.0
  * @since 1.0.0
- * @author Fathalfath30
+ * @see \Database\Helper\F30_Migration
  */
 return new class extends F30_Migration {
   public function __construct() {

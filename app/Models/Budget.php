@@ -24,11 +24,11 @@ namespace App\Models;
  * This model will handle all budget information and also user
  * budget targets
  *
+ * @author Fathalfath30
  * @version 1.0.0
  * @since 1.0.0
- * @see \App\Models\F30_Model
  * @see \Illuminate\Database\Eloquent\Model
- * @author Fathalfath30
+ * @see \App\Models\F30_Model
  */
 class Budget extends F30_Model {
   /** @var string $table set the table name */

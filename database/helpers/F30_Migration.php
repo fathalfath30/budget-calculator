@@ -27,9 +27,11 @@ use Illuminate\Database\Schema\Blueprint;
  * This helper class is used to simplify migration code such as get table name, buldi some
  * repeating code and more
  *
+ * @author Fathalfath30
  * @version 1.0.0
  * @since 1.0.0
- * @author Fathalfath30
+ *
+ * @see \Illuminate\Database\Migrations\Migration
  */
 class F30_Migration extends Migration {
   /** @var string $table table name */

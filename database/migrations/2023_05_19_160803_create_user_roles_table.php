@@ -27,10 +27,10 @@ use Illuminate\Support\Facades\Schema;
  * create new user_roles table this table will put all roles for
  * some users
  *
- * @version 1.0.0
- * @since 1.0.0
  * @author Fathalfath30
  *
+ * @version 1.0.0
+ * @since 1.0.0
  */
 return new class extends F30_Migration {
   // set table name

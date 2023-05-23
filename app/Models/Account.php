@@ -23,11 +23,11 @@ namespace App\Models;
  * This model should handle all data such as bank, card and other account
  * basic information
  *
+ * @author Fathalfath30
  * @version 1.0.0
  * @since 1.0.0
- * @see \App\Models\F30_Model
  * @see \Illuminate\Database\Eloquent\Model
- * @author Fathalfath30
+ * @see \App\Models\F30_Model
  */
 class Account extends F30_Model {
   /** @var string $table set the table name */

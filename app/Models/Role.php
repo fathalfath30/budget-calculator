@@ -22,12 +22,12 @@ namespace App\Models;
  * This model is used to handle roles management that will be used for
  * user permission
  *
- * @version 1.0.0
- * @since 1.0.0
- * @see \App\Models\F30_Model
- * @see \Illuminate\Database\Eloquent\Model
  * @author Fathalfath30
  *
+ * @version 1.0.0
+ * @since 1.0.0
+ * @see \Illuminate\Database\Eloquent\Model
+ * @see \App\Models\F30_Model
  */
 class Role extends F30_Model {
   /** @var string $table set the table name */

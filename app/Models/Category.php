@@ -24,11 +24,11 @@ namespace App\Models;
  * This model will handle transaction_history category for expense
  * or income category
  *
+ * @author Fathalfath30
  * @version 1.0.0
  * @since 1.0.0
- * @see \App\Models\F30_Model
  * @see \Illuminate\Database\Eloquent\Model
- * @author Fathalfath30
+ * @see \App\Models\F30_Model
  */
 class Category extends F30_Model {
   /** @var string $table set the table name */
