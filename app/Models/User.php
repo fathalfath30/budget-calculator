@@ -55,6 +55,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
   /** @var string $table set the table name */
   protected $table = 'users';
 
+  /** @var bool $incrementing disabling AUTO_INCREMENT command, we used UUID */
+  public $incrementing = false;
+
   /**
    * The attributes that are mass assignable.
    *

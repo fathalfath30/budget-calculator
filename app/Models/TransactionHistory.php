@@ -33,4 +33,7 @@ namespace App\Models;
 class TransactionHistory extends F30_Model {
   /** @var string $table set the table name */
   protected $table = 'transaction_history';
+
+  /** @var bool $incrementing disabling AUTO_INCREMENT command, we used UUID */
+  public $incrementing = false;
 }

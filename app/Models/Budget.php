@@ -33,4 +33,7 @@ namespace App\Models;
 class Budget extends F30_Model {
   /** @var string $table set the table name */
   protected $table = 'budgets';
+
+  /** @var bool $incrementing disabling AUTO_INCREMENT command, we used UUID */
+  public $incrementing = false;
 }

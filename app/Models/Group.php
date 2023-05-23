@@ -32,4 +32,7 @@ namespace App\Models;
 class Group extends F30_Model {
   /** @var string $table set the table name */
   protected $table = 'groups';
+
+  /** @var bool $incrementing disabling AUTO_INCREMENT command, we used UUID */
+  public $incrementing = false;
 }

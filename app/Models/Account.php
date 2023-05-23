@@ -32,4 +32,7 @@ namespace App\Models;
 class Account extends F30_Model {
   /** @var string $table set the table name */
   protected $table = 'accounts';
+
+  /** @var bool $incrementing disabling AUTO_INCREMENT command, we used UUID */
+  public $incrementing = false;
 }

@@ -32,4 +32,7 @@ namespace App\Models;
 class Role extends F30_Model {
   /** @var string $table set the table name */
   protected $table = 'roles';
+
+  /** @var bool $incrementing disabling AUTO_INCREMENT command, we used UUID */
+  public $incrementing = false;
 }
