@@ -15,7 +15,8 @@
 //  Gitlab : https://gitlab.com/Fathalfath30
 //
 */
-namespace App\Domain\Entity;
-class Domain {
 
+namespace App\Domain\Entity;
+interface IEntity {
+  // public static function rebuild(array $payload) : self;
 }
