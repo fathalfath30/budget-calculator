@@ -30,3 +30,6 @@ yarn-error.log
 .env.backup
 .env.production
 .phpunit.result.cache
+
+### reporting file
+.coverage-report
