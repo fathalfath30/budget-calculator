@@ -15,16 +15,12 @@
 //  Gitlab : https://gitlab.com/Fathalfath30
 //
 */
-return [
-  'server' => [
-    'error' => [
-      'internal' => 'ERR_005000001',
-      'not_implemented' => 'ERR_005030001',
-    ]
-  ],
-  'user' => [
-    'error' => [
-      'bad_request' => 'ERR_014000001'
-    ]
-  ]
-];
+
+namespace App\Http\Request;
+
+use Faker\Provider\Base;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Foundation\Http\FormRequest;
+
+abstract class Request extends FormRequest {}

@@ -15,16 +15,25 @@
 //  Gitlab : https://gitlab.com/Fathalfath30
 //
 */
-return [
-  'server' => [
-    'error' => [
-      'internal' => 'ERR_005000001',
-      'not_implemented' => 'ERR_005030001',
-    ]
-  ],
-  'user' => [
-    'error' => [
-      'bad_request' => 'ERR_014000001'
-    ]
-  ]
-];
+
+namespace App\Http\Request;
+class Login extends Request {
+  /**
+   * Determine if the user is authorized to make this request.
+   */
+  public function authorize() : bool {
+    return false;
+  }
+
+  /**
+   * Get the validation rules that apply to the request.
+   *
+   * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
+   */
+  public function rules() : array {
+    return [
+      'username' => ['required', 'min:6'],
+      'password' => ['required']
+    ];
+  }
+}

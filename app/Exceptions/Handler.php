@@ -2,8 +2,13 @@
 
 namespace App\Exceptions;
 
+use App\Utils\Http\ResponseFormat;
+use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
+use function PHPUnit\Framework\isInstanceOf;
 
 class Handler extends ExceptionHandler {
   /**
@@ -24,5 +29,30 @@ class Handler extends ExceptionHandler {
     $this->reportable(function(Throwable $e) {
       //
     });
+  }
+
+  /**
+   * @param $request
+   * @param \Throwable $e
+   *
+   * @return false|\Illuminate\Http\JsonResponse|\Illuminate\Http\Response|string|\Symfony\Component\HttpFoundation\Response
+   * @throws \Throwable
+   */
+  public function render($request, Throwable $e) : \Illuminate\Http\Response|bool|JsonResponse|string|Response {
+    if($request->ajax() || $request->isJson()) {
+      return $this->handleJsonException($e);
+    }
+
+    return parent::render($request, $e);
+  }
+
+  private function handleJsonException(Throwable $e) : \Illuminate\Http\Response|bool|JsonResponse|string|Response {
+    $httpStatus = 200;
+    switch(get_class($e)) {
+      default:
+    }
+
+    return \response()
+      ->header('Content-Type', 'application/json');
   }
 }

@@ -15,16 +15,27 @@
 //  Gitlab : https://gitlab.com/Fathalfath30
 //
 */
-return [
-  'server' => [
-    'error' => [
-      'internal' => 'ERR_005000001',
-      'not_implemented' => 'ERR_005030001',
-    ]
-  ],
-  'user' => [
-    'error' => [
-      'bad_request' => 'ERR_014000001'
-    ]
-  ]
-];
+
+namespace App\Http\Controllers\API;
+
+use App\Exceptions\NotImplementedException;
+use App\Http\Controllers\F30Controller;
+use App\Http\Request\Login;
+use Exception;
+
+class AuthController extends F30Controller {
+  public function login(Login $request) {
+    // todo: implement me
+    throw new NotImplementedException();
+  }
+
+  public function forgotPassword() {
+    // todo: implement me
+    throw new NotImplementedException();
+  }
+
+  public function resetPassword() {
+    // todo: implement me
+    throw new NotImplementedException();
+  }
+}
