@@ -17,6 +17,9 @@
 */
 return [
   'server' => [
+    'success' => [
+      'ok' => 'SUCCESS_002000001'
+    ],
     'error' => [
       'internal' => 'ERR_005000001',
       'not_implemented' => 'ERR_005030001',
@@ -24,7 +27,8 @@ return [
   ],
   'user' => [
     'error' => [
-      'bad_request' => 'ERR_014000001'
+      'bad_request' => 'ERR_014000001',
+      'unauthorized' => 'ERR_014010001'
     ]
   ]
 ];
