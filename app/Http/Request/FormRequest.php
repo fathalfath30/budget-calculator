@@ -18,9 +18,7 @@
 
 namespace App\Http\Request;
 
-use Faker\Provider\Base;
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Foundation\Http\FormRequest as BaseClass;
 
-abstract class Request extends FormRequest {}
+abstract class FormRequest extends BaseClass implements IFormRequest {
+}

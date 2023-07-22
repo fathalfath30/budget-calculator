@@ -17,12 +17,24 @@
 */
 
 namespace App\Http\Request;
-class Login extends Request {
+/**
+ * Login
+ *
+ * This class will handle login request, it should be used by AuthController.
+ *
+ * @author fathalfath30
+ * @version 1.0.0
+ * @since 1.0.0
+ *
+ * @see \App\Http\Controllers\API\AuthController
+ */
+class Login extends FormRequest {
+
   /**
    * Determine if the user is authorized to make this request.
    */
   public function authorize() : bool {
-    return false;
+    return true;
   }
 
   /**
