@@ -1,9 +1,9 @@
 <?php
 
-use App\Models\Account;
-use App\Models\Category;
-use App\Models\TransactionHistory;
-use App\Models\User;
+use App\Repository\Models\Account;
+use App\Repository\Models\Category;
+use App\Repository\Models\TransactionHistory;
+use App\Repository\Models\User;
 use Database\Helper\F30_Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;

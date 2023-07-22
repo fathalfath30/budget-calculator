@@ -16,9 +16,9 @@
 //
 */
 
-use App\Models\Role;
-use App\Models\User;
-use App\Models\UserRole;
+use App\Repository\Models\Role;
+use App\Repository\Models\User;
+use App\Repository\Models\UserRole;
 use Database\Helper\F30_Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;

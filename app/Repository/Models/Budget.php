@@ -16,23 +16,23 @@
 //
 */
 
-namespace App\Models;
+namespace App\Repository\Models;
 
 /**
- * Category
+ * Budget
  *
- * This model will handle transaction_history category for expense
- * or income category
+ * This model will handle all budget information and also user
+ * budget targets
  *
  * @author Fathalfath30
  * @version 1.0.0
  * @since 1.0.0
  * @see \Illuminate\Database\Eloquent\Model
- * @see \App\Models\F30_Model
+ * @see \App\Repository\Models\F30_Model
  */
-class Category extends F30_Model {
+class Budget extends F30_Model {
   /** @var string $table set the table name */
-  protected $table = 'categories';
+  protected $table = 'budgets';
 
   /** @var bool $incrementing disabling AUTO_INCREMENT command, we used UUID */
   public $incrementing = false;

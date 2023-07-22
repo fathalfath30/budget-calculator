@@ -16,23 +16,24 @@
 //
 */
 
-namespace App\Models;
+namespace App\Repository\Models;
 
 /**
- * Budget
+ * TransactionHistory
  *
- * This model will handle all budget information and also user
- * budget targets
+ * This is the most core model because it will use as transaction history
+ * for expense or income, and it will use to calculator when use will
+ * achieve their budget target
  *
  * @author Fathalfath30
  * @version 1.0.0
  * @since 1.0.0
- * @see \Illuminate\Database\Eloquent\Model
- * @see \App\Models\F30_Model
+ *
+ * @see \Database\Helper\F30_Migration
  */
-class Budget extends F30_Model {
+class TransactionHistory extends F30_Model {
   /** @var string $table set the table name */
-  protected $table = 'budgets';
+  protected $table = 'transaction_history';
 
   /** @var bool $incrementing disabling AUTO_INCREMENT command, we used UUID */
   public $incrementing = false;

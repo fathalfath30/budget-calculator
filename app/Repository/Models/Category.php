@@ -16,23 +16,23 @@
 //
 */
 
-namespace App\Models;
-
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+namespace App\Repository\Models;
 
 /**
- * UserRole
- * This model will handle roles information on each user.
+ * Category
+ *
+ * This model will handle transaction_history category for expense
+ * or income category
  *
  * @author Fathalfath30
  * @version 1.0.0
  * @since 1.0.0
  * @see \Illuminate\Database\Eloquent\Model
- * @see \App\Models\F30_Model
+ * @see \App\Repository\Models\F30_Model
  */
-class UserRole extends F30_Model {
+class Category extends F30_Model {
   /** @var string $table set the table name */
-  protected $table = 'user_roles';
+  protected $table = 'categories';
 
   /** @var bool $incrementing disabling AUTO_INCREMENT command, we used UUID */
   public $incrementing = false;

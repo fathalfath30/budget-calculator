@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Group;
+use App\Repository\Models\Group;
 use Database\Helper\F30_Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;

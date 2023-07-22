@@ -1,8 +1,8 @@
 <?php
 
-use App\Models\Account;
-use App\Models\Group;
-use App\Models\User;
+use App\Repository\Models\Account;
+use App\Repository\Models\Group;
+use App\Repository\Models\User;
 use Database\Helper\F30_Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;

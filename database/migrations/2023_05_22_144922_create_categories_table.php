@@ -16,7 +16,7 @@
 //
 */
 
-use App\Models\Category;
+use App\Repository\Models\Category;
 use Database\Helper\F30_Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;

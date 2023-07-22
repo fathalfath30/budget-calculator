@@ -16,23 +16,23 @@
 //
 */
 
-namespace App\Models;
+namespace App\Repository\Models;
+
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
+
 /**
- * TransactionHistory
- *
- * This is the most core model because it will use as transaction history
- * for expense or income, and it will use to calculator when use will
- * achieve their budget target
+ * UserRole
+ * This model will handle roles information on each user.
  *
  * @author Fathalfath30
  * @version 1.0.0
  * @since 1.0.0
- *
- * @see \Database\Helper\F30_Migration
+ * @see \Illuminate\Database\Eloquent\Model
+ * @see \App\Repository\Models\F30_Model
  */
-class TransactionHistory extends F30_Model {
+class UserRole extends F30_Model {
   /** @var string $table set the table name */
-  protected $table = 'transaction_history';
+  protected $table = 'user_roles';
 
   /** @var bool $incrementing disabling AUTO_INCREMENT command, we used UUID */
   public $incrementing = false;
