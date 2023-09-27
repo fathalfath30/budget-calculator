@@ -20,7 +20,13 @@ namespace App\Domain\Entity;
 
 /**
  * Timestamp
- * This entity mean to
+ *
+ * @author Fathalfath30
+ * @version 1.0.0
+ * @since 1.0.0
+ *
+ * @see \App\Domain\Entity\IEntity
+ * @see \App\Domain\Entity\ToArray
  */
 class Timestamp extends Entity implements IEntity {
   use ToArray;
@@ -46,13 +52,15 @@ class Timestamp extends Entity implements IEntity {
    * @throws \Illuminate\Validation\ValidationException
    */
   public function __construct(array $payload, bool $validate = true) {
-    $payload = $this->validate($payload,
-      [
-        self::CREATED_AT => ['required', 'date:Y-m-d H:i:s'],
-        self::UPDATED_AT => ['required', 'date:Y-m-d H:i:s'],
-        self::DELETED_AT => ['nullable', 'date:Y-m-d H:i:s'],
-      ]
-    );
+    if($validate) {
+      $payload = $this->validate($payload,
+        [
+          self::CREATED_AT => ['required', 'date:Y-m-d H:i:s'],
+          self::UPDATED_AT => ['required', 'date:Y-m-d H:i:s'],
+          self::DELETED_AT => ['nullable', 'date:Y-m-d H:i:s'],
+        ]
+      );
+    }
 
     $this->created_at = $payload[self::CREATED_AT];
     $this->updated_at = $payload[self::UPDATED_AT];

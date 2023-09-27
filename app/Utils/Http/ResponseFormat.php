@@ -150,11 +150,15 @@ class ResponseFormat {
     self::HttpNetworkAuthenticationRequired => 'Network Authentication Required', // RFC6585
   ];
 
-  public static function create(string $code, ?string $message, $data = null) : array {
+  public static function getHttpMessage(int $code) : string {
+    return self::$statusTexts[$code] ?? "";
+  }
+
+  public static function create(int $httpCode, string $statusCode, ?string $message, $data = null) : array {
     return [
       'status' => [
-        'code' => '',
-        'message' => ''
+        'code' => $statusCode,
+        'message' => (empty($message)) ? self::getHttpMessage($httpCode) : $message
       ],
       'data' => $data
     ];

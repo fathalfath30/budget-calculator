@@ -16,10 +16,11 @@
 //
 */
 
-namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\F30Controller;
+namespace App\UseCases;
 
-class UserManagement extends F30Controller {
+use App\Http\Request\IFormRequest;
 
+interface IUseCase {
+  public function execute(IFormRequest $request);
 }

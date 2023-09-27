@@ -16,10 +16,15 @@
 //
 */
 
-namespace App\Http\Controllers\API;
+namespace App\Repository\Mapper;
 
-use App\Http\Controllers\F30Controller;
+use App\Domain\Entity\User as UserEntity;
+use App\Exceptions\NotImplementedException;
+use App\Repository\Models\User as UserModel;
 
-class UserManagement extends F30Controller {
-
+class User {
+  public function ModelToEntity(UserModel $user) : UserEntity {
+    // todo: implement me
+    throw new NotImplementedException;
+  }
 }

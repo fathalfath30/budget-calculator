@@ -18,5 +18,5 @@
 
 namespace App\Domain\Entity;
 interface IEntity {
-  // public static function rebuild(array $payload) : self;
+  public function __construct(array $payload, bool $validate = true);
 }

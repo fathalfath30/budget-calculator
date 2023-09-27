@@ -16,10 +16,13 @@
 //
 */
 
-namespace App\Http\Controllers\API;
+namespace App\UseCases\Authentication;
 
-use App\Http\Controllers\F30Controller;
+use App\Http\Request\IFormRequest;
+use App\UseCases\IUseCase;
 
-class UserManagement extends F30Controller {
-
+class LoginUseCase implements IUseCase {
+  public function execute(IFormRequest $request) {
+    // TODO: Implement execute() method.
+  }
 }
