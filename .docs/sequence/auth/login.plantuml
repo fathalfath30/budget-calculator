@@ -1,0 +1,114 @@
+@startuml
+title "Budget Management: Login Sequence"
+footer "Copyright (c) 2023 - Fathalfath30 All Right Reserved | https://github.com/fathalfath30"
+
+autonumber
+!theme plain
+skinparam minClassWidth 100
+skinparam handwritten false
+
+actor "**USER**" as user
+box Budget Management #dbf1f3
+  participant "**Frontend**\n**service**" as fe order 1
+  participant "**Backend**\n**service**" as be order 2
+  participant "**Database**" as db order 3
+end box
+
+box 3rd Party #dbe3f3
+  participant "**Google**\n**Recaptcha**" as google_r order 4
+end box
+
+note over user
+  - "username": required, can be email or username
+  - "password": required, minimum: 6 character
+  - "g-recaptcha-response": required if enabled
+end note
+user -> fe: request login
+fe -> be: process request login
+
+alt total request > 5 in 1 minutes
+  be --> fe: status code: **429 (to many request)**
+  note over fe
+    **error message:**
+    You've sent to many request to us recently,
+    please try again later
+  end note
+  fe --> user: display error message
+else "else -> goto next step"
+end alt
+
+alt if GOOGLE_RECAPTCHA_ENABLED == 1
+  be -> google_r: validate "g-recaptcha-response"
+  google_r --> be: response
+  alt response['success'] == false
+    be --> fe: status code: **400 (bad request)**
+    note over fe
+      **error message:**
+      Invalid Recaptcha response, please try again
+    end note
+    fe --> user: display error message
+  else "else -> goto next step"
+  end
+
+else "else -> goto next step"
+end
+
+be -> db: get account detail using email or username
+db --> be: return user detail
+be -> be: check user status
+alt user status == 1
+  be -> be: validate user password from input with database
+  alt password match
+    note over db
+      - **update table "users"**
+        - set "locked_at" = null
+        - set "login_fail_attempt" = 0
+      - **insert into table "user_login_history"**
+        - user_id
+        - ip address
+        - user_agent (if any)
+        - status = 1
+        - created_at
+        - updated_at
+    end note
+    be -> db: update account detail and\ninsert new login history
+    db --> be:
+    note over be: jwt token expiry : 30 minutes
+    be -> be: generate jwt token
+    be --> fe:
+    fe --> user: redirect to dashboard
+  else
+    be --> fe: status code: **401 (Unauthorized)**
+    note over fe
+      invalid username or password please try again
+    end note
+    fe --> user: display error message
+  end alt
+else user status == 0
+  be --> fe: status code: **403 (forbidden)**
+  note over fe
+    **error message:**
+    Your account are not activated, please
+    contact administrator
+    end note
+  fe --> user: display error message
+else user status == 2
+  be --> fe: status code: **403 (forbidden)**
+  note over fe
+    **error message:**
+    Your account has been locked, please use
+    "reset password" to unlock your account
+    and reset password !
+  end note
+  fe --> user: display error message
+else
+be --> fe: status code: **403 (forbidden)**
+  note over fe
+    **error message:**
+    Invalid account status, please contact administrator
+  end note
+  fe --> user: display error message
+end alt
+
+
+@enduml
