@@ -29,7 +29,7 @@ use Tests\TestData\RoleTestData;
 use Tests\TestData\TimestampTestData;
 
 class RoleTest extends TestCase {
-  use RoleTestData, TimestampTestData;
+  use RoleTestData;
 
   private Generator $faker;
 

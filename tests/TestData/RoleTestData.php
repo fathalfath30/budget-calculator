@@ -16,25 +16,50 @@
 //
 */
 
-
 namespace Tests\TestData;
 
-
+use App\Domain\Entity\Entity;
 use App\Domain\Entity\Role;
-use Carbon\Traits\Timestamp;
 
+/**
+ * RoleTestData
+ *
+ * @author Fathalfath30
+ * @version 1.0.0
+ * @since 1.0.0
+ *
+ * @see \App\Domain\Entity\Timestamp
+ * @see \Tests\TestData\TimestampTestData
+ */
 trait RoleTestData {
-  use Timestamp;
+  use TimestampTestData;
+
+  /**
+   * Return valid sample role id
+   *
+   * @param bool $admin
+   *
+   * @return string
+   */
   public function ValidRoleId(bool $admin = false) : string {
     return ($admin) ?
       '8723b59f-10a9-4b79-9b04-11cdd8bd164c' : '06a11a2f-3dc6-4455-9ab9-5003c5f66128';
   }
 
+  /**
+   * Return valid sample role name
+   *
+   * @param bool $admin
+   *
+   * @return string
+   */
   public function ValidRoleName(bool $admin = false) : string {
     return "Test Role " . ($admin) ? "Admin" : "Guest";
   }
 
   /**
+   * Return valid sample role entity
+   *
    * @throws \App\Exceptions\EntityException
    * @throws \Illuminate\Validation\ValidationException
    */
@@ -44,7 +69,7 @@ trait RoleTestData {
         Role::ID => $this->ValidRoleId($admin),
         Role::NAME => $this->ValidRoleName($admin),
         Role::LEVEL => $admin ? Role::USER_LEVEL_SUPER_ADMIN : Role::USER_LEVEL_GUEST,
-        Role::TIMESTAMP => $this->ValidTimestampEntity()
+        Entity::TIMESTAMP => $this->ValidTimestampEntity()
       ],
       false)
     );

@@ -36,9 +36,6 @@ abstract class Entity implements Arrayable {
 
   /**
    * @throws \Illuminate\Validation\ValidationException|\App\Exceptions\EntityException
-   * @author Fathalfath30
-   * @version 1.0.0
-   * @since 1.0.0
    */
   public function validate(array $payload, array $rules, ?array $message = []) : array {
     $validate = Validator::make($payload, $rules, $message);
@@ -49,6 +46,9 @@ abstract class Entity implements Arrayable {
     return $validate->validated();
   }
 
+  /**
+   * @throws \App\Exceptions\EntityException
+   */
   public function validateTimestamp(array $payload) : void {
     if(!empty($payload[self::TIMESTAMP]) && !($payload[self::TIMESTAMP] instanceof Timestamp)) {
       throw new EntityException(trans('exception.domain.instance_of.timestamp'));
