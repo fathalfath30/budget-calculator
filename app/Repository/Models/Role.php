@@ -18,6 +18,10 @@
 
 namespace App\Repository\Models;
 
+use Database\Factories\RoleFactory;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 /**
  * This model is used to handle roles management that will be used for
  * user permission
@@ -30,9 +34,24 @@ namespace App\Repository\Models;
  * @see \App\Repository\Models\F30_Model
  */
 class Role extends F30_Model {
+  use HasFactory;
+
+  const ID = 'id';
+  const NAME = 'name';
+  const ICON = 'icon';
+  const LEVEL = 'level';
+
+
   /** @var string $table set the table name */
   protected $table = 'roles';
 
   /** @var bool $incrementing disabling AUTO_INCREMENT command, we used UUID */
   public $incrementing = false;
+
+  /**
+   * @return \Illuminate\Database\Eloquent\Factories\Factory
+   */
+  protected static function newFactory() : Factory {
+    return RoleFactory::new();
+  }
 }
