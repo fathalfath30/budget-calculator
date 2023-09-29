@@ -1,8 +1,24 @@
 <?php
+/*
+//
+//  ______    _   _           _  __      _   _     ____   ___
+// |  ____|  | | | |         | |/ _|    | | | |   |___ \ / _ \
+// | |__ __ _| |_| |__   __ _| | |_ __ _| |_| |__   __) | | | |
+// |  __/ _` | __| '_ \ / _` | |  _/ _` | __| '_ \ |__ <| | | |
+// | | | (_| | |_| | | | (_| | | || (_| | |_| | | |___) | |_| |
+// |_|  \__,_|\__|_| |_|\__,_|_|_| \__,_|\__|_| |_|____/ \___/
+//
+// Written by Fathalfath30.
+// Email : fathalfath30@gmail.com
+// Follow me on:
+//  Github : https://github.com/fathalfath30
+//  Gitlab : https://gitlab.com/Fathalfath30
+//
+*/
 
-use App\Models\Role;
-use App\Models\User;
-use App\Models\UserRole;
+use App\Repository\Models\Role;
+use App\Repository\Models\User;
+use App\Repository\Models\UserRole;
 use Database\Helper\F30_Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,10 +27,10 @@ use Illuminate\Support\Facades\Schema;
  * create new user_roles table this table will put all roles for
  * some users
  *
- * @version 1.0.0
- * @since 1.0.0
  * @author Fathalfath30
  *
+ * @version 1.0.0
+ * @since 1.0.0
  */
 return new class extends F30_Migration {
   // set table name

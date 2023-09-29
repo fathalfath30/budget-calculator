@@ -6,6 +6,15 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 
-class Controller extends BaseController {
+/**
+ * F30Controller
+ * This is class is modified from Laravel existing Controller
+ *
+ * @since 1.0.0
+ * @version 1.0.0
+ *
+ * @see BaseController
+ */
+class F30Controller extends BaseController {
   use AuthorizesRequests, ValidatesRequests;
 }

@@ -5,8 +5,8 @@
 .vscode
 
 ### Visual Paradigm
-.design/**
-!.design/budget-calculator.vpp
+.docs/database/**
+!.docs/database/budget-calculator.vpp
 
 ### NodeJS Module and lock
 node_modules
@@ -30,3 +30,6 @@ yarn-error.log
 .env.backup
 .env.production
 .phpunit.result.cache
+
+### reporting file
+.coverage-report

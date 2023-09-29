@@ -16,10 +16,23 @@
 //
 */
 
-namespace App\Models;
+namespace App\Repository\Models;
 
-use Illuminate\Database\Eloquent\Model;
+/**
+ * UserLoginHistory
+ *
+ * This model should store all login history by users
+ *
+ * @author Fathalfath30
+ * @version 1.0.0
+ * @since 1.0.0
+ * @see \Illuminate\Database\Eloquent\Model
+ * @see \App\Repository\Models\F30_Model
+ */
+class UserLoginHistory extends F30_Model {
+  /** @var string $table set the table name */
+  protected $table = 'user_login_history';
 
-class F30_Model extends Model {
-  // todo: add something useful here
+  /** @var bool $incrementing disabling AUTO_INCREMENT command, we used UUID */
+  public $incrementing = false;
 }

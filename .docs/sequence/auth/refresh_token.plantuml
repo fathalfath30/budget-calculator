@@ -1,0 +1,40 @@
+@startuml
+title "Budget Management: Refresh Token"
+footer "Copyright (c) 2023 - Fathalfath30 All Right Reserved | https://github.com/fathalfath30"
+
+autonumber
+!theme plain
+skinparam minClassWidth 100
+skinparam handwritten false
+
+actor "**USER**" as user
+box Budget Management #dbf1f3
+  participant "**Frontend**\n**service**" as fe order 1
+  participant "**Backend**\n**service**" as be order 2
+end box
+
+note over fe
+  **Request Header:**
+    - Authorization: Bearer <token>
+end note
+
+fe -> be: request refresh token
+be -> be: check token expiry date
+
+alt token expiry
+  be --> fe: status code: **401 (Unauthorized)**
+  note over fe
+    **error message:**
+    Your session has been expired, please
+    re-login to continue
+  end note
+  fe --> user: redirect to dashboard and\n display error message
+else "else -> goto next step"
+end
+
+note over be: jwt token expiry : 30 minutes
+be -> be: generate jwt token
+be --> fe:
+fe -> fe: update current jwt
+
+@enduml
