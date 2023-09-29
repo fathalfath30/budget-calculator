@@ -5,8 +5,8 @@
 .vscode
 
 ### Visual Paradigm
-.docs/.design/**
-!.docs/.design/budget-calculator.vpp
+.docs/database/**
+!.docs/database/budget-calculator.vpp
 
 ### NodeJS Module and lock
 node_modules
