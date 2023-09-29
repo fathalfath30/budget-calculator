@@ -18,16 +18,13 @@
 
 namespace Domain\Entity;
 
-use App\Domain\Entity\User;
+use App\Domain\Entity\Auth;
 use App\Exceptions\EntityException;
 use Exception;
 use Tests\TestCase;
 
 /**
- * TimestampTest
- *
- * This class is used to testing some business rules for Timestamp entity, for example
- * testing __constructor and validation and more.
+ * AuthTest
  *
  * @author Fathalfath30
  * @version 1.0.0
@@ -35,7 +32,7 @@ use Tests\TestCase;
  *
  * @see \App\Domain\Entity\Timestamp
  */
-class UserTest extends TestCase {
+class AuthTest extends TestCase {
 
   /**
    * Test the validation on each input
@@ -44,7 +41,6 @@ class UserTest extends TestCase {
    * @test
    */
   public function validateInput() {
-    $now = date('Y-m-d H:i:s');
     $testCase = [
       [
         'name' => 'check id must be filled',
@@ -57,7 +53,7 @@ class UserTest extends TestCase {
 
     foreach($testCase as $tc) {
       try {
-        new User($tc['payload']);
+        new Auth($tc['payload']);
       } catch(Exception $e) {
         /** @var EntityException $e */
         $this->assertStringMatchesFormat($tc['expected']['message'], $e->getMessage());
@@ -66,27 +62,4 @@ class UserTest extends TestCase {
       }
     }
   }
-
-  //  /**
-  //   * @return void
-  //   * @throws \App\Exceptions\EntityException
-  //   * @throws \Illuminate\Validation\ValidationException
-  //   *
-  //   * @test
-  //   */
-  //  public function createdAtAndUpdateAtMustReturnConstructedValue() {
-  //    $now = date('Y-m-d H:i:s');
-  //    $cls = new Timestamp([Timestamp::CREATED_AT => $now, Timestamp::UPDATED_AT => $now]);
-  //
-  //    $this->assertSame($now, $cls->getCreatedAt());
-  //    $this->assertSame($now, $cls->getUpdatedAt());
-  //    $this->assertNull($cls->getDeletedAt());
-  //
-  //    $clsArray = $cls->toArray();
-  //    $this->assertIsArray($clsArray);
-  //
-  //    $this->assertArrayHasKey(Timestamp::CREATED_AT, $clsArray);
-  //    $this->assertArrayHasKey(Timestamp::UPDATED_AT, $clsArray);
-  //    $this->assertArrayHasKey(Timestamp::DELETED_AT, $clsArray);
-  //  }
 }
