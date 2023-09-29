@@ -1,6 +1,5 @@
 <?php
 
-use App\Repository\Models\Budget;
 use App\Repository\Models\User;
 use App\Repository\Models\UserLoginHistory;
 use Database\Helper\F30_Migration;

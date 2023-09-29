@@ -33,6 +33,7 @@ use Illuminate\Support\Facades\Validator;
  */
 abstract class Entity implements Arrayable {
   const TIMESTAMP = 'timestamp';
+
   /**
    * @throws \Illuminate\Validation\ValidationException|\App\Exceptions\EntityException
    * @author Fathalfath30
