@@ -32,6 +32,7 @@ use Illuminate\Support\Facades\Validator;
  * @since 1.0.0
  */
 abstract class Entity implements Arrayable {
+  const TIMESTAMP = 'timestamp';
   /**
    * @throws \Illuminate\Validation\ValidationException|\App\Exceptions\EntityException
    * @author Fathalfath30
@@ -45,5 +46,11 @@ abstract class Entity implements Arrayable {
     }
 
     return $validate->validated();
+  }
+
+  public function validateTimestamp(array $payload) : void {
+    if(!empty($payload[self::TIMESTAMP]) && !($payload[self::TIMESTAMP] instanceof Timestamp)) {
+      throw new EntityException(trans('exception.domain.instance_of.timestamp'));
+    }
   }
 }
