@@ -19,7 +19,7 @@
 namespace App\Domain\Entity;
 
 /**
- * User
+ * Auth
  *
  * @author Fathalfath30
  * @version 1.0.0
@@ -28,19 +28,12 @@ namespace App\Domain\Entity;
  * @see \App\Domain\Entity\IEntity
  * @see \App\Domain\Entity\ToArray
  */
-class User extends Entity implements IEntity {
+class Auth extends Entity implements IEntity {
   use ToArray;
 
-  const ID = 'id';
-  const USERNAME = 'username';
-  const EMAIL = 'email';
   const PASSWORD = 'password';
-
-  private string $id;
-  private Role $role;
-  private Auth $auth;
-  private UserInfo $info;
-  private ?Timestamp $timestamp;
+  const LOCKED_AT = 'locked_at';
+  const LOGIN_FAIL_ATTEMPT = 'login_fail_attempt';
 
   public function __construct(array $payload, bool $validate = true) {
     // todo: __construct

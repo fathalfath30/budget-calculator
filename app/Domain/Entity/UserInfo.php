@@ -15,11 +15,10 @@
 //  Gitlab : https://gitlab.com/Fathalfath30
 //
 */
-
 namespace App\Domain\Entity;
 
 /**
- * User
+ * UserInfo
  *
  * @author Fathalfath30
  * @version 1.0.0
@@ -28,19 +27,17 @@ namespace App\Domain\Entity;
  * @see \App\Domain\Entity\IEntity
  * @see \App\Domain\Entity\ToArray
  */
-class User extends Entity implements IEntity {
+class UserInfo extends Entity implements IEntity {
   use ToArray;
 
-  const ID = 'id';
+  const FIRST_NAME = 'first_name';
+  const LAST_NAME = 'last_name';
   const USERNAME = 'username';
   const EMAIL = 'email';
-  const PASSWORD = 'password';
-
-  private string $id;
-  private Role $role;
-  private Auth $auth;
-  private UserInfo $info;
-  private ?Timestamp $timestamp;
+  private string $first_name;
+  private ?string $last_name;
+  private string $username;
+  private string $email;
 
   public function __construct(array $payload, bool $validate = true) {
     // todo: __construct
