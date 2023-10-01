@@ -16,33 +16,17 @@
 //
 */
 
-namespace App\Domain\Entity;
+namespace Tests\TestData;
 
 /**
- * User
+ * UserTestData
  *
  * @author Fathalfath30
  * @version 1.0.0
  * @since 1.0.0
  *
- * @see \App\Domain\Entity\IEntity
- * @see \App\Domain\Entity\ToArray
+ * @see \App\Domain\Entity\User
  */
-class User extends Entity implements IEntity {
-  use ToArray;
+trait UserTestData {
 
-  const ID = 'id';
-  const ROLE = 'role';
-  const AUTH = 'auth';
-  const USER_INFO = 'user_info';
-
-  private string $id;
-  private Role $role;
-  private Auth $auth;
-  private UserInfo $info;
-  private ?Timestamp $timestamp;
-
-  public function __construct(array $payload, bool $validate = true) {
-    // todo: __construct
-  }
 }

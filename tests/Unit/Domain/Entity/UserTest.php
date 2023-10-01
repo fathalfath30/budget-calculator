@@ -44,7 +44,6 @@ class UserTest extends TestCase {
    * @test
    */
   public function validateInput() {
-    $now = date('Y-m-d H:i:s');
     $testCase = [
       [
         'name' => 'check id must be filled',
@@ -69,27 +68,4 @@ class UserTest extends TestCase {
       $this->assertTrue($exception, "validation error");
     }
   }
-
-  //  /**
-  //   * @return void
-  //   * @throws \App\Exceptions\EntityException
-  //   * @throws \Illuminate\Validation\ValidationException
-  //   *
-  //   * @test
-  //   */
-  //  public function createdAtAndUpdateAtMustReturnConstructedValue() {
-  //    $now = date('Y-m-d H:i:s');
-  //    $cls = new Timestamp([Timestamp::CREATED_AT => $now, Timestamp::UPDATED_AT => $now]);
-  //
-  //    $this->assertSame($now, $cls->getCreatedAt());
-  //    $this->assertSame($now, $cls->getUpdatedAt());
-  //    $this->assertNull($cls->getDeletedAt());
-  //
-  //    $clsArray = $cls->toArray();
-  //    $this->assertIsArray($clsArray);
-  //
-  //    $this->assertArrayHasKey(Timestamp::CREATED_AT, $clsArray);
-  //    $this->assertArrayHasKey(Timestamp::UPDATED_AT, $clsArray);
-  //    $this->assertArrayHasKey(Timestamp::DELETED_AT, $clsArray);
-  //  }
 }
