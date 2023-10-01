@@ -52,16 +52,17 @@ class UserInfo extends Entity implements IEntity {
           self::FIRST_NAME => ['required', VALIDATION_REGEX_STD_NAME],
           self::LAST_NAME => ['nullable', VALIDATION_REGEX_STD_NAME],
           self::USERNAME => ['required', VALIDATION_REGEX_USERNAME],
-          self::EMAIL => ['nullable', 'email', 'max:255'],
+          self::EMAIL => ['required', 'email', 'max:255'],
         ]
       );
     }
 
     $this->first_name = trim($payload[self::FIRST_NAME]);
     $this->last_name = null;
-    if(!empty($payload[self::LAST_NAME])) {
+    if(isset($payload[self::LAST_NAME]) && !empty($payload[self::LAST_NAME]) && !is_null($payload[self::LAST_NAME])) {
       $this->last_name = trim($payload[self::LAST_NAME]);
     }
+
     $this->username = trim($payload[self::USERNAME]);
     $this->email = strtolower(trim($payload[self::EMAIL]));
   }
@@ -81,10 +82,6 @@ class UserInfo extends Entity implements IEntity {
    * @return null|string first name
    */
   public function getLastName() : ?string {
-    if(empty(trim($this->last_name))) {
-      return null;
-    }
-
     return $this->last_name;
   }
 

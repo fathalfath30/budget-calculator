@@ -199,4 +199,39 @@ class UserInfoTest extends TestCase {
     $this->assertEquals($this->getValidUsername(), $entity->getUsername());
     $this->assertEquals($this->getValidEmail(), $entity->getEmail());
   }
+
+  /**
+   * @return void
+   * @throws \App\Exceptions\EntityException
+   * @throws \Illuminate\Validation\ValidationException
+   *
+   * @test
+   * @testdox getLastName must return null if last_name is not set
+   */
+  public function getLastNameMustReturnNullIfNotSetOrNullOrEmptyString() : void {
+    $entity = new UserInfo([
+      UserInfo::FIRST_NAME => $this->getValidFirstName(),
+      UserInfo::USERNAME => $this->getValidUsername(),
+      UserInfo::EMAIL => $this->getValidEmail()
+    ], false);
+    $this->assertNull($entity->getLastName());
+
+
+    $entity = new UserInfo([
+      UserInfo::FIRST_NAME => $this->getValidFirstName(),
+      UserInfo::LAST_NAME => '',
+      UserInfo::USERNAME => $this->getValidUsername(),
+      UserInfo::EMAIL => $this->getValidEmail()
+    ], false);
+    $this->assertNull($entity->getLastName());
+
+
+    $entity = new UserInfo([
+      UserInfo::FIRST_NAME => $this->getValidFirstName(),
+      UserInfo::LAST_NAME => null,
+      UserInfo::USERNAME => $this->getValidUsername(),
+      UserInfo::EMAIL => $this->getValidEmail()
+    ], false);
+    $this->assertNull($entity->getLastName());
+  }
 }
