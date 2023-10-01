@@ -160,14 +160,14 @@ class RoleTest extends TestCase {
    */
   public function roleMustHaveGetterFunction() {
     try {
-      $role = $this->ValidRoleEntity(true);
-      $this->assertEquals($this->ValidRoleId(true), $role->getId());
-      $this->assertEquals($this->ValidRoleName(true), $role->getName());
+      $role = $this->getValidRoleEntity(true);
+      $this->assertEquals($this->getValidRoleId(true), $role->getId());
+      $this->assertEquals($this->getValidRoleName(true), $role->getName());
       $this->assertEquals(Role::USER_LEVEL_SUPER_ADMIN, $role->getLevel());
 
 
       $ts = $role->getTimestamp();
-      $this->assertEquals($this->ValidTimestampEntity(), $ts);
+      $this->assertEquals($this->getValidTimestampEntity(), $ts);
       $this->assertEquals(self::SAMPLE_DATE_TIME, $ts->getCreatedAt());
       $this->assertEquals(self::SAMPLE_DATE_TIME, $ts->getUpdatedAt());
     } catch(Exception $exception) {
@@ -183,7 +183,7 @@ class RoleTest extends TestCase {
    */
   public function isSuperAdminMustReturnTrueIfRoleLevelIsSuperAdmin() {
     try {
-      $role = $this->ValidRoleEntity(true);
+      $role = $this->getValidRoleEntity(true);
       $this->assertTrue($role->isSuperAdmin());
     } catch(Exception $exception) {
       $this->assertNull($exception);
@@ -198,7 +198,7 @@ class RoleTest extends TestCase {
    */
   public function isGuestMustReturnTrueIfRoleLevelIsGuest() {
     try {
-      $role = $this->ValidRoleEntity(false);
+      $role = $this->getValidRoleEntity(false);
       $this->assertTrue($role->isGuest());
     } catch(Exception $exception) {
       $this->assertNull($exception);
@@ -212,7 +212,7 @@ class RoleTest extends TestCase {
    */
   public function setSuperAdminMustSetUserLevelTo999() {
     try {
-      $role = $this->ValidRoleEntity();
+      $role = $this->getValidRoleEntity();
       $this->assertFalse($role->isSuperAdmin());
 
       $this->assertInstanceOf(Role::class, $role->setSuperAdmin());
@@ -230,7 +230,7 @@ class RoleTest extends TestCase {
    */
   public function setGuestMustSetUserLevelTo0() {
     try {
-      $role = $this->ValidRoleEntity(true);
+      $role = $this->getValidRoleEntity(true);
       $this->assertTrue($role->isSuperAdmin());
 
       $this->assertInstanceOf(Role::class, $role->setGuest());

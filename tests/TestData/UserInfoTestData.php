@@ -36,7 +36,7 @@ trait UserInfoTestData {
    *
    * @return string
    */
-  public function ValidFirstName() : string {
+  public function getValidFirstName() : string {
     return "Lorem";
   }
 
@@ -45,7 +45,7 @@ trait UserInfoTestData {
    *
    * @return string
    */
-  public function ValidLastName() : string {
+  public function getValidLastName() : string {
     return "Ipsum";
   }
 
@@ -54,7 +54,7 @@ trait UserInfoTestData {
    *
    * @return string
    */
-  public function ValidUsername() : string {
+  public function getValidUsername() : string {
     return "Fathalfath30";
   }
 
@@ -63,7 +63,7 @@ trait UserInfoTestData {
    *
    * @return string
    */
-  public function ValidEmail() : string {
+  public function getValidEmail() : string {
     return "fathalfath30@gmail.com";
   }
 
@@ -76,12 +76,12 @@ trait UserInfoTestData {
    * @throws \App\Exceptions\EntityException
    * @throws \Illuminate\Validation\ValidationException
    */
-  public function ValidUserInfoEntity(bool $lastNull = false) : UserInfo {
+  public function getValidUserInfoEntity(bool $lastNull = false) : UserInfo {
     return new UserInfo([
-      UserInfo::FIRST_NAME => $this->ValidFirstName(),
-      UserInfo::LAST_NAME => ($lastNull) ? null : $this->ValidLastName(),
-      UserInfo::USERNAME => $this->ValidUsername(),
-      UserInfo::EMAIL => $this->ValidEmail()
+      UserInfo::FIRST_NAME => $this->getValidFirstName(),
+      UserInfo::LAST_NAME => ($lastNull) ? null : $this->getValidLastName(),
+      UserInfo::USERNAME => $this->getValidUsername(),
+      UserInfo::EMAIL => $this->getValidEmail()
     ], false);
   }
 }

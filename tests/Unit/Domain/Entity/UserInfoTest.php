@@ -192,11 +192,11 @@ class UserInfoTest extends TestCase {
    * @test
    */
   public function userInfoMustHaveBasicGetterToGetObjectValue() : void {
-    $entity = $this->ValidUserInfoEntity();
+    $entity = $this->getValidUserInfoEntity();
 
-    $this->assertEquals($this->ValidFirstName(), $entity->getFirstName());
-    $this->assertEquals($this->ValidLastName(), $entity->getLastName());
-    $this->assertEquals($this->ValidUsername(), $entity->getUsername());
-    $this->assertEquals($this->ValidEmail(), $entity->getEmail());
+    $this->assertEquals($this->getValidFirstName(), $entity->getFirstName());
+    $this->assertEquals($this->getValidLastName(), $entity->getLastName());
+    $this->assertEquals($this->getValidUsername(), $entity->getUsername());
+    $this->assertEquals($this->getValidEmail(), $entity->getEmail());
   }
 }

@@ -41,7 +41,7 @@ trait TimestampTestData {
    * @throws \App\Exceptions\EntityException
    * @throws \Illuminate\Validation\ValidationException
    */
-  public function ValidTimestampEntity(string $value = self::SAMPLE_DATE_TIME) : Timestamp {
+  public function getValidTimestampEntity(string $value = self::SAMPLE_DATE_TIME) : Timestamp {
     return new Timestamp([
       Timestamp::CREATED_AT => $value,
       Timestamp::UPDATED_AT => $value,
