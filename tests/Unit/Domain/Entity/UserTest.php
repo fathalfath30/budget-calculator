@@ -18,10 +18,14 @@
 
 namespace Domain\Entity;
 
+use App\Domain\Entity\Auth;
+use App\Domain\Entity\Role;
 use App\Domain\Entity\User;
 use App\Exceptions\EntityException;
 use Exception;
 use Tests\TestCase;
+use Tests\TestData\RoleTestData;
+use Tests\TestData\UserTestData;
 
 /**
  * TimestampTest
@@ -36,22 +40,82 @@ use Tests\TestCase;
  * @see \App\Domain\Entity\Timestamp
  */
 class UserTest extends TestCase {
+  use UserTestData, RoleTestData;
 
   /**
    * Test the validation on each input
    *
    * @return void
+   * @return void
    * @test
+   * @throws \Illuminate\Validation\ValidationException
+   *
+   * @throws \App\Exceptions\EntityException
    */
   public function validateInput() {
     $testCase = [
+      // <editor-fold desc="validation_test::id">
       [
         'name' => 'check id must be filled',
         'expected' => [
-          'message' => 'The id field is required.'
+          'message' => trans('validation.required', ['attribute' => 'id'])
         ],
         'payload' => []
-      ]
+      ],
+      [
+        'name' => 'check id must be a valid uuid',
+        'expected' => [
+          'message' => trans('validation.uuid', ['attribute' => 'id'])
+        ],
+        'payload' => [
+          User::ID => 'lorem'
+        ]
+      ],
+      // </editor-fold>
+      // <editor-fold desc="validation_test::role">
+      [
+        'name' => 'check role is required',
+        'expected' => [
+          'message' => trans('validation.required', ['attribute' => 'role'])
+        ],
+        'payload' => [
+          User::ID => $this->getValidUserId()
+        ]
+      ],
+      [
+        'name' => 'check role is instance of Role class',
+        'expected' => [
+          'message' => trans("validation.instance_of", ['attribute' => 'role', 'values' => Role::class])
+        ],
+        'payload' => [
+          User::ID => $this->getValidUserId(),
+          User::ROLE => 'lorem'
+        ]
+      ],
+      // </editor-fold>
+      // <editor-fold desc="validation_test::auth">
+      [
+        'name' => 'check auth is required',
+        'expected' => [
+          'message' => trans('validation.required', ['attribute' => 'auth'])
+        ],
+        'payload' => [
+          User::ID => $this->getValidUserId(),
+          User::ROLE => $this->getValidRoleEntity()
+        ]
+      ],
+      [
+        'name' => 'check auth is required',
+        'expected' => [
+          'message' => trans("validation.instance_of", ['attribute' => 'auth', 'values' => Auth::class])
+        ],
+        'payload' => [
+          User::ID => $this->getValidUserId(),
+          User::ROLE => $this->getValidRoleEntity(),
+          User::AUTH => 'lorem'
+        ]
+      ],
+      // </editor-fold>
     ];
 
     foreach($testCase as $tc) {

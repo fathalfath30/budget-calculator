@@ -18,6 +18,11 @@
 
 namespace App\Domain\Entity;
 
+use App\Domain\Entity\Traits\Entity;
+use App\Domain\Entity\Traits\HasAuth;
+use App\Domain\Entity\Traits\HasRole;
+use App\Domain\Entity\Traits\ToArray;
+
 /**
  * User
  *
@@ -26,23 +31,38 @@ namespace App\Domain\Entity;
  * @since 1.0.0
  *
  * @see \App\Domain\Entity\IEntity
- * @see \App\Domain\Entity\ToArray
+ * @see \App\Domain\Entity\Traits\ToArray
  */
 class User extends Entity implements IEntity {
-  use ToArray;
+  use ToArray, HasRole, HasAuth;
 
   const ID = 'id';
-  const ROLE = 'role';
-  const AUTH = 'auth';
+
   const USER_INFO = 'user_info';
 
   private string $id;
-  private Role $role;
-  private Auth $auth;
   private UserInfo $info;
   private ?Timestamp $timestamp;
 
+  /**
+   * @throws \App\Exceptions\EntityException
+   * @throws \Illuminate\Validation\ValidationException
+   */
   public function __construct(array $payload, bool $validate = true) {
-    // todo: __construct
+    if($validate) {
+      $payload = $this->validate($payload, [
+        self::ID => ['required', 'uuid'],
+        self::ROLE => [],
+        self::AUTH => []
+      ]);
+
+      $role = $payload[self::ROLE] ?? null;
+      $this->roleIsRequired($role);
+      $this->instanceOfRole($role);
+
+      $auth = $payload[self::AUTH] ?? null;
+      $this->authIsRequired($auth);
+      $this->instanceOfAuth($auth);
+    }
   }
 }

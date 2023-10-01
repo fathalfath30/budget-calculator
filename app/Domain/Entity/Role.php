@@ -18,6 +18,9 @@
 
 namespace App\Domain\Entity;
 
+use App\Domain\Entity\Traits\Entity;
+use App\Domain\Entity\Traits\ToArray;
+
 /**
  * Role
  *
@@ -28,7 +31,7 @@ namespace App\Domain\Entity;
  * @since 1.0.0
  *
  * @see \App\Domain\Entity\IEntity
- * @see \App\Domain\Entity\ToArray
+ * @see \App\Domain\Entity\Traits\ToArray
  */
 class Role extends Entity implements IEntity {
   use ToArray;

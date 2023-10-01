@@ -16,8 +16,9 @@
 //
 */
 
-namespace App\Domain\Entity;
+namespace App\Domain\Entity\Traits;
 
+use App\Domain\Entity\Timestamp;
 use App\Exceptions\EntityException;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Facades\Validator;

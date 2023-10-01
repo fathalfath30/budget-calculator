@@ -18,8 +18,8 @@
 
 namespace Tests\TestData;
 
-use App\Domain\Entity\Entity;
 use App\Domain\Entity\Role;
+use App\Domain\Entity\Traits\Entity;
 
 /**
  * RoleTestData
