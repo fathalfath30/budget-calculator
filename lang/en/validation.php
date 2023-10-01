@@ -150,6 +150,9 @@ return [
   'ulid' => 'The :attribute field must be a valid ULID.',
   'uuid' => 'The :attribute field must be a valid UUID.',
   'instance_of' => 'The :attribute field must be instance of :values.',
+  'first_name' => [
+    'required' => 'The first name field is required.'
+  ],
 
   /*
   |--------------------------------------------------------------------------

@@ -18,7 +18,6 @@
 
 namespace Domain\Entity;
 
-use App\Domain\Entity\Timestamp;
 use App\Domain\Entity\User;
 use App\Exceptions\EntityException;
 use Exception;
@@ -57,37 +56,40 @@ class UserTest extends TestCase {
     ];
 
     foreach($testCase as $tc) {
+      $exception = false;
       try {
         new User($tc['payload']);
       } catch(Exception $e) {
-        /** @var EntityException $e */
         $this->assertStringMatchesFormat($tc['expected']['message'], $e->getMessage());
         $this->assertInstanceOf(EntityException::class, $e);
         $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+        $exception = true;
       }
+
+      $this->assertTrue($exception, "validation error");
     }
   }
 
-//  /**
-//   * @return void
-//   * @throws \App\Exceptions\EntityException
-//   * @throws \Illuminate\Validation\ValidationException
-//   *
-//   * @test
-//   */
-//  public function createdAtAndUpdateAtMustReturnConstructedValue() {
-//    $now = date('Y-m-d H:i:s');
-//    $cls = new Timestamp([Timestamp::CREATED_AT => $now, Timestamp::UPDATED_AT => $now]);
-//
-//    $this->assertSame($now, $cls->getCreatedAt());
-//    $this->assertSame($now, $cls->getUpdatedAt());
-//    $this->assertNull($cls->getDeletedAt());
-//
-//    $clsArray = $cls->toArray();
-//    $this->assertIsArray($clsArray);
-//
-//    $this->assertArrayHasKey(Timestamp::CREATED_AT, $clsArray);
-//    $this->assertArrayHasKey(Timestamp::UPDATED_AT, $clsArray);
-//    $this->assertArrayHasKey(Timestamp::DELETED_AT, $clsArray);
-//  }
+  //  /**
+  //   * @return void
+  //   * @throws \App\Exceptions\EntityException
+  //   * @throws \Illuminate\Validation\ValidationException
+  //   *
+  //   * @test
+  //   */
+  //  public function createdAtAndUpdateAtMustReturnConstructedValue() {
+  //    $now = date('Y-m-d H:i:s');
+  //    $cls = new Timestamp([Timestamp::CREATED_AT => $now, Timestamp::UPDATED_AT => $now]);
+  //
+  //    $this->assertSame($now, $cls->getCreatedAt());
+  //    $this->assertSame($now, $cls->getUpdatedAt());
+  //    $this->assertNull($cls->getDeletedAt());
+  //
+  //    $clsArray = $cls->toArray();
+  //    $this->assertIsArray($clsArray);
+  //
+  //    $this->assertArrayHasKey(Timestamp::CREATED_AT, $clsArray);
+  //    $this->assertArrayHasKey(Timestamp::UPDATED_AT, $clsArray);
+  //    $this->assertArrayHasKey(Timestamp::DELETED_AT, $clsArray);
+  //  }
 }

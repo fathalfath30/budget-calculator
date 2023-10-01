@@ -21,21 +21,20 @@ namespace App\Http\Controllers\API;
 use App\Exceptions\NotImplementedException;
 use App\Http\Controllers\F30Controller;
 use App\Http\Request\Login;
-use Exception;
 
 class AuthController extends F30Controller {
   public function login(Login $request) {
     // todo: implement me
-    throw new NotImplementedException();
+    throw new NotImplementedException;
   }
 
   public function forgotPassword() {
     // todo: implement me
-    throw new NotImplementedException();
+    throw new NotImplementedException;
   }
 
   public function resetPassword() {
     // todo: implement me
-    throw new NotImplementedException();
+    throw new NotImplementedException;
   }
 }

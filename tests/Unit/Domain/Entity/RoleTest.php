@@ -26,10 +26,9 @@ use Faker\Factory as Faker;
 use Faker\Generator;
 use Tests\TestCase;
 use Tests\TestData\RoleTestData;
-use Tests\TestData\TimestampTestData;
 
 class RoleTest extends TestCase {
-  use RoleTestData, TimestampTestData;
+  use RoleTestData;
 
   private Generator $faker;
 
@@ -137,14 +136,17 @@ class RoleTest extends TestCase {
     ];
 
     foreach($testCase as $tc) {
+      $exception = false;
       try {
         new Role($tc['payload']);
       } catch(Exception $e) {
-        /** @var EntityException $e */
         $this->assertStringMatchesFormat($tc['expected']['message'], $e->getMessage());
         $this->assertInstanceOf(EntityException::class, $e);
         $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+        $exception = true;
       }
+
+      $this->assertTrue($exception, "validation error");
     }
   }
 
@@ -158,14 +160,14 @@ class RoleTest extends TestCase {
    */
   public function roleMustHaveGetterFunction() {
     try {
-      $role = $this->ValidRoleEntity(true);
-      $this->assertEquals($this->ValidRoleId(true), $role->getId());
-      $this->assertEquals($this->ValidRoleName(true), $role->getName());
+      $role = $this->getValidRoleEntity(true);
+      $this->assertEquals($this->getValidRoleId(true), $role->getId());
+      $this->assertEquals($this->getValidRoleName(true), $role->getName());
       $this->assertEquals(Role::USER_LEVEL_SUPER_ADMIN, $role->getLevel());
 
 
       $ts = $role->getTimestamp();
-      $this->assertEquals($this->ValidTimestampEntity(), $ts);
+      $this->assertEquals($this->getValidTimestampEntity(), $ts);
       $this->assertEquals(self::SAMPLE_DATE_TIME, $ts->getCreatedAt());
       $this->assertEquals(self::SAMPLE_DATE_TIME, $ts->getUpdatedAt());
     } catch(Exception $exception) {
@@ -181,7 +183,7 @@ class RoleTest extends TestCase {
    */
   public function isSuperAdminMustReturnTrueIfRoleLevelIsSuperAdmin() {
     try {
-      $role = $this->ValidRoleEntity(true);
+      $role = $this->getValidRoleEntity(true);
       $this->assertTrue($role->isSuperAdmin());
     } catch(Exception $exception) {
       $this->assertNull($exception);
@@ -196,7 +198,7 @@ class RoleTest extends TestCase {
    */
   public function isGuestMustReturnTrueIfRoleLevelIsGuest() {
     try {
-      $role = $this->ValidRoleEntity(false);
+      $role = $this->getValidRoleEntity(false);
       $this->assertTrue($role->isGuest());
     } catch(Exception $exception) {
       $this->assertNull($exception);
@@ -210,7 +212,7 @@ class RoleTest extends TestCase {
    */
   public function setSuperAdminMustSetUserLevelTo999() {
     try {
-      $role = $this->ValidRoleEntity();
+      $role = $this->getValidRoleEntity();
       $this->assertFalse($role->isSuperAdmin());
 
       $this->assertInstanceOf(Role::class, $role->setSuperAdmin());
@@ -228,7 +230,7 @@ class RoleTest extends TestCase {
    */
   public function setGuestMustSetUserLevelTo0() {
     try {
-      $role = $this->ValidRoleEntity(true);
+      $role = $this->getValidRoleEntity(true);
       $this->assertTrue($role->isSuperAdmin());
 
       $this->assertInstanceOf(Role::class, $role->setGuest());

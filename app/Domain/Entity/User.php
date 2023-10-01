@@ -37,22 +37,12 @@ class User extends Entity implements IEntity {
   const PASSWORD = 'password';
 
   private string $id;
-  private string $username;
-  private string $email;
-  private string $password;
+  private Role $role;
+  private Auth $auth;
+  private UserInfo $info;
+  private ?Timestamp $timestamp;
 
-  /**
-   * @throws \App\Exceptions\EntityException
-   * @throws \Illuminate\Validation\ValidationException
-   */
   public function __construct(array $payload, bool $validate = true) {
-    if($validate) {
-      $payload = $this->validate($payload,
-        [
-          self::ID => ['required', 'uuid'],
-          self::USERNAME => ['required', 'string', 'min:6']
-        ]
-      );
-    }
+    // todo: __construct
   }
 }
