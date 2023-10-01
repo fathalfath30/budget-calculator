@@ -205,7 +205,7 @@ class AuthTest extends TestCase {
    * @throws \Illuminate\Validation\ValidationException
    *
    * @test
-   * @testdox getLoginFailAttempt must zero null if locked_at is not set
+   * @testdox getLoginFailAttempt must zero null if login_fail_attempt is not set
    */
   public function getLoginFailAttemptMustReturnZeroIfNotSetOrNullOrEmptyString() : void {
     $entity = new Auth([Auth::PASSWORD => $this->getValidPassword()], false);
