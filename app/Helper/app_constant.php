@@ -17,8 +17,12 @@
 */
 
 const ENV_APP_ENV = 'APP_ENV';
-
 const APP_MODE_PRODUCTION = 'production';
 const APP_MODE_TESTING = 'testing';
 const APP_MODE_LOCAL = 'local';
 const APP_MODE_DEVELOPMENT = 'development';
+
+// <editor-fold desc="validation::regex">
+const VALIDATION_REGEX_STD_NAME = 'regex:/^[\pL\s\-]+$/u';
+const VALIDATION_REGEX_USERNAME = 'regex:/^(?=[a-zA-Z0-9._]{6,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/';
+// </editor-fold>
