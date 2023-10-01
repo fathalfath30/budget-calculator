@@ -52,14 +52,17 @@ class AuthTest extends TestCase {
     ];
 
     foreach($testCase as $tc) {
+      $exception = false;
       try {
         new Auth($tc['payload']);
       } catch(Exception $e) {
-        /** @var EntityException $e */
         $this->assertStringMatchesFormat($tc['expected']['message'], $e->getMessage());
         $this->assertInstanceOf(EntityException::class, $e);
         $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+        $exception = true;
       }
+
+      $this->assertTrue($exception, "validation error");
     }
   }
 }
