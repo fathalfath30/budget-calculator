@@ -22,6 +22,7 @@ use App\Domain\Entity\Auth;
 use App\Exceptions\EntityException;
 use Exception;
 use Tests\TestCase;
+use Tests\TestData\AuthTestData;
 
 /**
  * AuthTest
@@ -33,6 +34,7 @@ use Tests\TestCase;
  * @see \App\Domain\Entity\Timestamp
  */
 class AuthTest extends TestCase {
+  use AuthTestData;
 
   /**
    * Test the validation on each input
@@ -40,15 +42,109 @@ class AuthTest extends TestCase {
    * @return void
    * @test
    */
-  public function validateInput() {
+  public function validateInput() : void {
     $testCase = [
+      // <editor-fold desc="validation_test::password">
       [
-        'name' => 'check id must be filled',
+        'name' => 'check password is required',
         'expected' => [
-          'message' => 'The id field is required.'
+          'message' => 'The password field is required.'
         ],
         'payload' => []
-      ]
+      ],
+      [
+        'name' => 'check password minimum eight character',
+        'expected' => [
+          'message' => 'The password field format is invalid.'
+        ],
+        'payload' => [
+          Auth::PASSWORD => 'admin'
+        ],
+      ],
+      [
+        'name' => 'check password at least one uppercase letter',
+        'expected' => [
+          'message' => 'The password field format is invalid.'
+        ],
+        'payload' => [
+          Auth::PASSWORD => 'admin123'
+        ]
+      ],
+      [
+        'name' => 'check password at least one lowercase letter',
+        'expected' => [
+          'message' => 'The password field format is invalid.'
+        ],
+        'payload' => [
+          Auth::PASSWORD => 'A1234567890'
+        ]
+      ],
+      [
+        'name' => 'check password at least one number',
+        'expected' => [
+          'message' => 'The password field format is invalid.'
+        ],
+        'payload' => [
+          Auth::PASSWORD => 'Abcdswewfqw'
+        ]
+      ],
+      [
+        'name' => 'check password at least one special characte',
+        'expected' => [
+          'message' => 'The password field format is invalid.'
+        ],
+        'payload' => [
+          Auth::PASSWORD => 'Ab1weqsfw'
+        ]
+      ],
+      // </editor-fold>
+      // <editor-fold desc="validation_test::locked_at">
+      [
+        'name' => 'check password is required',
+        'expected' => [
+          'message' => 'The locked at field must match the format Y-m-d H:i:s.'
+        ],
+        'payload' => [
+          Auth::PASSWORD => $this->getValidPassword(),
+          Auth::LOCKED_AT => "loremIpsum"
+        ]
+      ],
+      // </editor-fold>
+      // <editor-fold desc="validation_test::login_fail_attempt">
+      [
+        'name' => 'check login fail attempt must be an integer',
+        'expected' => [
+          'message' => 'The login fail attempt field must be an integer.'
+        ],
+        'payload' => [
+          Auth::PASSWORD => $this->getValidPassword(),
+          Auth::LOCKED_AT => $this->getValidLockedAt(),
+          Auth::LOGIN_FAIL_ATTEMPT => 'lorem'
+        ]
+      ],
+      [
+        'name' => 'login fail attempt must be greater or equals zero',
+        'expected' => [
+          'message' => 'The login fail attempt field must be at least 0.'
+        ],
+        'payload' => [
+          Auth::PASSWORD => $this->getValidPassword(),
+          Auth::LOCKED_AT => $this->getValidLockedAt(),
+          Auth::LOGIN_FAIL_ATTEMPT => -1
+        ]
+      ],
+      [
+        'name' => 'login fail attempt must be less then or equals 5',
+        'expected' => [
+          'message' => 'The login fail attempt field must not be greater than 5.'
+        ],
+        'payload' => [
+          Auth::PASSWORD => $this->getValidPassword(),
+          Auth::LOCKED_AT => $this->getValidLockedAt(),
+          Auth::LOGIN_FAIL_ATTEMPT => 88
+        ]
+      ],
+      // </editor-fold>
     ];
 
     foreach($testCase as $tc) {
@@ -64,5 +160,61 @@ class AuthTest extends TestCase {
 
       $this->assertTrue($exception, "validation error");
     }
+  }
+
+  /**
+   * @return void
+   * @throws \App\Exceptions\EntityException
+   * @throws \Illuminate\Validation\ValidationException
+   *
+   * @test
+   */
+  public function itMustHaveBasicGetterToGetObjectValue() : void {
+    $entity = $this->getValidAuthEntity();
+
+    $this->assertEquals($this->getValidPassword(), $entity->getPassword());
+    $this->assertEquals($this->getValidLockedAt(), $entity->getLockedAt());
+    $this->assertEquals($this->getValidLoginFailedAttempt(), $entity->getLoginFailAttempt());
+  }
+
+  /**
+   * @return void
+   * @throws \App\Exceptions\EntityException
+   * @throws \Illuminate\Validation\ValidationException
+   *
+   * @test
+   * @testdox getLockedAt must return null if locked_at is not set
+   */
+  public function getLockedAtMustReturnNullIfNotSetOrNullOrEmptyString() : void {
+    $entity = new Auth([Auth::PASSWORD => $this->getValidPassword()], false);
+    $this->assertNull($entity->getLockedAt());
+
+
+    $entity = new Auth([Auth::PASSWORD => $this->getValidPassword(), Auth::LOCKED_AT => ''], false);
+    $this->assertNull($entity->getLockedAt());
+
+
+    $entity = new Auth([Auth::PASSWORD => $this->getValidPassword(), Auth::LOCKED_AT => null], false);
+    $this->assertNull($entity->getLockedAt());
+  }
+
+
+  /**
+   * @return void
+   * @throws \App\Exceptions\EntityException
+   * @throws \Illuminate\Validation\ValidationException
+   *
+   * @test
+   * @testdox getLoginFailAttempt must zero null if locked_at is not set
+   */
+  public function getLoginFailAttemptMustReturnZeroIfNotSetOrNullOrEmptyString() : void {
+    $entity = new Auth([Auth::PASSWORD => $this->getValidPassword()], false);
+    $this->assertEquals(0, $entity->getLoginFailAttempt());
+
+    $entity = new Auth([Auth::PASSWORD => $this->getValidPassword(), Auth::LOGIN_FAIL_ATTEMPT => null], false);
+    $this->assertEquals(0, $entity->getLoginFailAttempt());
+
+    $entity = new Auth([Auth::PASSWORD => $this->getValidPassword(), Auth::LOGIN_FAIL_ATTEMPT => ''], false);
+    $this->assertEquals(0, $entity->getLoginFailAttempt());
   }
 }
