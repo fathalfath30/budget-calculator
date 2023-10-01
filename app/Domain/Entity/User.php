@@ -21,6 +21,8 @@ namespace App\Domain\Entity;
 use App\Domain\Entity\Traits\Entity;
 use App\Domain\Entity\Traits\HasAuth;
 use App\Domain\Entity\Traits\HasRole;
+use App\Domain\Entity\Traits\HasTimestamp;
+use App\Domain\Entity\Traits\HasUserInfo;
 use App\Domain\Entity\Traits\ToArray;
 
 /**
@@ -34,15 +36,13 @@ use App\Domain\Entity\Traits\ToArray;
  * @see \App\Domain\Entity\Traits\ToArray
  */
 class User extends Entity implements IEntity {
-  use ToArray, HasRole, HasAuth;
+  use ToArray, HasRole, HasAuth, HasTimestamp, HasUserInfo;
 
   const ID = 'id';
 
   const USER_INFO = 'user_info';
 
   private string $id;
-  private UserInfo $info;
-  private ?Timestamp $timestamp;
 
   /**
    * @throws \App\Exceptions\EntityException
