@@ -20,6 +20,15 @@ namespace Tests\TestData;
 
 use App\Domain\Entity\UserInfo;
 
+/**
+ * UserInfoTestData
+ *
+ * @author Fathalfath30
+ * @version 1.0.0
+ * @since 1.0.0
+ *
+ * @see \App\Domain\Entity\UserInfo
+ */
 trait UserInfoTestData {
 
   /**
