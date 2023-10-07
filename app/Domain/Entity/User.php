@@ -24,6 +24,7 @@ use App\Domain\Entity\Traits\HasRole;
 use App\Domain\Entity\Traits\HasTimestamp;
 use App\Domain\Entity\Traits\HasUserInfo;
 use App\Domain\Entity\Traits\ToArray;
+use App\Exceptions\EntityValidationException;
 
 /**
  * User
@@ -38,31 +39,26 @@ use App\Domain\Entity\Traits\ToArray;
 class User extends Entity implements IEntity {
   use ToArray, HasRole, HasAuth, HasTimestamp, HasUserInfo;
 
-  const ID = 'id';
-
-  const USER_INFO = 'user_info';
-
   private string $id;
 
   /**
-   * @throws \App\Exceptions\EntityException
-   * @throws \Illuminate\Validation\ValidationException
+   * @param string $id
+   * @param \App\Domain\Entity\Role $role
+   * @param \App\Domain\Entity\Auth $auth
+   * @param \App\Domain\Entity\UserInfo $userInfo
+   * @param null|\App\Domain\Entity\Timestamp $timestamp
+   *
+   * @throws \App\Exceptions\EntityValidationException
    */
-  public function __construct(array $payload, bool $validate = true) {
-    if($validate) {
-      $payload = $this->validate($payload, [
-        self::ID => ['required', 'uuid'],
-        self::ROLE => [],
-        self::AUTH => []
-      ]);
-
-      $role = $payload[self::ROLE] ?? null;
-      $this->roleIsRequired($role);
-      $this->instanceOfRole($role);
-
-      $auth = $payload[self::AUTH] ?? null;
-      $this->authIsRequired($auth);
-      $this->instanceOfAuth($auth);
+  public function __construct(string $id, Role $role, Auth $auth, UserInfo $userInfo, ?Timestamp $timestamp) {
+    $this->id = trim($id);
+    if(empty($this->id)) {
+      throw new EntityValidationException('validation.required', ['attribute' => 'id']);
     }
+
+    $this->role = $role;
+    $this->auth = $auth;
+    $this->user_info = $userInfo;
+    $this->timestamp = $timestamp;
   }
 }

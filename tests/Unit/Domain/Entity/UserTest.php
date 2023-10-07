@@ -18,13 +18,13 @@
 
 namespace Domain\Entity;
 
-use App\Domain\Entity\Auth;
-use App\Domain\Entity\Role;
 use App\Domain\Entity\User;
-use App\Exceptions\EntityException;
-use Exception;
+use App\Exceptions\EntityValidationException;
 use Tests\TestCase;
+use Tests\TestData\AuthTestData;
 use Tests\TestData\RoleTestData;
+use Tests\TestData\TimestampTestData;
+use Tests\TestData\UserInfoTestData;
 use Tests\TestData\UserTestData;
 
 /**
@@ -40,96 +40,35 @@ use Tests\TestData\UserTestData;
  * @see \App\Domain\Entity\Timestamp
  */
 class UserTest extends TestCase {
-  use UserTestData, RoleTestData;
+  use UserTestData, RoleTestData, AuthTestData, UserInfoTestData, TimestampTestData;
 
   /**
-   * Test the validation on each input
-   *
    * @return void
+   * @throws \App\Exceptions\EntityException
+   * @throws \App\Exceptions\EntityValidationException
+   * @throws \Illuminate\Validation\ValidationException
+   */
+  public function idIsRequired() : void {
+    $this->expectException(EntityValidationException::class);
+    $this->expectExceptionMessage(trans("validation.required", ['attribute' => 'id']));
+    $this->expectExceptionCode(400);
+
+    new User('', $this->getValidRoleEntity(), $this->getValidAuthEntity(), $this->getValidUserInfoEntity(),
+      $this->getValidTimestampEntity());
+  }
+
+  /**
    * @return void
-   * @test
+   * @throws \App\Exceptions\EntityException
    * @throws \Illuminate\Validation\ValidationException
    *
-   * @throws \App\Exceptions\EntityException
+   * @test
    */
-  public function validateInput() {
-    $testCase = [
-      // <editor-fold desc="validation_test::id">
-      [
-        'name' => 'check id must be filled',
-        'expected' => [
-          'message' => trans('validation.required', ['attribute' => 'id'])
-        ],
-        'payload' => []
-      ],
-      [
-        'name' => 'check id must be a valid uuid',
-        'expected' => [
-          'message' => trans('validation.uuid', ['attribute' => 'id'])
-        ],
-        'payload' => [
-          User::ID => 'lorem'
-        ]
-      ],
-      // </editor-fold>
-      // <editor-fold desc="validation_test::role">
-      [
-        'name' => 'check role is required',
-        'expected' => [
-          'message' => trans('validation.required', ['attribute' => 'role'])
-        ],
-        'payload' => [
-          User::ID => $this->getValidUserId()
-        ]
-      ],
-      [
-        'name' => 'check role is instance of Role class',
-        'expected' => [
-          'message' => trans("validation.instance_of", ['attribute' => 'role', 'values' => Role::class])
-        ],
-        'payload' => [
-          User::ID => $this->getValidUserId(),
-          User::ROLE => 'lorem'
-        ]
-      ],
-      // </editor-fold>
-      // <editor-fold desc="validation_test::auth">
-      [
-        'name' => 'check auth is required',
-        'expected' => [
-          'message' => trans('validation.required', ['attribute' => 'auth'])
-        ],
-        'payload' => [
-          User::ID => $this->getValidUserId(),
-          User::ROLE => $this->getValidRoleEntity()
-        ]
-      ],
-      [
-        'name' => 'check auth is required',
-        'expected' => [
-          'message' => trans("validation.instance_of", ['attribute' => 'auth', 'values' => Auth::class])
-        ],
-        'payload' => [
-          User::ID => $this->getValidUserId(),
-          User::ROLE => $this->getValidRoleEntity(),
-          User::AUTH => 'lorem'
-        ]
-      ],
-      // </editor-fold>
-    ];
+  public function idIsRequiredAndAlsoValidateWhitespace() {
+    $this->expectException(EntityValidationException::class);
+    $this->expectExceptionMessage(trans("validation.required", ['attribute' => 'id']));
 
-    foreach($testCase as $tc) {
-      $exception = false;
-      try {
-        new User($tc['payload']);
-      } catch(Exception $e) {
-        $this->assertStringMatchesFormat($tc['expected']['message'], $e->getMessage());
-        $this->assertInstanceOf(EntityException::class, $e);
-        $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
-        $exception = true;
-      }
-
-      $this->assertTrue($exception, "validation error");
-    }
+    new User(' ', $this->getValidRoleEntity(), $this->getValidAuthEntity(), $this->getValidUserInfoEntity(),
+      $this->getValidTimestampEntity());
   }
 }

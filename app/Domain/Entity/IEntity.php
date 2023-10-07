@@ -18,5 +18,6 @@
 
 namespace App\Domain\Entity;
 interface IEntity {
-  public function __construct(array $payload, bool $validate = true);
+  //  public function __construct(array $payload, bool $validate = true);
+  public function toArray() : array;
 }

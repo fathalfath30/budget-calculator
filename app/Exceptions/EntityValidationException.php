@@ -16,22 +16,23 @@
 //
 */
 
-namespace App\Domain\Entity\Traits;
-
-use App\Domain\Entity\UserInfo;
+namespace App\Exceptions;
 
 /**
- * HasUserInfo
+ * EntityValidationException
  *
  * @author Fathalfath30
  * @version 1.0.0
  * @since 1.0.0
- *
- * @see \App\Domain\Entity\Timestamp
+ * @see \App\Exceptions\F30Exception
  */
-trait HasUserInfo {
-  /** @var \App\Domain\Entity\UserInfo $user_info */
-  const USER_INFO = 'user_info';
-
-  private UserInfo $user_info;
+class EntityValidationException extends F30Exception {
+  /**
+   * @param string $message
+   * @param array $replace
+   */
+  public function __construct(string $message = "Unhandled entity exception", array $replace = []) {
+    parent::__construct(trans($message, $replace), 400);
+    $this->statusCode = config('response_code.user.error.bad_request');
+  }
 }
