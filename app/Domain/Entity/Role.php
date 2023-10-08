@@ -61,7 +61,7 @@ class Role extends Entity implements IEntity {
    */
   public function __construct(string $id, string $name, int|string $level, ?Timestamp $timestamp = null) {
     $this->id = $this->validateId($id);
-    $this->name = $this->generalName($name);
+    $this->name = $this->validateGeneralName($name);
 
     $level = trim($level);
     if(empty($level)) {

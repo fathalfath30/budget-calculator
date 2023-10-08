@@ -44,20 +44,56 @@ trait EntityValidation {
   /**
    * @param string $value
    * @param string $attribute
+   * @param bool $allow_empty
    *
    * @return string
    * @throws \App\Exceptions\EntityValidationException
    */
-  protected function generalName(string $value, string $attribute = 'name') : string {
+  protected function validateGeneralName(string $value, string $attribute = 'name', bool $allow_empty = false) : string {
+    $value = trim($value);
+    if(!$allow_empty && empty($value)) {
+      throw new EntityValidationException('validation.required', ['attribute' => $attribute]);
+    }
+
+    if(preg_match(VALIDATION_REGEX_STD_NAME, $value) !== 1) {
+      throw new EntityValidationException('validation.regex', ['attribute' => $attribute]);
+    }
+
+    return $value;
+  }
+
+  /**
+   * @param string $value
+   * @param string $attribute
+   *
+   * @return string
+   * @throws \App\Exceptions\EntityValidationException
+   */
+  protected function validateUsername(string $value, string $attribute = 'username') : string {
     $value = trim($value);
     if(empty($value)) {
       throw new EntityValidationException('validation.required', ['attribute' => $attribute]);
     }
 
-    if(preg_match("/^[\pL\s\-]+$/u", $value) !== 1) {
-      throw new EntityValidationException('validation.regex', ['attribute' => $attribute]);
+    if(preg_match(VALIDATION_REGEX_USERNAME, $value) !== 1) {
+      throw new EntityValidationException("validation.regex", ["attribute" => $attribute]);
+    }
+    return $value;
+  }
+
+  /**
+   * @param string $value
+   * @param string $attribute
+   *
+   * @return string
+   * @throws \App\Exceptions\EntityValidationException
+   */
+  protected function validateEmail(string $value, string $attribute = 'email') : string {
+    $value = trim($value);
+    if(!filter_var($value, FILTER_VALIDATE_EMAIL)) {
+      throw new EntityValidationException("validation.email", ["attribute" => $attribute]);
     }
 
-    return $value;
+    return strtolower($value);
   }
 }

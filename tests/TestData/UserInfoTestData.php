@@ -70,18 +70,17 @@ trait UserInfoTestData {
   /**
    * Valid UserInfo Entity
    *
-   * @param bool $lastNull
+   * @param bool $last_name
    *
    * @return \App\Domain\Entity\UserInfo
-   * @throws \App\Exceptions\EntityException
-   * @throws \Illuminate\Validation\ValidationException
+   * @throws \App\Exceptions\EntityValidationException
    */
-  public function getValidUserInfoEntity(bool $lastNull = false) : UserInfo {
-    return new UserInfo([
-      UserInfo::FIRST_NAME => $this->getValidFirstName(),
-      UserInfo::LAST_NAME => ($lastNull) ? null : $this->getValidLastName(),
-      UserInfo::USERNAME => $this->getValidUsername(),
-      UserInfo::EMAIL => $this->getValidEmail()
-    ], false);
+  public function getValidUserInfoEntity(bool $last_name = false) : UserInfo {
+    $last_name = null;
+    if (!$last_name){
+      $last_name = $this->getValidLastName();
+    }
+    return new UserInfo($this->getValidFirstName(), $last_name, $this->getValidUsername(),
+      $this->getValidEmail());
   }
 }
