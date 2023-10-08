@@ -18,7 +18,11 @@
 
 namespace Domain\Entity;
 
+use App\Domain\Entity\Auth;
+use App\Domain\Entity\Role;
+use App\Domain\Entity\Timestamp;
 use App\Domain\Entity\User;
+use App\Domain\Entity\UserInfo;
 use App\Exceptions\EntityValidationException;
 use Tests\TestCase;
 use Tests\TestData\AuthTestData;
@@ -70,5 +74,31 @@ class UserTest extends TestCase {
 
     new User(' ', $this->getValidRoleEntity(), $this->getValidAuthEntity(), $this->getValidUserInfoEntity(),
       $this->getValidTimestampEntity());
+  }
+
+  /**
+   * @return void
+   * @throws \App\Exceptions\EntityException
+   * @throws \App\Exceptions\EntityValidationException
+   * @throws \Illuminate\Validation\ValidationException
+   *
+   * @test
+   */
+  public function itShouldHaveMainGetterForTheProps() {
+    $user = new User($this->getValidUserId(), $this->getValidRoleEntity(), $this->getValidAuthEntity(), $this->getValidUserInfoEntity(),
+      $this->getValidTimestampEntity());
+
+    $this->assertEquals($this->getValidUserId(), $user->getId());
+    $this->assertEquals($this->getValidRoleEntity(), $user->getRole());
+    $this->assertInstanceOf(Role::class, $user->getRole());
+
+    $this->assertEquals($this->getValidAuthEntity(), $user->getAuth());
+    $this->assertInstanceOf(Auth::class, $user->getAuth());
+
+    $this->assertEquals($this->getValidUserInfoEntity(), $user->getUserInfo());
+    $this->assertInstanceOf(UserInfo::class, $user->getUserInfo());
+
+    $this->assertEquals($this->getValidTimestampEntity(), $user->getTimestamp());
+    $this->assertInstanceOf(Timestamp::class, $user->getTimestamp());
   }
 }

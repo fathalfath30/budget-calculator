@@ -61,4 +61,11 @@ class User extends Entity implements IEntity {
     $this->user_info = $userInfo;
     $this->timestamp = $timestamp;
   }
+
+  /**
+   * @return string
+   */
+  public function getId() : string {
+    return $this->id;
+  }
 }

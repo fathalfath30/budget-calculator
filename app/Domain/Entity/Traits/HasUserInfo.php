@@ -18,6 +18,7 @@
 
 namespace App\Domain\Entity\Traits;
 
+use App\Domain\Entity\Timestamp;
 use App\Domain\Entity\UserInfo;
 
 /**
@@ -33,5 +34,13 @@ trait HasUserInfo {
   /** @var \App\Domain\Entity\UserInfo $user_info */
   const USER_INFO = 'user_info';
 
+  /** @var \App\Domain\Entity\UserInfo $user_info */
   private UserInfo $user_info;
+
+  /**
+   * @return \App\Domain\Entity\UserInfo
+   */
+  public function getUserInfo() : UserInfo {
+    return $this->user_info;
+  }
 }

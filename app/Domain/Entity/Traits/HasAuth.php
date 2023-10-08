@@ -19,8 +19,6 @@
 namespace App\Domain\Entity\Traits;
 
 use App\Domain\Entity\Auth;
-use App\Domain\Entity\Role;
-use App\Exceptions\EntityException;
 
 /**
  * HasAuth
@@ -37,31 +35,11 @@ trait HasAuth {
   /** @var \App\Domain\Entity\Auth $auth */
   private Auth $auth;
 
-  /**
-   * @param $value
-   *
-   * @return void
-   * @throws \App\Exceptions\EntityException
-   */
-  public function authIsRequired($value) : void {
-    if(empty($value)) {
-      throw new EntityException(
-        trans('validation.required', ['attribute' => 'auth'])
-      );
-    }
-  }
 
   /**
-   * @param mixed $object
-   *
-   * @return void
-   * @throws \App\Exceptions\EntityException
+   * @return \App\Domain\Entity\Auth
    */
-  public function instanceOfAuth(mixed $object) : void {
-    if(!($object instanceof Role)) {
-      throw new EntityException(
-        trans("validation.instance_of", ['attribute' => 'auth', 'values' => Auth::class])
-      );
-    }
+  public function getAuth() : Auth {
+    return $this->auth;
   }
 }

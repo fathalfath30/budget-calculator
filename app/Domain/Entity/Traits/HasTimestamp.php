@@ -17,6 +17,7 @@
 */
 
 namespace App\Domain\Entity\Traits;
+
 use App\Domain\Entity\Timestamp;
 
 /**
@@ -30,6 +31,15 @@ use App\Domain\Entity\Timestamp;
  */
 trait HasTimestamp {
 
+  const TIMESTAMP = 'timestamp';
+
   /** @var null|\App\Domain\Entity\Timestamp $timestamp */
   private ?Timestamp $timestamp;
+
+  /**
+   * @return null|\App\Domain\Entity\Timestamp
+   */
+  public function getTimestamp() : ?Timestamp {
+    return $this->timestamp;
+  }
 }
