@@ -20,6 +20,8 @@ namespace App\Domain\Entity;
 
 use App\Domain\Entity\Traits\Entity;
 use App\Domain\Entity\Traits\ToArray;
+use App\Exceptions\EntityValidationException;
+use function Symfony\Component\Translation\t;
 
 /**
  * Auth
@@ -37,37 +39,59 @@ class Auth extends Entity implements IEntity {
   const PASSWORD = 'password';
   const LOCKED_AT = 'locked_at';
   const LOGIN_FAIL_ATTEMPT = 'login_fail_attempt';
+  const MIN_LOGIN_ATTEMPT = 0;
+  const MAX_LOGIN_ATTEMPT = 3;
 
   private string $password;
   private ?string $locked_at;
   private int $login_fail_attempt;
 
   /**
-   * @throws \App\Exceptions\EntityException
-   * @throws \Illuminate\Validation\ValidationException
+   * @param string $password
+   * @param null|string $locked_at
+   * @param string|int $login_fail_attempt
+   *
+   * @throws \App\Exceptions\EntityValidationException
    */
-  public function __construct(array $payload, bool $validate = true) {
-    if($validate) {
-      $payload = $this->validate($payload,
-        [
-          self::PASSWORD => ['required', VALIDATION_REGEX_PASSWORD],
-          self::LOCKED_AT => ['nullable', VALIDATION_DATE_YMD_HIS],
-          self::LOGIN_FAIL_ATTEMPT => ['nullable', 'integer', 'min:0', 'max:5']
-        ]
-      );
+  public function __construct(string $password, ?string $locked_at = null, string|int $login_fail_attempt = 0) {
+    $this->password = trim($password);
+    if(empty($this->password)) {
+      throw new EntityValidationException('validation.required', ['attribute' => self::PASSWORD]);
     }
 
-    $this->password = trim($payload[self::PASSWORD]);
-
-    $this->locked_at = null;
-    if(isset($payload[self::LOCKED_AT]) && !is_null($payload[self::LOCKED_AT]) && !empty($payload[self::LOCKED_AT])) {
-      $this->locked_at = trim($payload[self::LOCKED_AT]);
+    if(preg_match(VALIDATION_REGEX_PASSWORD, $this->password) !== 1) {
+      throw new EntityValidationException('validation.regex', ['attribute' => self::PASSWORD]);
     }
 
-    $this->login_fail_attempt = 0;
-    if(isset($payload[self::LOGIN_FAIL_ATTEMPT]) && $payload[self::LOGIN_FAIL_ATTEMPT] > 0) {
-      $this->login_fail_attempt = $payload[self::LOGIN_FAIL_ATTEMPT];
+    $this->locked_at = trim($locked_at);
+    if(empty($this->locked_at)) {
+      $this->locked_at = null;
     }
+
+    if(!is_null($this->locked_at) && strtotime($this->locked_at) === false) {
+      throw new EntityValidationException('validation.date_format', [
+        'attribute' => self::LOCKED_AT,
+        'format' => 'Y-m-d H:i:s'
+      ]);
+    }
+
+    $login_fail_attempt = trim($login_fail_attempt);
+    if(empty($login_fail_attempt)) {
+      $login_fail_attempt = 0;
+    }
+
+    if(preg_match(VALIDATION_REGEX_INTEGER, $login_fail_attempt) !== 1) {
+      throw new EntityValidationException('validation.regex', ['attribute' => self::LOGIN_FAIL_ATTEMPT]);
+    }
+
+    if($login_fail_attempt > self::MAX_LOGIN_ATTEMPT) {
+      throw new EntityValidationException('validation.max.numeric', [
+        'attribute' => self::LOGIN_FAIL_ATTEMPT,
+        'max' => self::MAX_LOGIN_ATTEMPT
+      ]);
+    }
+
+    $this->login_fail_attempt = $login_fail_attempt;
   }
 
   /**

@@ -62,14 +62,9 @@ trait AuthTestData {
    * Get valid auth entity
    *
    * @return \App\Domain\Entity\Auth
-   * @throws \App\Exceptions\EntityException
-   * @throws \Illuminate\Validation\ValidationException
+   * @throws \App\Exceptions\EntityValidationException
    */
   public function getValidAuthEntity() : Auth {
-    return new Auth([
-      Auth::PASSWORD => $this->getValidPassword(),
-      Auth::LOCKED_AT => $this->getValidLockedAt(),
-      Auth::LOGIN_FAIL_ATTEMPT => $this->getValidLoginFailedAttempt()
-    ], false);
+    return new Auth($this->getValidPassword(), $this->getValidLockedAt(), $this->getValidLoginFailedAttempt());
   }
 }
