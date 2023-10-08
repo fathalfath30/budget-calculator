@@ -32,6 +32,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @since 1.0.0
  * @see \Illuminate\Database\Eloquent\Model
  * @see \App\Repository\Models\F30_Model
+ *
+ * @property string $id
+ * @property string $name
+ * @property string $icon
+ * @property int $level
+ * @property string $created_at
+ * @property string $updated_at
+ * @property ?string $deleted_at
  */
 class Role extends F30_Model {
   use HasFactory;

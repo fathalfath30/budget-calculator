@@ -18,8 +18,6 @@
 
 namespace App\Repository\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-
 /**
  * UserRole
  * This model will handle roles information on each user.
@@ -29,6 +27,13 @@ namespace App\Repository\Models;
  * @since 1.0.0
  * @see \Illuminate\Database\Eloquent\Model
  * @see \App\Repository\Models\F30_Model
+ *
+ * @property string $id
+ * @property string $user_id
+ * @property string $role_id
+ * @property int $enable
+ * @property string $created_at
+ * @property string $updated_at
  */
 class UserRole extends F30_Model {
   /** @var string $table set the table name */

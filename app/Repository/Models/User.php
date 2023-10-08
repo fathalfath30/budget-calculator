@@ -48,6 +48,13 @@ use Laravel\Sanctum\HasApiTokens;
  * @see \Illuminate\Auth\Passwords\CanResetPassword
  * @see \Illuminate\Auth\MustVerifyEmail
  *
+ * @property string $id
+ * @property string $first_name
+ * @property string $last_name
+ * @property string $username
+ * @property string $email
+ * @property Role $role
+ *
  */
 class User extends Model implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract {
   use HasApiTokens, HasFactory, Notifiable, Authenticatable, Authorizable, CanResetPassword, MustVerifyEmail;
