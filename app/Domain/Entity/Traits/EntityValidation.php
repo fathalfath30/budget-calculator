@@ -54,7 +54,7 @@ trait EntityValidation {
       throw new EntityValidationException('validation.required', ['attribute' => $attribute]);
     }
 
-    if(preg_match("/^[\pL\s\-]+$/u", $value) < 1) {
+    if(preg_match("/^[\pL\s\-]+$/u", $value) !== 1) {
       throw new EntityValidationException('validation.regex', ['attribute' => $attribute]);
     }
 

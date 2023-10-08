@@ -68,7 +68,7 @@ class Role extends Entity implements IEntity {
       $level = self::USER_LEVEL_GUEST;
     }
 
-    if(preg_match("/^\d+$/", $level) < 1) {
+    if(preg_match("/^\d+$/", $level) !== 1) {
       throw new EntityValidationException('validation.integer', [
         'attribute' => 'level'
       ]);
