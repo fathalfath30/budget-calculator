@@ -18,12 +18,14 @@
 
 namespace App\Repository\Models;
 
+use Database\Factories\UserFactory;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\Authorizable;
@@ -47,6 +49,13 @@ use Laravel\Sanctum\HasApiTokens;
  * @see \Illuminate\Foundation\Auth\Access\Authorizable
  * @see \Illuminate\Auth\Passwords\CanResetPassword
  * @see \Illuminate\Auth\MustVerifyEmail
+ *
+ * @property string $id
+ * @property string $first_name
+ * @property string $last_name
+ * @property string $username
+ * @property string $email
+ * @property Role $role
  *
  */
 class User extends Model implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract {
@@ -78,4 +87,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
    * @var array<string, string>
    */
   protected $casts = ['email_verified_at' => 'datetime', 'password' => 'hashed',];
+
+  /**
+   * @return \Illuminate\Database\Eloquent\Factories\Factory
+   */
+  protected static function newFactory() : Factory {
+    return UserFactory::new();
+  }
 }

@@ -16,8 +16,19 @@
 //
 */
 
-namespace App\Domain\Entity;
-interface IEntity {
-  //  public function __construct(array $payload, bool $validate = true);
-  public function toArray() : array;
+namespace Tests\TestData;
+
+/**
+ * UserTestData
+ *
+ * @author Fathalfath30
+ * @version 1.0.0
+ * @since 1.0.0
+ *
+ * @see \App\Domain\Entity\User
+ */
+trait UserTestData {
+  public function getValidUserId() : string {
+    return "40797635-7cad-4e9a-8159-2f09191e1061";
+  }
 }

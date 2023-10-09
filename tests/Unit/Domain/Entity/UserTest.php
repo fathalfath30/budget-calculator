@@ -18,10 +18,18 @@
 
 namespace Domain\Entity;
 
+use App\Domain\Entity\Auth;
+use App\Domain\Entity\Role;
+use App\Domain\Entity\Timestamp;
 use App\Domain\Entity\User;
-use App\Exceptions\EntityException;
-use Exception;
+use App\Domain\Entity\UserInfo;
+use App\Exceptions\EntityValidationException;
 use Tests\TestCase;
+use Tests\TestData\AuthTestData;
+use Tests\TestData\RoleTestData;
+use Tests\TestData\TimestampTestData;
+use Tests\TestData\UserInfoTestData;
+use Tests\TestData\UserTestData;
 
 /**
  * TimestampTest
@@ -36,60 +44,61 @@ use Tests\TestCase;
  * @see \App\Domain\Entity\Timestamp
  */
 class UserTest extends TestCase {
+  use UserTestData, RoleTestData, AuthTestData, UserInfoTestData, TimestampTestData;
 
   /**
-   * Test the validation on each input
-   *
    * @return void
-   * @test
+   * @throws \App\Exceptions\EntityException
+   * @throws \App\Exceptions\EntityValidationException
+   * @throws \Illuminate\Validation\ValidationException
    */
-  public function validateInput() {
-    $now = date('Y-m-d H:i:s');
-    $testCase = [
-      [
-        'name' => 'check id must be filled',
-        'expected' => [
-          'message' => 'The id field is required.'
-        ],
-        'payload' => []
-      ]
-    ];
+  public function idIsRequired() : void {
+    $this->expectException(EntityValidationException::class);
+    $this->expectExceptionMessage(trans("validation.required", ['attribute' => 'id']));
+    $this->expectExceptionCode(400);
 
-    foreach($testCase as $tc) {
-      $exception = false;
-      try {
-        new User($tc['payload']);
-      } catch(Exception $e) {
-        $this->assertStringMatchesFormat($tc['expected']['message'], $e->getMessage());
-        $this->assertInstanceOf(EntityException::class, $e);
-        $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
-        $exception = true;
-      }
-
-      $this->assertTrue($exception, "validation error");
-    }
+    new User('', $this->getValidRoleEntity(), $this->getValidAuthEntity(), $this->getValidUserInfoEntity(),
+      $this->getValidTimestampEntity());
   }
 
-  //  /**
-  //   * @return void
-  //   * @throws \App\Exceptions\EntityException
-  //   * @throws \Illuminate\Validation\ValidationException
-  //   *
-  //   * @test
-  //   */
-  //  public function createdAtAndUpdateAtMustReturnConstructedValue() {
-  //    $now = date('Y-m-d H:i:s');
-  //    $cls = new Timestamp([Timestamp::CREATED_AT => $now, Timestamp::UPDATED_AT => $now]);
-  //
-  //    $this->assertSame($now, $cls->getCreatedAt());
-  //    $this->assertSame($now, $cls->getUpdatedAt());
-  //    $this->assertNull($cls->getDeletedAt());
-  //
-  //    $clsArray = $cls->toArray();
-  //    $this->assertIsArray($clsArray);
-  //
-  //    $this->assertArrayHasKey(Timestamp::CREATED_AT, $clsArray);
-  //    $this->assertArrayHasKey(Timestamp::UPDATED_AT, $clsArray);
-  //    $this->assertArrayHasKey(Timestamp::DELETED_AT, $clsArray);
-  //  }
+  /**
+   * @return void
+   * @throws \App\Exceptions\EntityException
+   * @throws \Illuminate\Validation\ValidationException
+   *
+   * @test
+   */
+  public function idIsRequiredAndAlsoValidateWhitespace() {
+    $this->expectException(EntityValidationException::class);
+    $this->expectExceptionMessage(trans("validation.required", ['attribute' => 'id']));
+
+    new User(' ', $this->getValidRoleEntity(), $this->getValidAuthEntity(), $this->getValidUserInfoEntity(),
+      $this->getValidTimestampEntity());
+  }
+
+  /**
+   * @return void
+   * @throws \App\Exceptions\EntityException
+   * @throws \App\Exceptions\EntityValidationException
+   * @throws \Illuminate\Validation\ValidationException
+   *
+   * @test
+   */
+  public function itShouldHaveMainGetterForTheProps() {
+    $user = new User($this->getValidUserId(), $this->getValidRoleEntity(), $this->getValidAuthEntity(), $this->getValidUserInfoEntity(),
+      $this->getValidTimestampEntity());
+
+    $this->assertEquals($this->getValidUserId(), $user->getId());
+    $this->assertEquals($this->getValidRoleEntity(), $user->getRole());
+    $this->assertInstanceOf(Role::class, $user->getRole());
+
+    $this->assertEquals($this->getValidAuthEntity(), $user->getAuth());
+    $this->assertInstanceOf(Auth::class, $user->getAuth());
+
+    $this->assertEquals($this->getValidUserInfoEntity(), $user->getUserInfo());
+    $this->assertInstanceOf(UserInfo::class, $user->getUserInfo());
+
+    $this->assertEquals($this->getValidTimestampEntity(), $user->getTimestamp());
+    $this->assertInstanceOf(Timestamp::class, $user->getTimestamp());
+  }
 }

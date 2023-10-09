@@ -20,9 +20,11 @@ namespace Domain\Entity;
 
 use App\Domain\Entity\Auth;
 use App\Exceptions\EntityException;
+use App\Exceptions\EntityValidationException;
 use Exception;
 use Tests\TestCase;
 use Tests\TestData\AuthTestData;
+use const http\Client\Curl\AUTH_ANY;
 
 /**
  * AuthTest
@@ -43,58 +45,73 @@ class AuthTest extends TestCase {
    * @test
    */
   public function validateInput() : void {
+    $expected_invalid_password = trans('validation.regex', ['attribute' => Auth::PASSWORD]);
     $testCase = [
       // <editor-fold desc="validation_test::password">
       [
         'name' => 'check password is required',
         'expected' => [
-          'message' => 'The password field is required.'
+          'message' => trans('validation.required', ['attribute' => Auth::PASSWORD])
         ],
-        'payload' => []
+        'payload' => [
+          Auth::PASSWORD => '',
+          Auth::LOCKED_AT => '',
+          Auth::LOGIN_FAIL_ATTEMPT => ''
+        ]
       ],
       [
         'name' => 'check password minimum eight character',
         'expected' => [
-          'message' => 'The password field format is invalid.'
+          'message' => $expected_invalid_password
         ],
         'payload' => [
-          Auth::PASSWORD => 'admin'
+          Auth::PASSWORD => 'admin',
+          Auth::LOCKED_AT => '',
+          Auth::LOGIN_FAIL_ATTEMPT => ''
         ],
       ],
       [
         'name' => 'check password at least one uppercase letter',
         'expected' => [
-          'message' => 'The password field format is invalid.'
+          'message' => $expected_invalid_password
         ],
         'payload' => [
-          Auth::PASSWORD => 'admin123'
+          Auth::PASSWORD => 'admin123',
+          Auth::LOCKED_AT => '',
+          Auth::LOGIN_FAIL_ATTEMPT => ''
         ]
       ],
       [
         'name' => 'check password at least one lowercase letter',
         'expected' => [
-          'message' => 'The password field format is invalid.'
+          'message' => $expected_invalid_password
         ],
         'payload' => [
-          Auth::PASSWORD => 'A1234567890'
+          Auth::PASSWORD => 'A1234567890',
+          Auth::LOCKED_AT => '',
+          Auth::LOGIN_FAIL_ATTEMPT => ''
         ]
       ],
       [
         'name' => 'check password at least one number',
         'expected' => [
-          'message' => 'The password field format is invalid.'
+          'message' => $expected_invalid_password
         ],
         'payload' => [
-          Auth::PASSWORD => 'Abcdswewfqw'
+          Auth::PASSWORD => 'Abcdswewfqw',
+          Auth::LOCKED_AT => '',
+          Auth::LOGIN_FAIL_ATTEMPT => ''
         ]
       ],
       [
         'name' => 'check password at least one special characte',
         'expected' => [
-          'message' => 'The password field format is invalid.'
+          'message' => $expected_invalid_password
         ],
         'payload' => [
-          Auth::PASSWORD => 'Ab1weqsfw'
+          Auth::PASSWORD => 'Ab1weqsfw',
+          Auth::LOCKED_AT => '',
+          Auth::LOGIN_FAIL_ATTEMPT => ''
         ]
       ],
       // </editor-fold>
@@ -102,11 +119,12 @@ class AuthTest extends TestCase {
       [
         'name' => 'check password is required',
         'expected' => [
-          'message' => 'The locked at field must match the format Y-m-d H:i:s.'
+          'message' => trans('validation.date_format', ['attribute' => Auth::LOCKED_AT, 'format' => 'Y-m-d H:i:s'])
         ],
         'payload' => [
           Auth::PASSWORD => $this->getValidPassword(),
-          Auth::LOCKED_AT => "loremIpsum"
+          Auth::LOCKED_AT => "loremIpsum",
+          Auth::LOGIN_FAIL_ATTEMPT => ''
         ]
       ],
       // </editor-fold>
@@ -114,7 +132,7 @@ class AuthTest extends TestCase {
       [
         'name' => 'check login fail attempt must be an integer',
         'expected' => [
-          'message' => 'The login fail attempt field must be an integer.'
+          'message' => trans('validation.regex', ['attribute' => Auth::LOGIN_FAIL_ATTEMPT])
         ],
         'payload' => [
           Auth::PASSWORD => $this->getValidPassword(),
@@ -125,7 +143,7 @@ class AuthTest extends TestCase {
       [
         'name' => 'login fail attempt must be greater or equals zero',
         'expected' => [
-          'message' => 'The login fail attempt field must be at least 0.'
+          'message' => trans('validation.regex', ['attribute' => Auth::LOGIN_FAIL_ATTEMPT])
         ],
         'payload' => [
           Auth::PASSWORD => $this->getValidPassword(),
@@ -136,7 +154,10 @@ class AuthTest extends TestCase {
       [
         'name' => 'login fail attempt must be less then or equals 5',
         'expected' => [
-          'message' => 'The login fail attempt field must not be greater than 5.'
+          'message' => trans('validation.max.numeric', [
+            'attribute' => Auth::LOGIN_FAIL_ATTEMPT,
+            'max' => Auth::MAX_LOGIN_ATTEMPT
+          ])
         ],
         'payload' => [
           Auth::PASSWORD => $this->getValidPassword(),
@@ -150,10 +171,10 @@ class AuthTest extends TestCase {
     foreach($testCase as $tc) {
       $exception = false;
       try {
-        new Auth($tc['payload']);
+        new Auth($tc['payload'][Auth::PASSWORD], $tc['payload'][Auth::LOCKED_AT], $tc['payload'][Auth::LOGIN_FAIL_ATTEMPT]);
       } catch(Exception $e) {
         $this->assertStringMatchesFormat($tc['expected']['message'], $e->getMessage());
-        $this->assertInstanceOf(EntityException::class, $e);
+        $this->assertInstanceOf(EntityValidationException::class, $e);
         $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
         $exception = true;
       }
@@ -164,8 +185,7 @@ class AuthTest extends TestCase {
 
   /**
    * @return void
-   * @throws \App\Exceptions\EntityException
-   * @throws \Illuminate\Validation\ValidationException
+   * @throws \App\Exceptions\EntityValidationException
    *
    * @test
    */
@@ -179,42 +199,34 @@ class AuthTest extends TestCase {
 
   /**
    * @return void
-   * @throws \App\Exceptions\EntityException
-   * @throws \Illuminate\Validation\ValidationException
+   * @throws \App\Exceptions\EntityValidationException
    *
    * @test
-   * @testdox getLockedAt must return null if locked_at is not set
+   * @testdox getValidLoginFailedAttempt must return null if locked_at is not set or empty or null
    */
   public function getLockedAtMustReturnNullIfNotSetOrNullOrEmptyString() : void {
-    $entity = new Auth([Auth::PASSWORD => $this->getValidPassword()], false);
+    $entity = new Auth($this->getValidPassword(), null, $this->getValidLoginFailedAttempt());
     $this->assertNull($entity->getLockedAt());
 
 
-    $entity = new Auth([Auth::PASSWORD => $this->getValidPassword(), Auth::LOCKED_AT => ''], false);
-    $this->assertNull($entity->getLockedAt());
-
-
-    $entity = new Auth([Auth::PASSWORD => $this->getValidPassword(), Auth::LOCKED_AT => null], false);
+    $entity = new Auth($this->getValidPassword(), '', $this->getValidLoginFailedAttempt());
     $this->assertNull($entity->getLockedAt());
   }
 
 
   /**
    * @return void
-   * @throws \App\Exceptions\EntityException
-   * @throws \Illuminate\Validation\ValidationException
+   * @throws \App\Exceptions\EntityValidationException
    *
    * @test
    * @testdox getLoginFailAttempt must zero null if login_fail_attempt is not set
    */
   public function getLoginFailAttemptMustReturnZeroIfNotSetOrNullOrEmptyString() : void {
-    $entity = new Auth([Auth::PASSWORD => $this->getValidPassword()], false);
+    $entity = new Auth($this->getValidPassword(), null, 0);
     $this->assertEquals(0, $entity->getLoginFailAttempt());
 
-    $entity = new Auth([Auth::PASSWORD => $this->getValidPassword(), Auth::LOGIN_FAIL_ATTEMPT => null], false);
-    $this->assertEquals(0, $entity->getLoginFailAttempt());
 
-    $entity = new Auth([Auth::PASSWORD => $this->getValidPassword(), Auth::LOGIN_FAIL_ATTEMPT => ''], false);
+    $entity = new Auth($this->getValidPassword());
     $this->assertEquals(0, $entity->getLoginFailAttempt());
   }
 }

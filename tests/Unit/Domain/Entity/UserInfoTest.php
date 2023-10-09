@@ -19,7 +19,7 @@
 namespace Domain\Entity;
 
 use App\Domain\Entity\UserInfo;
-use App\Exceptions\EntityException;
+use App\Exceptions\EntityValidationException;
 use Exception;
 use Tests\TestCase;
 use Tests\TestData\UserInfoTestData;
@@ -48,44 +48,61 @@ class UserInfoTest extends TestCase {
       [
         'name' => 'first name is required',
         'expected' => [
-          'message' => 'The first name field is required.'
+          'message' => trans('validation.required', ['attribute' => UserInfo::FIRST_NAME])
         ],
-        'payload' => []
+        'payload' => [
+          UserInfo::FIRST_NAME => '',
+          UserInfo::LAST_NAME => null,
+          UserInfo::USERNAME => '',
+          UserInfo::EMAIL => ''
+        ]
       ],
       [
         'name' => 'first name must have a valid format (1)',
         'expected' => [
-          'message' => 'The first name field format is invalid.'
+          'message' => trans('validation.regex', ['attribute' => UserInfo::FIRST_NAME])
         ],
         'payload' => [
-          UserInfo::FIRST_NAME => 'lorem1psum'
+          UserInfo::FIRST_NAME => 'lorem1psum',
+          UserInfo::LAST_NAME => null,
+          UserInfo::USERNAME => '',
+          UserInfo::EMAIL => ''
         ]
       ],
       [
         'name' => 'first name must have a valid format (2)',
         'expected' => [
-          'message' => 'The first name field format is invalid.'
+          'message' => trans('validation.regex', ['attribute' => UserInfo::FIRST_NAME])
         ],
         'payload' => [
-          UserInfo::FIRST_NAME => 'lorem 1psum'
+          UserInfo::FIRST_NAME => 'lorem 1psum',
+          UserInfo::LAST_NAME => null,
+          UserInfo::USERNAME => '',
+          UserInfo::EMAIL => ''
         ]
       ],
       [
         'name' => 'first name must have a valid format (3)',
         'expected' => [
-          'message' => 'The first name field format is invalid.'
+          'message' => trans('validation.regex', ['attribute' => UserInfo::FIRST_NAME])
         ],
         'payload' => [
-          UserInfo::FIRST_NAME => 'lorem @psum'
+          UserInfo::FIRST_NAME => 'lorem @psum',
+          UserInfo::LAST_NAME => null,
+          UserInfo::USERNAME => '',
+          UserInfo::EMAIL => ''
         ]
       ],
       [
         'name' => 'first name must have a valid format (4)',
         'expected' => [
-          'message' => 'The first name field format is invalid.'
+          'message' => trans('validation.regex', ['attribute' => UserInfo::FIRST_NAME])
         ],
         'payload' => [
-          UserInfo::FIRST_NAME => 'lorem.'
+          UserInfo::FIRST_NAME => 'lorem.',
+          UserInfo::LAST_NAME => null,
+          UserInfo::USERNAME => '',
+          UserInfo::EMAIL => ''
         ]
       ],
       // </editor-fold>
@@ -94,41 +111,49 @@ class UserInfoTest extends TestCase {
       [
         'name' => 'last name must have a valid format (1)',
         'expected' => [
-          'message' => 'The last name field format is invalid.'
+          'message' => trans('validation.regex', ['attribute' => UserInfo::LAST_NAME])
         ],
         'payload' => [
-          UserInfo::FIRST_NAME => 'lorem',
-          UserInfo::LAST_NAME => 'lorem1psum'
+          UserInfo::FIRST_NAME => $this->getValidFirstName(),
+          UserInfo::LAST_NAME => 'lorem1psum',
+          UserInfo::USERNAME => '',
+          UserInfo::EMAIL => ''
         ]
       ],
       [
         'name' => 'last name must have a valid format (2)',
         'expected' => [
-          'message' => 'The last name field format is invalid.'
+          'message' => trans('validation.regex', ['attribute' => UserInfo::LAST_NAME])
         ],
         'payload' => [
-          UserInfo::FIRST_NAME => 'lorem',
-          UserInfo::LAST_NAME => 'lorem 1psum'
+          UserInfo::FIRST_NAME => $this->getValidFirstName(),
+          UserInfo::LAST_NAME => 'lorem 1psum',
+          UserInfo::USERNAME => '',
+          UserInfo::EMAIL => ''
         ]
       ],
       [
         'name' => 'last name must have a valid format (3)',
         'expected' => [
-          'message' => 'The last name field format is invalid.'
+          'message' => trans('validation.regex', ['attribute' => UserInfo::LAST_NAME])
         ],
         'payload' => [
-          UserInfo::FIRST_NAME => 'lorem',
-          UserInfo::LAST_NAME => 'lorem @psum'
+          UserInfo::FIRST_NAME => $this->getValidFirstName(),
+          UserInfo::LAST_NAME => 'lorem @psum',
+          UserInfo::USERNAME => '',
+          UserInfo::EMAIL => ''
         ]
       ],
       [
         'name' => 'last name must have a valid format (4)',
         'expected' => [
-          'message' => 'The last name field format is invalid.'
+          'message' => trans('validation.regex', ['attribute' => UserInfo::LAST_NAME])
         ],
         'payload' => [
-          UserInfo::FIRST_NAME => 'lorem',
-          UserInfo::LAST_NAME => 'lorem.'
+          UserInfo::FIRST_NAME => $this->getValidFirstName(),
+          UserInfo::LAST_NAME => 'lorem.',
+          UserInfo::USERNAME => '',
+          UserInfo::EMAIL => ''
         ]
       ],
       // </editor-fold>
@@ -140,30 +165,73 @@ class UserInfoTest extends TestCase {
           'message' => 'The username field is required.'
         ],
         'payload' => [
-          UserInfo::FIRST_NAME => 'lorem',
-          UserInfo::LAST_NAME => 'ipsum',
+          UserInfo::FIRST_NAME => $this->getValidFirstName(),
+          UserInfo::LAST_NAME => $this->getValidLastName(),
+          UserInfo::USERNAME => '',
+          UserInfo::EMAIL => ''
         ]
       ],
       [
         'name' => 'validate username format (1)',
         'expected' => [
-          'message' => 'The username field format is invalid.'
+          'message' => trans('validation.regex', ['attribute' => UserInfo::USERNAME])
         ],
         'payload' => [
-          UserInfo::FIRST_NAME => 'lorem',
-          UserInfo::LAST_NAME => 'ipsum',
-          UserInfo::USERNAME => 'lorem_.'
+          UserInfo::FIRST_NAME => $this->getValidFirstName(),
+          UserInfo::LAST_NAME => $this->getValidLastName(),
+          UserInfo::USERNAME => 'lorem_.',
+          UserInfo::EMAIL => ''
         ],
       ],
       [
         'name' => 'validate username format (2)',
         'expected' => [
-          'message' => 'The username field format is invalid.'
+          'message' => trans('validation.regex', ['attribute' => UserInfo::USERNAME])
         ],
         'payload' => [
-          UserInfo::FIRST_NAME => 'lorem',
-          UserInfo::LAST_NAME => 'ipsum',
-          UserInfo::USERNAME => 'lorem_ '
+          UserInfo::FIRST_NAME => $this->getValidFirstName(),
+          UserInfo::LAST_NAME => $this->getValidLastName(),
+          UserInfo::USERNAME => 'lorem_ ',
+          UserInfo::EMAIL => ''
+        ],
+      ],
+      // </editor-fold>
+
+      // <editor-fold desc="email">
+      [
+        'name' => 'username is required',
+        'expected' => [
+          'message' => trans('validation.email', ['attribute' => UserInfo::EMAIL])
+        ],
+        'payload' => [
+          UserInfo::FIRST_NAME => $this->getValidFirstName(),
+          UserInfo::LAST_NAME => $this->getValidLastName(),
+          UserInfo::USERNAME => $this->getValidUsername(),
+          UserInfo::EMAIL => ''
+        ]
+      ],
+      [
+        'name' => 'validate username format (1)',
+        'expected' => [
+          'message' => trans('validation.email', ['attribute' => UserInfo::EMAIL])
+        ],
+        'payload' => [
+          UserInfo::FIRST_NAME => $this->getValidFirstName(),
+          UserInfo::LAST_NAME => $this->getValidLastName(),
+          UserInfo::USERNAME => $this->getValidUsername(),
+          UserInfo::EMAIL => 'loremipsum.com'
+        ],
+      ],
+      [
+        'name' => 'validate username format (2)',
+        'expected' => [
+          'message' => trans('validation.email', ['attribute' => UserInfo::EMAIL])
+        ],
+        'payload' => [
+          UserInfo::FIRST_NAME => $this->getValidFirstName(),
+          UserInfo::LAST_NAME => $this->getValidLastName(),
+          UserInfo::USERNAME => $this->getValidUsername(),
+          UserInfo::EMAIL => '!@#_loremipsum@gmail.com'
         ],
       ],
       // </editor-fold>
@@ -172,10 +240,11 @@ class UserInfoTest extends TestCase {
     foreach($testCase as $tc) {
       $exception = false;
       try {
-        new UserInfo($tc['payload']);
+        new UserInfo($tc['payload'][UserInfo::FIRST_NAME], $tc['payload'][UserInfo::LAST_NAME],
+          $tc['payload'][UserInfo::USERNAME], $tc['payload'][UserInfo::EMAIL]);
       } catch(Exception $e) {
         $this->assertStringMatchesFormat($tc['expected']['message'], $e->getMessage());
-        $this->assertInstanceOf(EntityException::class, $e);
+        $this->assertInstanceOf(EntityValidationException::class, $e);
         $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
         $exception = true;
       }
@@ -202,36 +271,15 @@ class UserInfoTest extends TestCase {
 
   /**
    * @return void
-   * @throws \App\Exceptions\EntityException
-   * @throws \Illuminate\Validation\ValidationException
-   *
-   * @test
-   * @testdox getLastName must return null if last_name is not set
+   * @throws \App\Exceptions\EntityValidationException
    */
   public function getLastNameMustReturnNullIfNotSetOrNullOrEmptyString() : void {
-    $entity = new UserInfo([
-      UserInfo::FIRST_NAME => $this->getValidFirstName(),
-      UserInfo::USERNAME => $this->getValidUsername(),
-      UserInfo::EMAIL => $this->getValidEmail()
-    ], false);
+    $entity = new UserInfo($this->getValidFirstName(), null, $this->getValidUsername(),
+      $this->getValidEmail());
     $this->assertNull($entity->getLastName());
 
-
-    $entity = new UserInfo([
-      UserInfo::FIRST_NAME => $this->getValidFirstName(),
-      UserInfo::LAST_NAME => '',
-      UserInfo::USERNAME => $this->getValidUsername(),
-      UserInfo::EMAIL => $this->getValidEmail()
-    ], false);
-    $this->assertNull($entity->getLastName());
-
-
-    $entity = new UserInfo([
-      UserInfo::FIRST_NAME => $this->getValidFirstName(),
-      UserInfo::LAST_NAME => null,
-      UserInfo::USERNAME => $this->getValidUsername(),
-      UserInfo::EMAIL => $this->getValidEmail()
-    ], false);
+    $entity = new UserInfo($this->getValidFirstName(), '', $this->getValidUsername(),
+      $this->getValidEmail());
     $this->assertNull($entity->getLastName());
   }
 }

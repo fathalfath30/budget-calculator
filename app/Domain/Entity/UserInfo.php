@@ -18,6 +18,10 @@
 
 namespace App\Domain\Entity;
 
+use App\Domain\Entity\Traits\Entity;
+use App\Domain\Entity\Traits\EntityValidation;
+use App\Domain\Entity\Traits\ToArray;
+
 /**
  * UserInfo
  *
@@ -26,10 +30,10 @@ namespace App\Domain\Entity;
  * @since 1.0.0
  *
  * @see \App\Domain\Entity\IEntity
- * @see \App\Domain\Entity\ToArray
+ * @see \App\Domain\Entity\Traits\ToArray
  */
 class UserInfo extends Entity implements IEntity {
-  use ToArray;
+  use ToArray, EntityValidation;
 
   const FIRST_NAME = 'first_name';
   const LAST_NAME = 'last_name';
@@ -42,29 +46,18 @@ class UserInfo extends Entity implements IEntity {
   private string $email;
 
   /**
-   * @throws \App\Exceptions\EntityException
-   * @throws \Illuminate\Validation\ValidationException
+   * @param string $first_name
+   * @param null|string $last_name
+   * @param string $username
+   * @param string $email
+   *
+   * @throws \App\Exceptions\EntityValidationException
    */
-  public function __construct(array $payload, bool $validate = true) {
-    if($validate) {
-      $payload = $this->validate($payload,
-        [
-          self::FIRST_NAME => ['required', VALIDATION_REGEX_STD_NAME],
-          self::LAST_NAME => ['nullable', VALIDATION_REGEX_STD_NAME],
-          self::USERNAME => ['required', VALIDATION_REGEX_USERNAME],
-          self::EMAIL => ['required', 'email', 'max:255'],
-        ]
-      );
-    }
-
-    $this->first_name = trim($payload[self::FIRST_NAME]);
-    $this->last_name = null;
-    if(isset($payload[self::LAST_NAME]) && !empty($payload[self::LAST_NAME]) && !is_null($payload[self::LAST_NAME])) {
-      $this->last_name = trim($payload[self::LAST_NAME]);
-    }
-
-    $this->username = trim($payload[self::USERNAME]);
-    $this->email = strtolower(trim($payload[self::EMAIL]));
+  public function __construct(string $first_name, ?string $last_name, string $username, string $email) {
+    $this->first_name = $this->validateGeneralName($first_name, self::FIRST_NAME);
+    $this->last_name = $this->validateGeneralName($last_name, self::LAST_NAME, true);
+    $this->username = $this->validateUsername($username);
+    $this->email = $this->validateEmail($email);
   }
 
   /**

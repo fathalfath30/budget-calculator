@@ -16,8 +16,30 @@
 //
 */
 
-namespace App\Domain\Entity;
-interface IEntity {
-  //  public function __construct(array $payload, bool $validate = true);
-  public function toArray() : array;
+namespace App\Domain\Entity\Traits;
+
+use App\Domain\Entity\Timestamp;
+
+/**
+ * HasTimestamp
+ *
+ * @author Fathalfath30
+ * @version 1.0.0
+ * @since 1.0.0
+ *
+ * @see \App\Domain\Entity\Timestamp
+ */
+trait HasTimestamp {
+
+  const TIMESTAMP = 'timestamp';
+
+  /** @var null|\App\Domain\Entity\Timestamp $timestamp */
+  private ?Timestamp $timestamp;
+
+  /**
+   * @return null|\App\Domain\Entity\Timestamp
+   */
+  public function getTimestamp() : ?Timestamp {
+    return $this->timestamp;
+  }
 }

@@ -16,8 +16,25 @@
 //
 */
 
-namespace App\Domain\Entity;
-interface IEntity {
-  //  public function __construct(array $payload, bool $validate = true);
-  public function toArray() : array;
+namespace App\Domain\Entity\Traits;
+
+/**
+ * ToArray
+ *
+ * This trait is used to convert object class to array
+ *
+ * @author Fathalfath30
+ * @version 1.0.0
+ * @since 1.0.0
+ */
+trait ToArray {
+  /**
+   * @return array
+   * @author Fathalfath30
+   * @version 1.0.0
+   * @since 1.0.0
+   */
+  public function toArray() : array {
+    return get_object_vars($this);
+  }
 }

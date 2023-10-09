@@ -18,9 +18,10 @@
 
 namespace Domain\Entity;
 
-use App\Domain\Entity\Entity;
 use App\Domain\Entity\Role;
+use App\Domain\Entity\Traits\Entity;
 use App\Exceptions\EntityException;
+use App\Exceptions\EntityValidationException;
 use Exception;
 use Faker\Factory as Faker;
 use Faker\Generator;
@@ -51,7 +52,12 @@ class RoleTest extends TestCase {
         'expected' => [
           'message' => 'The id field is required.'
         ],
-        'payload' => []
+        'payload' => [
+          Role::ID => '',
+          Role::NAME => '',
+          Role::LEVEL => 0,
+          Entity::TIMESTAMP => null,
+        ]
       ],
       [
         'name' => 'id must be a valid uuid',
@@ -59,7 +65,10 @@ class RoleTest extends TestCase {
           'message' => 'The id field must be a valid UUID.'
         ],
         'payload' => [
-          Role::ID => 'lorem'
+          Role::ID => 'lorem',
+          Role::NAME => '',
+          Role::LEVEL => 0,
+          Entity::TIMESTAMP => null,
         ]
       ],
 
@@ -70,8 +79,10 @@ class RoleTest extends TestCase {
           'message' => 'The name field is required.'
         ],
         'payload' => [
-          Role::ID => $this->faker->uuid,
-          Role::NAME => ''
+          Role::ID => $this->faker->uuid(),
+          Role::NAME => '',
+          Role::LEVEL => 0,
+          Entity::TIMESTAMP => null,
         ]
       ],
       [
@@ -80,8 +91,10 @@ class RoleTest extends TestCase {
           'message' => 'The name field format is invalid.'
         ],
         'payload' => [
-          Role::ID => $this->faker->uuid,
-          Role::NAME => 'Lorem!@#'
+          Role::ID => $this->faker->uuid(),
+          Role::NAME => 'Lorem!@#',
+          Role::LEVEL => 0,
+          Entity::TIMESTAMP => null,
         ]
       ],
 
@@ -94,43 +107,8 @@ class RoleTest extends TestCase {
         'payload' => [
           Role::ID => $this->faker->uuid,
           Role::NAME => 'Lorem Ipsum',
-          Role::LEVEL => 'XXX'
-        ]
-      ],
-      [
-        'name' => 'level must be greater than 0',
-        'expected' => [
-          'message' => 'The level field must be at least 1.'
-        ],
-        'payload' => [
-          Role::ID => $this->faker->uuid,
-          Role::NAME => 'Lorem Ipsum',
-          Role::LEVEL => '0'
-        ]
-      ],
-      [
-        'name' => 'level must be less than 999',
-        'expected' => [
-          'message' => 'The level field must not be greater than 998.'
-        ],
-        'payload' => [
-          Role::ID => $this->faker->uuid,
-          Role::NAME => 'Lorem Ipsum',
-          Role::LEVEL => '999'
-        ]
-      ],
-
-      // validation test timestamp
-      [
-        'name' => 'timestamp must be instance of Timestamp entity',
-        'expected' => [
-          'message' => trans('exception.domain.instance_of.timestamp')
-        ],
-        'payload' => [
-          Role::ID => $this->faker->uuid,
-          Role::NAME => 'Lorem Ipsum',
-          Role::LEVEL => '1',
-          Entity::TIMESTAMP => 'xx'
+          Role::LEVEL => 'XXX',
+          Entity::TIMESTAMP => null,
         ]
       ]
     ];
@@ -138,10 +116,11 @@ class RoleTest extends TestCase {
     foreach($testCase as $tc) {
       $exception = false;
       try {
-        new Role($tc['payload']);
+        new Role($tc['payload'][Role::ID], $tc['payload'][Role::NAME], $tc['payload'][Role::LEVEL],
+          $tc['payload'][Entity::TIMESTAMP]);
       } catch(Exception $e) {
         $this->assertStringMatchesFormat($tc['expected']['message'], $e->getMessage());
-        $this->assertInstanceOf(EntityException::class, $e);
+        $this->assertInstanceOf(EntityValidationException::class, $e);
         $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
         $exception = true;
       }
@@ -198,7 +177,7 @@ class RoleTest extends TestCase {
    */
   public function isGuestMustReturnTrueIfRoleLevelIsGuest() {
     try {
-      $role = $this->getValidRoleEntity(false);
+      $role = $this->getValidRoleEntity();
       $this->assertTrue($role->isGuest());
     } catch(Exception $exception) {
       $this->assertNull($exception);

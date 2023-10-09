@@ -16,8 +16,29 @@
 //
 */
 
-namespace App\Domain\Entity;
-interface IEntity {
-  //  public function __construct(array $payload, bool $validate = true);
-  public function toArray() : array;
+namespace App\Domain\Entity\Traits;
+
+use App\Domain\Entity\Role;
+
+/**
+ * HasRole
+ *
+ * @author Fathalfath30
+ * @version 1.0.0
+ * @since 1.0.0
+ *
+ * @see \App\Domain\Entity\Role
+ */
+trait HasRole {
+  const ROLE = 'role';
+
+  /** @var \App\Domain\Entity\Role $role */
+  private Role $role;
+
+  /**
+   * @return \App\Domain\Entity\Role
+   */
+  public function getRole() : Role {
+    return $this->role;
+  }
 }

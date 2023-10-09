@@ -16,7 +16,7 @@
 //
 */
 
-namespace App\Domain\Entity;
+namespace App\Domain\Entity\Traits;
 
 use App\Exceptions\EntityException;
 use Illuminate\Contracts\Support\Arrayable;
@@ -44,14 +44,5 @@ abstract class Entity implements Arrayable {
     }
 
     return $validate->validated();
-  }
-
-  /**
-   * @throws \App\Exceptions\EntityException
-   */
-  public function validateTimestamp(array $payload) : void {
-    if(!empty($payload[self::TIMESTAMP]) && !($payload[self::TIMESTAMP] instanceof Timestamp)) {
-      throw new EntityException(trans('exception.domain.instance_of.timestamp'));
-    }
   }
 }

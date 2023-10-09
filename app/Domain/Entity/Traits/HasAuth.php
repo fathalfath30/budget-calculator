@@ -16,25 +16,30 @@
 //
 */
 
-namespace App\Domain\Entity;
+namespace App\Domain\Entity\Traits;
+
+use App\Domain\Entity\Auth;
 
 /**
- * ToArray
- *
- * This trait is used to convert object class to array
+ * HasAuth
  *
  * @author Fathalfath30
  * @version 1.0.0
  * @since 1.0.0
+ *
+ * @see \App\Domain\Entity\Auth
  */
-trait ToArray {
+trait HasAuth {
+  const AUTH = 'auth';
+
+  /** @var \App\Domain\Entity\Auth $auth */
+  private Auth $auth;
+
+
   /**
-   * @return array
-   * @author Fathalfath30
-   * @version 1.0.0
-   * @since 1.0.0
+   * @return \App\Domain\Entity\Auth
    */
-  public function toArray() : array {
-    return get_object_vars($this);
+  public function getAuth() : Auth {
+    return $this->auth;
   }
 }

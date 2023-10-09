@@ -16,8 +16,31 @@
 //
 */
 
-namespace App\Domain\Entity;
-interface IEntity {
-  //  public function __construct(array $payload, bool $validate = true);
-  public function toArray() : array;
+namespace App\Domain\Entity\Traits;
+
+use App\Domain\Entity\Timestamp;
+use App\Domain\Entity\UserInfo;
+
+/**
+ * HasUserInfo
+ *
+ * @author Fathalfath30
+ * @version 1.0.0
+ * @since 1.0.0
+ *
+ * @see \App\Domain\Entity\Timestamp
+ */
+trait HasUserInfo {
+  /** @var \App\Domain\Entity\UserInfo $user_info */
+  const USER_INFO = 'user_info';
+
+  /** @var \App\Domain\Entity\UserInfo $user_info */
+  private UserInfo $user_info;
+
+  /**
+   * @return \App\Domain\Entity\UserInfo
+   */
+  public function getUserInfo() : UserInfo {
+    return $this->user_info;
+  }
 }
