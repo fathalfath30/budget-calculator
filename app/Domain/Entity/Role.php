@@ -19,7 +19,9 @@
 namespace App\Domain\Entity;
 
 use App\Domain\Entity\Traits\Entity;
+use App\Domain\Entity\Traits\EntityValidation;
 use App\Domain\Entity\Traits\ToArray;
+use App\Exceptions\EntityValidationException;
 
 /**
  * Role
@@ -32,9 +34,10 @@ use App\Domain\Entity\Traits\ToArray;
  *
  * @see \App\Domain\Entity\IEntity
  * @see \App\Domain\Entity\Traits\ToArray
+ * @see \App\Domain\Entity\Traits\EntityValidation
  */
 class Role extends Entity implements IEntity {
-  use ToArray;
+  use ToArray, EntityValidation;
 
   const ID = 'id';
   const NAME = 'name';
@@ -49,27 +52,30 @@ class Role extends Entity implements IEntity {
   private ?Timestamp $timestamp = null;
 
   /**
-   * @throws \App\Exceptions\EntityException
-   * @throws \Illuminate\Validation\ValidationException
+   * @param string $id
+   * @param string $name
+   * @param int|string $level
+   * @param null|\App\Domain\Entity\Timestamp $timestamp
+   *
+   * @throws \App\Exceptions\EntityValidationException
    */
-  public function __construct(array $payload, bool $validate = true) {
-    if($validate) {
-      $payload = $this->validate($payload,
-        [
-          self::ID => ['required', 'uuid'],
-          self::NAME => ['required', 'regex:/^[\pL\s\-]+$/u'],
-          self::LEVEL => ['nullable', 'integer', 'min:1', 'max:998'],
-          self::TIMESTAMP => ['nullable']
-        ]
-      );
+  public function __construct(string $id, string $name, int|string $level, ?Timestamp $timestamp = null) {
+    $this->id = $this->validateId($id);
+    $this->name = $this->validateGeneralName($name);
 
-      $this->validateTimestamp($payload);
+    $level = trim($level);
+    if(empty($level)) {
+      $level = self::USER_LEVEL_GUEST;
     }
 
-    $this->id = trim($payload[self::ID]);
-    $this->name = trim($payload[self::NAME]);
-    $this->level = $payload[self::LEVEL] ?? self::USER_LEVEL_GUEST;
-    $this->timestamp = $payload[self::TIMESTAMP];
+    if(preg_match(VALIDATION_REGEX_INTEGER, $level) !== 1) {
+      throw new EntityValidationException('validation.integer', [
+        'attribute' => 'level'
+      ]);
+    }
+
+    $this->level = $level;
+    $this->timestamp = $timestamp;
   }
 
   /**

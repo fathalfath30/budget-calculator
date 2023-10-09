@@ -16,30 +16,25 @@
 //
 */
 
-namespace App\Domain\Entity\Traits;
+namespace Repository\Mapper;
 
-use App\Domain\Entity\Auth;
+use App\Domain\Entity\User as UserEntity;
+use App\Repository\Mapper\User as UserMapper;
+use App\Repository\Models\User as UserModel;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use Tests\TestData\UserTestData;
 
-/**
- * HasAuth
- *
- * @author Fathalfath30
- * @version 1.0.0
- * @since 1.0.0
- *
- * @see \App\Domain\Entity\Auth
- */
-trait HasAuth {
-  const AUTH = 'auth';
-
-  /** @var \App\Domain\Entity\Auth $auth */
-  private Auth $auth;
-
+class UserTest extends TestCase {
+  use UserTestData, RefreshDatabase;
 
   /**
-   * @return \App\Domain\Entity\Auth
+   * @return void
+   * @throws \App\Exceptions\EntityValidationException
+   *
+   * @test
    */
-  public function getAuth() : Auth {
-    return $this->auth;
+  public function itCanMappingFromModelToUserEntity() {
+    $userModel = UserModel::factory()->create();
   }
 }

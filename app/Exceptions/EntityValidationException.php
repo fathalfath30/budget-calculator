@@ -16,30 +16,23 @@
 //
 */
 
-namespace App\Domain\Entity\Traits;
-
-use App\Domain\Entity\Auth;
+namespace App\Exceptions;
 
 /**
- * HasAuth
+ * EntityValidationException
  *
  * @author Fathalfath30
  * @version 1.0.0
  * @since 1.0.0
- *
- * @see \App\Domain\Entity\Auth
+ * @see \App\Exceptions\F30Exception
  */
-trait HasAuth {
-  const AUTH = 'auth';
-
-  /** @var \App\Domain\Entity\Auth $auth */
-  private Auth $auth;
-
-
+class EntityValidationException extends F30Exception {
   /**
-   * @return \App\Domain\Entity\Auth
+   * @param string $message
+   * @param array $replace
    */
-  public function getAuth() : Auth {
-    return $this->auth;
+  public function __construct(string $message = "Unhandled entity exception", array $replace = []) {
+    parent::__construct(trans($message, $replace), 400);
+    $this->statusCode = config('response_code.user.error.bad_request');
   }
 }

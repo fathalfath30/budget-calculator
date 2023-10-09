@@ -18,13 +18,26 @@
 
 namespace App\Repository\Mapper;
 
+use App\Domain\Entity\Auth as AuthEntity;
+use App\Domain\Entity\Role as RoleEntity;
+use App\Domain\Entity\Timestamp as TimestampEntity;
 use App\Domain\Entity\User as UserEntity;
-use App\Exceptions\NotImplementedException;
+use App\Domain\Entity\UserInfo as UserInfoEntity;
 use App\Repository\Models\User as UserModel;
 
 class User {
-  public function ModelToEntity(UserModel $user) : UserEntity {
-    // todo: implement me
-    throw new NotImplementedException;
+  /**
+   * @param \App\Repository\Models\User $user
+   *
+   * @return \App\Domain\Entity\User
+   * @throws \App\Exceptions\EntityValidationException
+   */
+  public static function ModelToEntity(UserModel $user) : UserEntity {
+    $role = new RoleEntity;
+    $auth = new AuthEntity;
+    $userInfo = new UserInfoEntity($user->first_name, $user->last_name, $user->username, $user->email);
+    $timestamp = new TimestampEntity;
+
+    return new UserEntity($user->id, $role, $auth, $userInfo, $timestamp);
   }
 }

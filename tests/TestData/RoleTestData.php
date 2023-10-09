@@ -60,18 +60,15 @@ trait RoleTestData {
   /**
    * Return valid sample role entity
    *
+   * @param bool $admin
+   *
+   * @return \App\Domain\Entity\Role
    * @throws \App\Exceptions\EntityException
+   * @throws \App\Exceptions\EntityValidationException
    * @throws \Illuminate\Validation\ValidationException
    */
   public function getValidRoleEntity(bool $admin = false) : Role {
-    return (new Role(
-      [
-        Role::ID => $this->getValidRoleId($admin),
-        Role::NAME => $this->getValidRoleName($admin),
-        Role::LEVEL => $admin ? Role::USER_LEVEL_SUPER_ADMIN : Role::USER_LEVEL_GUEST,
-        Entity::TIMESTAMP => $this->getValidTimestampEntity()
-      ],
-      false)
-    );
+    return (new Role($this->getValidRoleId($admin), $this->getValidRoleName($admin),
+      ($admin ? Role::USER_LEVEL_SUPER_ADMIN : Role::USER_LEVEL_GUEST), $this->getValidTimestampEntity()));
   }
 }

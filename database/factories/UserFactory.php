@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Repository\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -9,6 +10,8 @@ use Illuminate\Support\Str;
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Repository\Models\User>
  */
 class UserFactory extends Factory {
+  /** @var string $model */
+  protected $model = User::class;
   /**
    * Define the model's default state.
    *
