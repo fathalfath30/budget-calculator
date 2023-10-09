@@ -16,28 +16,25 @@
 //
 */
 
-namespace App\Repository\Mapper;
+namespace Repository\Mapper;
 
-use App\Domain\Entity\Auth as AuthEntity;
-use App\Domain\Entity\Role as RoleEntity;
-use App\Domain\Entity\Timestamp as TimestampEntity;
 use App\Domain\Entity\User as UserEntity;
-use App\Domain\Entity\UserInfo as UserInfoEntity;
+use App\Repository\Mapper\User as UserMapper;
 use App\Repository\Models\User as UserModel;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use Tests\TestData\UserTestData;
 
-class User {
+class UserTest extends TestCase {
+  use UserTestData, RefreshDatabase;
+
   /**
-   * @param \App\Repository\Models\User $user
-   *
-   * @return \App\Domain\Entity\User
+   * @return void
    * @throws \App\Exceptions\EntityValidationException
+   *
+   * @test
    */
-  public static function ModelToEntity(UserModel $user) : UserEntity {
-    $role = new RoleEntity;
-    $auth = new AuthEntity;
-    $userInfo = new UserInfoEntity($user->first_name, $user->last_name, $user->username, $user->email);
-    $timestamp = new TimestampEntity;
-
-    return new UserEntity($user->id, $role, $auth, $userInfo, $timestamp);
+  public function itCanMappingFromModelToUserEntity() {
+    $userModel = UserModel::factory()->create();
   }
 }
