@@ -28,6 +28,7 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -55,11 +56,27 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $last_name
  * @property string $username
  * @property string $email
- * @property Role $role
+ * @property string $role_id
  *
  */
 class User extends Model implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract {
-  use HasApiTokens, HasFactory, Notifiable, Authenticatable, Authorizable, CanResetPassword, MustVerifyEmail;
+  use HasApiTokens, HasFactory, Notifiable, Authenticatable, Authorizable, CanResetPassword, MustVerifyEmail,
+    SoftDeletes;
+
+  const ID = 'id';
+  const FIRST_NAME = 'first_name';
+  const LAST_NAME = 'last_name';
+  const USERNAME = 'username';
+  const EMAIL = 'email';
+  const EMAIL_VERIFIED_AT = 'email_verified_at';
+  const PASSWORD = 'password';
+  const REMEMBER_TOKEN = 'remember_token';
+  const LOCKED_AT = 'locked_at';
+  const LOGIN_FAIL_ATTEMPT = 'login_fail_attempt';
+  const CREATED_AT = 'created_at';
+  const UPDATED_AT = 'updated_at';
+  const DELETED_AT = 'deleted_at';
+
 
   /** @var string $table set the table name */
   protected $table = 'users';
@@ -86,7 +103,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
    *
    * @var array<string, string>
    */
-  protected $casts = ['email_verified_at' => 'datetime', 'password' => 'hashed',];
+  protected $casts = ['email_verified_at' => 'datetime', 'password' => 'hashed'];
 
   /**
    * @return \Illuminate\Database\Eloquent\Factories\Factory

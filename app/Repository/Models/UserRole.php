@@ -41,4 +41,11 @@ class UserRole extends F30_Model {
 
   /** @var bool $incrementing disabling AUTO_INCREMENT command, we used UUID */
   public $incrementing = false;
+
+  const ID = 'id';
+  const USER_ID = 'user_id';
+  const ROLE_ID = 'role_id';
+  const ENABLED = 'enabled';
+  const CREATED_AT = 'created_at';
+  const UPDATED_AT = 'updated_at';
 }

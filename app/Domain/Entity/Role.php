@@ -41,6 +41,7 @@ class Role extends Entity implements IEntity {
 
   const ID = 'id';
   const NAME = 'name';
+  const ICON = 'icon';
   const LEVEL = 'level';
 
   const USER_LEVEL_SUPER_ADMIN = 999;
@@ -49,17 +50,19 @@ class Role extends Entity implements IEntity {
   private string $id;
   private string $name;
   private int $level;
+  private ?string $icon;
   private ?Timestamp $timestamp = null;
 
   /**
    * @param string $id
    * @param string $name
    * @param int|string $level
+   * @param null|string $icon
    * @param null|\App\Domain\Entity\Timestamp $timestamp
    *
    * @throws \App\Exceptions\EntityValidationException
    */
-  public function __construct(string $id, string $name, int|string $level, ?Timestamp $timestamp = null) {
+  public function __construct(string $id, string $name, int|string $level, ?string $icon, ?Timestamp $timestamp = null) {
     $this->id = $this->validateId($id);
     $this->name = $this->validateGeneralName($name);
 
@@ -75,6 +78,9 @@ class Role extends Entity implements IEntity {
     }
 
     $this->level = $level;
+    if(!empty($icon)) {
+      $this->icon = trim($icon);
+    }
     $this->timestamp = $timestamp;
   }
 
@@ -103,6 +109,13 @@ class Role extends Entity implements IEntity {
    */
   public function getLevel() : int {
     return $this->level;
+  }
+
+  /**
+   * @return null|string
+   */
+  public function getIcon() : ?string {
+    return $this->icon;
   }
 
   /**

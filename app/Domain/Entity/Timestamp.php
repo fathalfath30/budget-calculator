@@ -20,6 +20,7 @@ namespace App\Domain\Entity;
 
 use App\Domain\Entity\Traits\Entity;
 use App\Domain\Entity\Traits\ToArray;
+use App\Exceptions\EntityValidationException;
 
 /**
  * Timestamp
@@ -51,23 +52,37 @@ class Timestamp extends Entity implements IEntity {
   private bool $rebuildClass = false;
 
   /**
-   * @throws \App\Exceptions\EntityException
-   * @throws \Illuminate\Validation\ValidationException
+   * @param string $created_at
+   * @param string $updated_at
+   * @param null|string $deleted_at
+   *
+   * @throws \App\Exceptions\EntityValidationException
    */
-  public function __construct(array $payload, bool $validate = true) {
-    if($validate) {
-      $payload = $this->validate($payload,
-        [
-          self::CREATED_AT => ['required', 'date:Y-m-d H:i:s'],
-          self::UPDATED_AT => ['required', 'date:Y-m-d H:i:s'],
-          self::DELETED_AT => ['nullable', 'date:Y-m-d H:i:s'],
-        ]
-      );
+  public function __construct(string $created_at, string $updated_at, ?string $deleted_at = null) {
+    $this->created_at = trim($created_at);
+    if(empty($this->created_at)) {
+      throw new EntityValidationException("validation.required", ['attribute' => 'created_at']);
     }
 
-    $this->created_at = $payload[self::CREATED_AT];
-    $this->updated_at = $payload[self::UPDATED_AT];
-    $this->deleted_at = $payload[self::DELETED_AT] ?? null;
+    if(preg_match(VALIDATION_REGEX_DATETIME_YMD_HIS, $this->created_at) !== 1) {
+      throw new EntityValidationException("validation.regex", ['attribute' => 'created_at']);
+    }
+
+    $this->updated_at = trim($updated_at);
+    if(empty($this->updated_at)) {
+      throw new EntityValidationException("validation.required", ['attribute' => 'updated_at']);
+    }
+
+    if(preg_match(VALIDATION_REGEX_DATETIME_YMD_HIS, $this->updated_at) !== 1) {
+      throw new EntityValidationException("validation.regex", ['attribute' => 'updated_at']);
+    }
+
+    if(!empty($deleted_at)) {
+      $this->deleted_at = $deleted_at;
+      if(preg_match(VALIDATION_REGEX_DATETIME_YMD_HIS, $this->deleted_at) !== 1) {
+        throw new EntityValidationException("validation.regex", ['attribute' => 'deleted_at']);
+      }
+    }
   }
 
   /**
