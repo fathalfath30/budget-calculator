@@ -44,11 +44,11 @@ return new class extends F30_Migration {
       $table->string('name');
       $table->string('icon')
         ->nullable();
-      $table->tinyInteger('level', false, true)
+      $table->integer('level', false, true)
         ->default(0);
 
       // add timestamp
-      $this->addTimestamp($table);
+      $this->addTimestamp($table, true);
 
       // add index
       $this->addIndex($table, ['level']);

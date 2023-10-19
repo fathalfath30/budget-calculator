@@ -26,14 +26,14 @@ class RoleSeeder extends Seeder {
     Role::factory()
       ->createMany([
         [
-          Role::ID => '8626e795-4079-4e4d-9e34-98b4aa4fec4f',
+          Role::ID => DEFAULT_ROLE_SUPER_ADMIN_ID,
           Role::NAME => 'Super Administrator',
           Role::LEVEL => 999,
           Model::CREATED_AT => $now,
           Model::UPDATED_AT => $now
         ],
         [
-          Role::ID => '304de370-bf18-4a26-8ee8-aaa6eab47955',
+          Role::ID => DEFAULT_ROLE_GUEST_ID,
           Role::NAME => 'Guest',
           Role::LEVEL => 0,
           Model::CREATED_AT => $now,

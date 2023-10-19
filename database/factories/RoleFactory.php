@@ -22,6 +22,7 @@ use App\Repository\Models\Role;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class RoleFactory extends Factory {
+  /** @var string $model */
   protected $model = Role::class;
 
   /**
@@ -30,10 +31,14 @@ class RoleFactory extends Factory {
    * @return array<string, mixed>
    */
   public function definition() : array {
+    $now = date('Y-m-d H:i:s');
     return [
       Role::ID => $this->faker->uuid(),
       Role::NAME => $this->faker->jobTitle,
-      Role::LEVEL => rand(1, 9)
+      Role::LEVEL => rand(1, 9),
+      Role::CREATED_AT => $now,
+      Role::UPDATED_AT => $now,
+      Role::DELETED_AT => null
     ];
   }
 }
