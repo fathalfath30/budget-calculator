@@ -20,8 +20,10 @@ namespace Domain\Entity;
 
 use App\Domain\Entity\Timestamp;
 use App\Exceptions\EntityException;
+use App\Exceptions\EntityValidationException;
 use Exception;
 use Tests\TestCase;
+use Tests\TestData\TimestampTestData;
 
 /**
  * TimestampTest
@@ -36,6 +38,7 @@ use Tests\TestCase;
  * @see \App\Domain\Entity\Timestamp
  */
 class TimestampTest extends TestCase {
+  use TimestampTestData;
 
   /**
    * Test the validation on each input
@@ -49,42 +52,51 @@ class TimestampTest extends TestCase {
       [
         'name' => 'check created_at is required',
         'expected' => [
-          'message' => 'The created at field is required.'
+          'message' => trans('validation.required', ['attribute' => 'created_at'])
         ],
-        'payload' => []
+        'payload' => [
+          Timestamp::CREATED_AT => '',
+          Timestamp::UPDATED_AT => '',
+          Timestamp::DELETED_AT => null
+        ]
       ],
       [
         'name' => 'check created at must be valid date time',
         'expected' => [
-          'message' => 'The created at field must be a valid date.'
+          'message' => trans('validation.regex', ['attribute' => 'created_at'])
         ],
         'payload' => [
-          Timestamp::CREATED_AT => 'lorem ipsum'
+          Timestamp::CREATED_AT => 'lorem ipsum',
+          Timestamp::UPDATED_AT => '',
+          Timestamp::DELETED_AT => null
         ]
       ],
       [
         'name' => 'check updated_at is required',
         'expected' => [
-          'message' => 'The updated at field is required.'
-        ],
-        'payload' => [
-          Timestamp::CREATED_AT => $now
-        ]
-      ],
-      [
-        'name' => 'check deleted at must be valid date time',
-        'expected' => [
-          'message' => 'The updated at field must be a valid date.'
+          'message' => trans('validation.required', ['attribute' => 'updated_at'])
         ],
         'payload' => [
           Timestamp::CREATED_AT => $now,
-          Timestamp::UPDATED_AT => 'lorem ipsum'
+          Timestamp::UPDATED_AT => '',
+          Timestamp::DELETED_AT => null
         ]
       ],
       [
         'name' => 'check deleted at must be valid date time',
         'expected' => [
-          'message' => 'The deleted at field must be a valid date.'
+          'message' => trans('validation.regex', ['attribute' => 'updated_at'])
+        ],
+        'payload' => [
+          Timestamp::CREATED_AT => $now,
+          Timestamp::UPDATED_AT => 'lorem ipsum',
+          Timestamp::DELETED_AT => null
+        ]
+      ],
+      [
+        'name' => 'check deleted at must be valid date time',
+        'expected' => [
+          'message' => trans('validation.regex', ['attribute' => 'deleted_at'])
         ],
         'payload' => [
           Timestamp::CREATED_AT => $now,
@@ -97,10 +109,11 @@ class TimestampTest extends TestCase {
     foreach($testCase as $tc) {
       $exception = false;
       try {
-        new Timestamp($tc['payload']);
+        new Timestamp($tc['payload'][Timestamp::CREATED_AT], $tc['payload'][Timestamp::UPDATED_AT],
+          $tc['payload'][Timestamp::DELETED_AT]);
       } catch(Exception $e) {
         $this->assertStringMatchesFormat($tc['expected']['message'], $e->getMessage());
-        $this->assertInstanceOf(EntityException::class, $e);
+        $this->assertInstanceOf(EntityValidationException::class, $e);
         $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
         $exception = true;
       }
@@ -111,18 +124,17 @@ class TimestampTest extends TestCase {
 
   /**
    * @return void
-   * @throws \App\Exceptions\EntityException
-   * @throws \Illuminate\Validation\ValidationException
+   * @throws \App\Exceptions\EntityValidationException
    *
    * @test
    */
   public function createdAtAndUpdateAtMustReturnConstructedValue() {
     $now = date('Y-m-d H:i:s');
-    $cls = new Timestamp([Timestamp::CREATED_AT => $now, Timestamp::UPDATED_AT => $now]);
+    $cls = $this->getValidTimestampEntity($now);
 
     $this->assertSame($now, $cls->getCreatedAt());
     $this->assertSame($now, $cls->getUpdatedAt());
-    $this->assertNull($cls->getDeletedAt());
+    $this->assertSame($now, $cls->getDeletedAt());
 
     $clsArray = $cls->toArray();
     $this->assertIsArray($clsArray);

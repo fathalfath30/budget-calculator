@@ -38,14 +38,18 @@ trait TimestampTestData {
    * @param string $value
    *
    * @return \App\Domain\Entity\Timestamp
-   * @throws \App\Exceptions\EntityException
-   * @throws \Illuminate\Validation\ValidationException
+   * @throws \App\Exceptions\EntityValidationException
    */
   public function getValidTimestampEntity(string $value = self::SAMPLE_DATE_TIME) : Timestamp {
-    return new Timestamp([
-      Timestamp::CREATED_AT => $value,
-      Timestamp::UPDATED_AT => $value,
-      Timestamp::DELETED_AT => $value
-    ], false);
+    return new Timestamp($value, $value, $value);
+  }
+
+  /**
+   * Return valid timestamp with format Y-m-d H:i:s
+   *
+   * @return string
+   */
+  public function getValidSampleTimestamp() : string {
+    return "2023-01-01 00:00:00";
   }
 }

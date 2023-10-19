@@ -48,11 +48,9 @@ class UserTest extends TestCase {
 
   /**
    * @return void
-   * @throws \App\Exceptions\EntityException
    * @throws \App\Exceptions\EntityValidationException
-   * @throws \Illuminate\Validation\ValidationException
    */
-  public function idIsRequired() : void {
+  public function testIdIsRequired() : void {
     $this->expectException(EntityValidationException::class);
     $this->expectExceptionMessage(trans("validation.required", ['attribute' => 'id']));
     $this->expectExceptionCode(400);
@@ -63,12 +61,9 @@ class UserTest extends TestCase {
 
   /**
    * @return void
-   * @throws \App\Exceptions\EntityException
-   * @throws \Illuminate\Validation\ValidationException
-   *
-   * @test
+   * @throws \App\Exceptions\EntityValidationException
    */
-  public function idIsRequiredAndAlsoValidateWhitespace() {
+  public function testIdIsRequiredAndAlsoValidateWhitespace() {
     $this->expectException(EntityValidationException::class);
     $this->expectExceptionMessage(trans("validation.required", ['attribute' => 'id']));
 
@@ -78,13 +73,9 @@ class UserTest extends TestCase {
 
   /**
    * @return void
-   * @throws \App\Exceptions\EntityException
    * @throws \App\Exceptions\EntityValidationException
-   * @throws \Illuminate\Validation\ValidationException
-   *
-   * @test
    */
-  public function itShouldHaveMainGetterForTheProps() {
+  public function testItShouldHaveMainGetterForTheProps() {
     $user = new User($this->getValidUserId(), $this->getValidRoleEntity(), $this->getValidAuthEntity(), $this->getValidUserInfoEntity(),
       $this->getValidTimestampEntity());
 

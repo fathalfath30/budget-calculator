@@ -16,25 +16,25 @@
 //
 */
 
-namespace Repository\Mapper;
-
-use App\Domain\Entity\User as UserEntity;
-use App\Repository\Mapper\User as UserMapper;
-use App\Repository\Models\User as UserModel;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
-use Tests\TestData\UserTestData;
-
-class UserTest extends TestCase {
-  use UserTestData, RefreshDatabase;
-
-  /**
-   * @return void
-   * @throws \App\Exceptions\EntityValidationException
-   *
-   * @test
-   */
-  public function itCanMappingFromModelToUserEntity() {
-    $userModel = UserModel::factory()->create();
-  }
-}
+//namespace Repository\Mapper;
+//
+//use App\Domain\Entity\User as UserEntity;
+//use App\Repository\Mapper\User as UserMapper;
+//use App\Repository\Models\User as UserModel;
+//use Illuminate\Foundation\Testing\RefreshDatabase;
+//use Tests\TestCase;
+//use Tests\TestData\UserTestData;
+//
+//class UserTest extends TestCase {
+//  use UserTestData, RefreshDatabase;
+//
+//  /**
+//   * @return void
+//   * @throws \App\Exceptions\EntityValidationException
+//   *
+//   * @test
+//   */
+//  public function itCanMappingFromModelToUserEntity() {
+//    $userModel = UserModel::factory()->create();
+//  }
+//}

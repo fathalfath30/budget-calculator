@@ -39,7 +39,9 @@
     "dev": "vite",
     "build": "vite build",
     "backend:test": "php -d zend_extension=xdebug -d xdebug.mode=coverage ./vendor/bin/phpunit --testdox --configuration ./phpunit.xml",
-    "backend:test:coverage": "yarn backend:test --coverage-html ./.coverage-report"
+    "backend:test:coverage": "yarn backend:test --coverage-html ./.coverage-report",
+    "backend:test:no-cache": "php -d zend_extension=xdebug -d xdebug.mode=coverage ./vendor/bin/phpunit --testdox --configuration ./phpunit.xml --do-not-cache-result",
+    "backend:test:coverage:no-cache": "yarn backend:test:no-cache --coverage-html ./.coverage-report"
   },
   "pre-commit": {
     "run": []
