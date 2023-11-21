@@ -18,8 +18,10 @@
 
 namespace App\Repository\Mapper;
 
+use App\Domain\Entity\Auth;
 use App\Domain\Entity\Auth as AuthEntity;
 use App\Domain\Entity\Role as RoleEntity;
+use App\Domain\Entity\Timestamp;
 use App\Domain\Entity\Timestamp as TimestampEntity;
 use App\Domain\Entity\User as UserEntity;
 use App\Domain\Entity\UserInfo as UserInfoEntity;
@@ -27,17 +29,26 @@ use App\Repository\Models\User as UserModel;
 
 class User {
   /**
-   * @param \App\Repository\Models\User $user
+   * @param \App\Repository\Models\User $model
    *
    * @return \App\Domain\Entity\User
    * @throws \App\Exceptions\EntityValidationException
    */
-  public static function ModelToEntity(UserModel $user) : UserEntity {
-    $role = new RoleEntity;
-    $auth = new AuthEntity;
-    $userInfo = new UserInfoEntity($user->first_name, $user->last_name, $user->username, $user->email);
-    $timestamp = new TimestampEntity;
+  public static function ModelToEntity(UserModel $model) : UserEntity {
+    $role = [];
+    if(!empty($model->roles)) {
+      for($i = 0; $i < count($model->roles); $i++) {
+        $r = $model->roles[$i];
+        $role[] = new RoleEntity($r->id, $r->name, $r->level, $r->icon,
+          new Timestamp($r->created_at, $r->updated_at, $r->deleted_at));
+      }
+    }
 
-    return new UserEntity($user->id, $role, $auth, $userInfo, $timestamp);
+    return new UserEntity($model->id, $role,
+      new AuthEntity($model->password, $model->locked_at, $model->login_fail_attempt),
+      new UserInfoEntity($model->first_name, $model->last_name, $model->username, $model->email),
+      new TimestampEntity(
+        $model->created_at, $model->updated_at, $model->deleted_at
+      ));
   }
 }

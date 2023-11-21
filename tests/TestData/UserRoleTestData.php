@@ -16,29 +16,15 @@
 //
 */
 
-namespace App\Domain\Entity\Traits;
-
-use App\Domain\Entity\Role;
-
-/**
- * HasRole
- *
- * @author Fathalfath30
- * @version 1.0.0
- * @since 1.0.0
- *
- * @see \App\Domain\Entity\Role
- */
-trait HasRole {
-  const ROLE = 'role';
-
-  /** @var array|\App\Domain\Entity\Role[] $role */
-  private array $roles;
+namespace Tests\TestData;
+trait UserRoleTestData {
+  use RoleTestData;
 
   /**
-   * @return array|\App\Domain\Entity\Role[]
+   * @return array
+   * @throws \App\Exceptions\EntityValidationException
    */
-  public function getRole() : array {
-    return $this->role;
+  public function getValidSuperAdminRole() : array {
+    return [$this->getValidRoleEntity(true)];
   }
 }

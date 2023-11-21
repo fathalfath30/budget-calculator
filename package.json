@@ -8,11 +8,13 @@
   "type": "module",
   "engines": {
     "npm": "please-use-yarn",
-    "yarn": ">= 1.19.1"
+    "yarn": ">= 1.19.1",
+    "node": ">= 18"
   },
   "devDependencies": {
     "@commitlint/cli": "^12.1.1",
     "@commitlint/config-conventional": "^12.1.1",
+    "@mockoon/cli": "^5.1.0",
     "@popperjs/core": "^2.11.6",
     "@vitejs/plugin-react": "^2.2.0",
     "axios": "^1.1.2",

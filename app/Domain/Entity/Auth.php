@@ -21,7 +21,6 @@ namespace App\Domain\Entity;
 use App\Domain\Entity\Traits\Entity;
 use App\Domain\Entity\Traits\ToArray;
 use App\Exceptions\EntityValidationException;
-use function Symfony\Component\Translation\t;
 
 /**
  * Auth
@@ -57,10 +56,6 @@ class Auth extends Entity implements IEntity {
     $this->password = trim($password);
     if(empty($this->password)) {
       throw new EntityValidationException('validation.required', ['attribute' => self::PASSWORD]);
-    }
-
-    if(preg_match(VALIDATION_REGEX_PASSWORD, $this->password) !== 1) {
-      throw new EntityValidationException('validation.regex', ['attribute' => self::PASSWORD]);
     }
 
     $this->locked_at = trim($locked_at);
@@ -119,5 +114,15 @@ class Auth extends Entity implements IEntity {
    */
   public function getLoginFailAttempt() : int {
     return $this->login_fail_attempt;
+  }
+
+  /**
+   * @return void
+   * @throws \App\Exceptions\EntityValidationException
+   */
+  public function validatePasswordFormat() : void {
+    if(preg_match(VALIDATION_REGEX_PASSWORD, $this->password) !== 1) {
+      throw new EntityValidationException('validation.regex', ['attribute' => self::PASSWORD]);
+    }
   }
 }

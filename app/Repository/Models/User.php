@@ -28,6 +28,7 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
@@ -56,7 +57,16 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $last_name
  * @property string $username
  * @property string $email
- * @property string $role_id
+ * @property ?string $email_verified_at
+ * @property string $password
+ * @property ?string $remember_token
+ * @property ?string $locked_at
+ * @property int $login_fail_attempt
+ * @property string $created_at
+ * @property string $updated_at
+ * @property ?string $deleted_at
+ *
+ * @property \App\Repository\Models\Role[] $roles
  *
  */
 class User extends Model implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract {
@@ -110,5 +120,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
    */
   protected static function newFactory() : Factory {
     return UserFactory::new();
+  }
+
+  public function roles() : BelongsToMany {
+    return $this->belongsToMany(Role::class, UserRole::class, UserRole::USER_ID,
+      UserRole::ROLE_ID, Role::ID);
   }
 }
