@@ -10,7 +10,7 @@
     {
       "uuid": "383c40a4-20cd-4cc2-9c80-f0cdcc1626e3",
       "name": "Authentication",
-      "collapsed": true,
+      "collapsed": false,
       "children": [
         {
           "type": "route",

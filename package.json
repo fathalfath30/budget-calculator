@@ -1,51 +1,54 @@
 {
-  "name": "budget-calculator",
-  "version": "1.0.0",
-  "repository": "git@github.com:fathalfath30/budget-calculator.git",
-  "author": "fathalfath <fathalfath30@gmail.com>",
-  "license": "MIT",
-  "private": true,
-  "type": "module",
-  "engines": {
-    "npm": "please-use-yarn",
-    "yarn": ">= 1.19.1",
-    "node": ">= 18"
-  },
-  "devDependencies": {
-    "@commitlint/cli": "^12.1.1",
-    "@commitlint/config-conventional": "^12.1.1",
-    "@mockoon/cli": "^5.1.0",
-    "@popperjs/core": "^2.11.6",
-    "@vitejs/plugin-react": "^2.2.0",
-    "axios": "^1.1.2",
-    "bootstrap": "^5.2.3",
-    "commitizen": "^4.2.3",
-    "custom-cz-conventional-changelog-for-jira": "^0.0.0-semantically-released",
-    "cz-conventional-changelog": "^3.3.0",
-    "husky": "^6.0.0",
-    "laravel-vite-plugin": "^0.7.5",
-    "nodemon": "2.0.7",
-    "pre-commit": "^1.2.2",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "sass": "^1.56.1",
-    "vite": "^4.0.0"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/custom-cz-conventional-changelog-for-jira",
-      "jiraOptional": true
+    "name": "budget-calculator",
+    "version": "1.0.0",
+    "repository": "git@github.com:fathalfath30/budget-calculator.git",
+    "author": "fathalfath <fathalfath30@gmail.com>",
+    "license": "MIT",
+    "private": true,
+    "type": "module",
+    "engines": {
+        "npm": "please-use-yarn",
+        "yarn": ">= 1.19.1",
+        "node": ">= 18"
+    },
+    "devDependencies": {
+        "@commitlint/cli": "^12.1.1",
+        "@commitlint/config-conventional": "^12.1.1",
+        "@mockoon/cli": "^5.1.0",
+        "@popperjs/core": "^2.11.6",
+        "@vitejs/plugin-react": "^2.2.0",
+        "axios": "^1.1.2",
+        "bootstrap": "^5.2.3",
+        "commitizen": "^4.2.3",
+        "custom-cz-conventional-changelog-for-jira": "^0.0.0-semantically-released",
+        "cz-conventional-changelog": "^3.3.0",
+        "husky": "^6.0.0",
+        "laravel-vite-plugin": "^0.7.5",
+        "nodemon": "2.0.7",
+        "pre-commit": "^1.2.2",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "sass": "^1.69.5",
+        "vite": "^4.0.0"
+    },
+    "config": {
+        "commitizen": {
+            "path": "./node_modules/custom-cz-conventional-changelog-for-jira",
+            "jiraOptional": true
+        }
+    },
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "backend:test": "php -d zend_extension=xdebug -d xdebug.mode=coverage ./vendor/bin/phpunit --testdox --configuration ./phpunit.xml",
+        "backend:test:coverage": "yarn backend:test --coverage-html ./.coverage-report",
+        "backend:test:no-cache": "php -d zend_extension=xdebug -d xdebug.mode=coverage ./vendor/bin/phpunit --testdox --configuration ./phpunit.xml --do-not-cache-result",
+        "backend:test:coverage:no-cache": "yarn backend:test:no-cache --coverage-html ./.coverage-report"
+    },
+    "pre-commit": {
+        "run": []
+    },
+    "dependencies": {
+        "scss": "^0.2.4"
     }
-  },
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "backend:test": "php -d zend_extension=xdebug -d xdebug.mode=coverage ./vendor/bin/phpunit --testdox --configuration ./phpunit.xml",
-    "backend:test:coverage": "yarn backend:test --coverage-html ./.coverage-report",
-    "backend:test:no-cache": "php -d zend_extension=xdebug -d xdebug.mode=coverage ./vendor/bin/phpunit --testdox --configuration ./phpunit.xml --do-not-cache-result",
-    "backend:test:coverage:no-cache": "yarn backend:test:no-cache --coverage-html ./.coverage-report"
-  },
-  "pre-commit": {
-    "run": []
-  }
 }
