@@ -6,18 +6,196 @@
   "latency": 0,
   "port": 8000,
   "hostname": "",
-  "folders": [],
+  "folders": [
+    {
+      "uuid": "383c40a4-20cd-4cc2-9c80-f0cdcc1626e3",
+      "name": "Authentication",
+      "collapsed": true,
+      "children": [
+        {
+          "type": "route",
+          "uuid": "1118e664-5779-4a93-88fc-913ae16a99a6"
+        },
+        {
+          "type": "route",
+          "uuid": "1d91a0ad-3706-4316-8b07-ca4162017929"
+        },
+        {
+          "type": "route",
+          "uuid": "56ee6ba3-5ede-4f61-ae20-25990b24cc72"
+        },
+        {
+          "type": "route",
+          "uuid": "618530d5-7553-4aca-92f4-bf03a0843076"
+        },
+        {
+          "type": "route",
+          "uuid": "b06a929c-0521-46f9-8c26-d40964fbdc7f"
+        }
+      ]
+    }
+  ],
   "routes": [
     {
       "uuid": "1118e664-5779-4a93-88fc-913ae16a99a6",
       "type": "http",
       "documentation": "",
       "method": "get",
-      "endpoint": "",
+      "endpoint": "api/auth/refresh",
       "responses": [
         {
           "uuid": "941a0f1c-f67e-441e-8e07-0ade33daa62f",
+          "body": "",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Refresh Token",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "mvqr",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Authorization",
+              "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1MTYyMzkwMjIsImV4cCI6MjUxNjIzOTAyMiwiaXNzIjoiZmF0aGFsZmF0aDMwOjpidWRnZXQtbWFuYWdlbWVudCIsInN1YiI6ImJ1ZGdldC1tYW5hZ2VtZW50OjphdXRoIiwidXNlcl9pZCI6MSwiZW1haWwiOiJmYXRoYWxmYXRoMzBAZ21haWwuY29tIiwicm9sZV9pZCI6WyIzZGY1MzdkZC01YjRiLTRhYjUtYjUwYy1iZDUzMWZmZGQ2MzMiXX0.jcDMA8pJT51u6wzIn4jSstVfoDsaXTRwHd3h1hm3aV0",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id"
+        },
+        {
+          "uuid": "b0aeb913-71b0-47b8-b504-24bf24e37070",
           "body": "{}",
+          "latency": 0,
+          "statusCode": 401,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "g950",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id"
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    },
+    {
+      "uuid": "1d91a0ad-3706-4316-8b07-ca4162017929",
+      "type": "http",
+      "documentation": "",
+      "method": "post",
+      "endpoint": "api/auth/login",
+      "responses": [
+        {
+          "uuid": "bc243b73-137b-4d8c-82ab-26e1dd95880c",
+          "body": "",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "success login (admin)",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "mvqr",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "username",
+              "value": "admin",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "password",
+              "value": "admin",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id"
+        },
+        {
+          "uuid": "1d68b9a1-0bcd-4176-b76b-1c8874f4f85f",
+          "body": "{\n  \"status\": {\n    \"success\": false,\n    \"code\": \"001401\",\n    \"transaction_id\": \"{{ header 'X-Transaction-Id' }}\",\n    \"transaction_date\": \"{{ header 'X-Transaction-Date' }}\"\n  },\n  \"data\": {\n    \"error_message\": [\n      \"username or password are empty\"\n    ]\n  }\n}",
+          "latency": 0,
+          "statusCode": 400,
+          "label": "If required parameter are empty",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "username",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "password",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id"
+        },
+        {
+          "uuid": "f30085cb-7212-467f-ab72-559d4063339a",
+          "body": "{\n  \"status\": {\n    \"success\": false,\n    \"code\": \"001400\",\n    \"transaction_id\": \"{{ header 'X-Transaction-Id' }}\",\n    \"transaction_date\": \"{{ header 'X-Transaction-Date' }}\"\n  },\n  \"data\": {\n    \"error_message\":[\n      \"username or password are incorrect\"\n    ]\n  }\n}",
+          "latency": 0,
+          "statusCode": 401,
+          "label": "invalid username or password",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id"
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    },
+    {
+      "uuid": "56ee6ba3-5ede-4f61-ae20-25990b24cc72",
+      "type": "http",
+      "documentation": "",
+      "method": "post",
+      "endpoint": "api/auth/password/forgot",
+      "responses": [
+        {
+          "uuid": "484ec23e-9d3b-481c-b2f0-f50716dba10b",
+          "body": "{\n  \"status\": {\n    \"success\": true,\n    \"code\": \"000200\",\n    \"transaction_id\": \"{{ header 'X-Transaction-Id' }}\",\n    \"transaction_date\": \"{{ header 'X-Transaction-Date' }}\"\n  },\n  \"data\": {\n    \"message\": \"if your email is registered, we've sent reset password link, please check your spam folder.\"\n  }\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "",
@@ -36,12 +214,111 @@
       ],
       "enabled": true,
       "responseMode": null
+    },
+    {
+      "uuid": "618530d5-7553-4aca-92f4-bf03a0843076",
+      "type": "http",
+      "documentation": "",
+      "method": "post",
+      "endpoint": "api/auth/password/reset",
+      "responses": [
+        {
+          "uuid": "3ba012f2-155b-4521-b673-44574c1e83e5",
+          "body": "{\n  \"status\": {\n    \"success\": true,\n    \"code\": \"000200\",\n    \"transaction_id\": \"{{ header 'X-Transaction-Id' }}\",\n    \"transaction_date\": \"{{ header 'X-Transaction-Date' }}\"\n  },\n  \"data\": {\n    \"message\": \"Success, your password has been updated, please login with your new password.\"\n  }\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id"
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    },
+    {
+      "uuid": "b06a929c-0521-46f9-8c26-d40964fbdc7f",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "api/auth/menu/sidebar",
+      "responses": [
+        {
+          "uuid": "dca8d5ec-09d4-42eb-ba23-e473296a1b7b",
+          "body": "{\n  \"status\": {\n    \"success\": true,\n    \"code\": \"000200\",\n    \"transaction_id\": \"{{ header 'X-Transaction-Id' }}\",\n    \"transaction_date\": \"{{ header 'X-Transaction-Date' }}\"\n  },\n  \"data\": [\n    {\n      \"id\": \"a1dcb341-69fa-4622-aee7-1c4e0b1b00bd\",\n      \"name\": \"Main Menu\",\n      \"icon\": \"fa fa-dashboard\",\n      \"url\": null,\n      \"index\": 1,\n      \"submenu\": [\n        {\n          \"id\": \"5c6c7a03-7898-4f06-b629-faac5175c831\",\n          \"name\": \"Dashboard\",\n          \"icon\": \"fa fa-dashboard\",\n          \"url\": \"/dashboard\",\n          \"index\": 1,\n          \"submenu\": []\n        },\n        {\n          \"id\": \"5c6c7a03-7898-4f06-b629-faac5175c831\",\n          \"name\": \"Logout\",\n          \"icon\": \"fa fa-dashboard\",\n          \"url\": \"/logout\",\n          \"index\": 2,\n          \"submenu\": []\n        }\n      ]\n    },\n    {\n      \"id\": \"f9c5d10d-3c2a-4f31-b730-4a92384a4b05\",\n      \"name\": \"Admin Menu\",\n      \"icon\": \"fa fa-admin\",\n      \"url\": null,\n      \"index\": 2,\n      \"submenu\": [\n        {\n          \"id\": \"3d289cc2-3ad5-4b8a-99f4-3aa22f613502\",\n          \"name\": \"User Management\",\n          \"icon\": \"fa fa-users\",\n          \"url\": null,\n          \"index\": 1,\n          \"submenu\": [\n            {\n              \"id\": \"263d97ac-1cde-4812-9089-eed4ac5000d8\",\n              \"name\": \"Roles\",\n              \"icon\": \"fa fa-users\",\n              \"url\": \"/admin/roles\",\n              \"index\": 1,\n              \"submenu\": []\n            },\n            {\n              \"id\": \"1da0f522-a9dd-4b24-bec1-99e90b9203fb\",\n              \"name\": \"User\",\n              \"icon\": \"fa fa-users\",\n              \"url\": \"/admin/users\",\n              \"index\": 2,\n              \"submenu\": []\n            }\n          ]\n        }\n      ]\n    },\n    {\n      \"id\": \"1aa1c3bf-7aa6-4f39-b0c6-622104a6253f\",\n      \"name\": \"Office Management\",\n      \"icon\": \"fa fa-content\",\n      \"url\": null,\n      \"index\": 3,\n      \"submenu\": [\n        {\n          \"id\": \"99112c21-707e-406f-92b6-028c5a30cfd2\",\n          \"name\": \"Office\",\n          \"icon\": \"fa fa-dashboard\",\n          \"url\": \"/office/dashboard\",\n          \"index\": 1,\n          \"submenu\": []\n        },\n        {\n          \"id\": \"aa5a1400-e8e7-4ce3-8a06-ea0cbf56bcac\",\n          \"name\": \"Employee\",\n          \"icon\": \"fa fa-dashboard\",\n          \"url\": \"/office/employee\",\n          \"index\": 2,\n          \"submenu\": []\n        }\n      ]\n    }\n  ]\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Authorization",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "header",
+              "modifier": "Authorization",
+              "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1MTYyMzkwMjIsImV4cCI6MjUxNjIzOTAyMiwiaXNzIjoiZmF0aGFsZmF0aDMwOjpidWRnZXQtbWFuYWdlbWVudCIsInN1YiI6ImJ1ZGdldC1tYW5hZ2VtZW50OjphdXRoIiwidXNlcl9pZCI6MSwiZW1haWwiOiJmYXRoYWxmYXRoMzBAZ21haWwuY29tIiwicm9sZV9pZCI6WyIzZGY1MzdkZC01YjRiLTRhYjUtYjUwYy1iZDUzMWZmZGQ2MzMiXX0.jcDMA8pJT51u6wzIn4jSstVfoDsaXTRwHd3h1hm3aV0",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id"
+        },
+        {
+          "uuid": "82f07e74-5e83-4ece-afb5-e9cd03b7e3be",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 401,
+          "label": "Invalid or empty JWT token",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "g950",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Authorization",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id"
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
     }
   ],
   "rootChildren": [
     {
-      "type": "route",
-      "uuid": "1118e664-5779-4a93-88fc-913ae16a99a6"
+      "type": "folder",
+      "uuid": "383c40a4-20cd-4cc2-9c80-f0cdcc1626e3"
     }
   ],
   "proxyMode": false,
@@ -61,6 +338,26 @@
     {
       "key": "Content-Type",
       "value": "application/json"
+    },
+    {
+      "key": "Access-Control-Allow-Origin",
+      "value": "*"
+    },
+    {
+      "key": "Access-Control-Allow-Methods",
+      "value": "GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS"
+    },
+    {
+      "key": "Access-Control-Allow-Headers",
+      "value": "Content-Type, Origin, Accept, Authorization, Content-Length, X-Requested-With"
+    },
+    {
+      "key": "X-Transaction-Id",
+      "value": "{{ header 'X-Transaction-Id' }}"
+    },
+    {
+      "key": "X-Transaction-Date",
+      "value": "{{ header 'X-Transaction-Date' }}"
     }
   ],
   "proxyReqHeaders": [
@@ -75,5 +372,27 @@
       "value": ""
     }
   ],
-  "data": []
+  "data": [
+    {
+      "uuid": "ee7f05a9-a05c-4424-8cf2-1d344f58c06e",
+      "id": "mvqr",
+      "name": "JWT Token",
+      "documentation": "",
+      "value": "{\n  \"status\": {\n    \"success\": true,\n    \"code\": \"000200\",\n    \"transaction_id\": \"{{ header 'X-Transaction-Id' }}\",\n    \"transaction_date\": \"{{ header 'X-Transaction-Date' }}\"\n  },\n  \"data\": {\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1MTYyMzkwMjIsImV4cCI6MjUxNjIzOTAyMiwiaXNzIjoiZmF0aGFsZmF0aDMwOjpidWRnZXQtbWFuYWdlbWVudCIsInN1YiI6ImJ1ZGdldC1tYW5hZ2VtZW50OjphdXRoIiwidXNlcl9pZCI6MSwiZW1haWwiOiJmYXRoYWxmYXRoMzBAZ21haWwuY29tIiwicm9sZV9pZCI6WyIzZGY1MzdkZC01YjRiLTRhYjUtYjUwYy1iZDUzMWZmZGQ2MzMiXX0.jcDMA8pJT51u6wzIn4jSstVfoDsaXTRwHd3h1hm3aV0\"\n  }\n}"
+    },
+    {
+      "uuid": "02d03142-b001-49a1-b63e-5973817251d8",
+      "id": "g950",
+      "name": "Invalid JWT Token",
+      "documentation": "",
+      "value": "{\n  \"status\": {\n    \"success\": false,\n    \"code\": \"001401\",\n    \"transaction_id\": \"{{ header 'X-Transaction-Id' }}\",\n    \"transaction_date\": \"{{ header 'X-Transaction-Date' }}\"\n  },\n  \"data\": {\n    \"error_message\": [\n      \"unauthorized access\"\n    ]\n  }\n}"
+    },
+    {
+      "uuid": "425998ef-1b56-4b26-8e80-6fd7d5b67f46",
+      "id": "mgeh",
+      "name": "Success without data",
+      "documentation": "",
+      "value": "{\n  \"status\": {\n    \"success\": true,\n    \"code\": \"000200\",\n    \"transaction_id\": \"{{ header 'X-Transaction-Id' }}\",\n    \"transaction_date\": \"{{ header 'X-Transaction-Date' }}\"\n  },\n  \"data\": {}\n}"
+    }
+  ]
 }
