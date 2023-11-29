@@ -32,13 +32,13 @@ use App\Domain\Entity\Role;
 trait HasRole {
   const ROLE = 'role';
 
-  /** @var \App\Domain\Entity\Role $role */
-  private Role $role;
+  /** @var array|\App\Domain\Entity\Role[] $role */
+  private array $roles;
 
   /**
-   * @return \App\Domain\Entity\Role
+   * @return array|\App\Domain\Entity\Role[]
    */
-  public function getRole() : Role {
+  public function getRole() : array {
     return $this->role;
   }
 }

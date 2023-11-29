@@ -58,17 +58,27 @@ trait RoleTestData {
   }
 
   /**
+   * Return valid role icon
+   *
+   * @param bool $nullable
+   *
+   * @return null|string
+   */
+  public function getValidRoleIcon(bool $nullable = false) : ?string {
+    return ($nullable) ? null : "icon.jpg";
+  }
+
+  /**
    * Return valid sample role entity
    *
    * @param bool $admin
    *
    * @return \App\Domain\Entity\Role
-   * @throws \App\Exceptions\EntityException
    * @throws \App\Exceptions\EntityValidationException
-   * @throws \Illuminate\Validation\ValidationException
    */
   public function getValidRoleEntity(bool $admin = false) : Role {
     return (new Role($this->getValidRoleId($admin), $this->getValidRoleName($admin),
-      ($admin ? Role::USER_LEVEL_SUPER_ADMIN : Role::USER_LEVEL_GUEST), $this->getValidTimestampEntity()));
+      ($admin ? Role::USER_LEVEL_SUPER_ADMIN : Role::USER_LEVEL_GUEST), $this->getValidRoleIcon(),
+      $this->getValidTimestampEntity()));
   }
 }

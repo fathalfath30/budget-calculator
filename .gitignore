@@ -33,3 +33,6 @@ yarn-error.log
 
 ### reporting file
 .coverage-report
+
+### react template
+!resources/vendor

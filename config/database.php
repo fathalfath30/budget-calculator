@@ -14,7 +14,6 @@ return [
   | you may use many connections at once using the Database library.
   |
   */
-
   'default' => env('DB_CONNECTION', 'mysql'),
 
   /*
@@ -32,9 +31,7 @@ return [
   | choice installed on your machine before you begin development.
   |
   */
-
   'connections' => [
-
     'sqlite' => [
       'driver' => 'sqlite',
       'url' => env('DATABASE_URL'),
@@ -52,6 +49,26 @@ return [
       'username' => env('DB_USERNAME', 'forge'),
       'password' => env('DB_PASSWORD', ''),
       'unix_socket' => env('DB_SOCKET', ''),
+      'charset' => 'utf8mb4',
+      'collation' => 'utf8mb4_unicode_ci',
+      'prefix' => '',
+      'prefix_indexes' => true,
+      'strict' => true,
+      'engine' => null,
+      'options' => extension_loaded('pdo_mysql') ? array_filter([
+        PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+      ]) : [],
+    ],
+
+    'mysql_test' => [
+      'driver' => 'mysql',
+      'url' => env('DATABASE_URL'),
+      'host' => env('DB_TEST_HOST'),
+      'port' => env('DB_TEST_PORT'),
+      'database' => env('DB_TEST_DATABASE'),
+      'username' => env('DB_TEST_USERNAME'),
+      'password' => env('DB_TEST_PASSWORD'),
+      'unix_socket' => env('DB_TEST_SOCKET'),
       'charset' => 'utf8mb4',
       'collation' => 'utf8mb4_unicode_ci',
       'prefix' => '',

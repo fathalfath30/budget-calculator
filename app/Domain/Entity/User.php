@@ -43,14 +43,14 @@ class User extends Entity implements IEntity {
 
   /**
    * @param string $id
-   * @param \App\Domain\Entity\Role $role
+   * @param array|\App\Domain\Entity\Role[] $role
    * @param \App\Domain\Entity\Auth $auth
    * @param \App\Domain\Entity\UserInfo $userInfo
    * @param null|\App\Domain\Entity\Timestamp $timestamp
    *
    * @throws \App\Exceptions\EntityValidationException
    */
-  public function __construct(string $id, Role $role, Auth $auth, UserInfo $userInfo, ?Timestamp $timestamp) {
+  public function __construct(string $id, array $role, Auth $auth, UserInfo $userInfo, ?Timestamp $timestamp) {
     $this->id = trim($id);
     if(empty($this->id)) {
       throw new EntityValidationException('validation.required', ['attribute' => 'id']);

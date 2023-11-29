@@ -29,6 +29,7 @@ use Tests\TestData\AuthTestData;
 use Tests\TestData\RoleTestData;
 use Tests\TestData\TimestampTestData;
 use Tests\TestData\UserInfoTestData;
+use Tests\TestData\UserRoleTestData;
 use Tests\TestData\UserTestData;
 
 /**
@@ -44,53 +45,47 @@ use Tests\TestData\UserTestData;
  * @see \App\Domain\Entity\Timestamp
  */
 class UserTest extends TestCase {
-  use UserTestData, RoleTestData, AuthTestData, UserInfoTestData, TimestampTestData;
+  use UserTestData, UserRoleTestData, AuthTestData, UserInfoTestData, TimestampTestData;
 
   /**
    * @return void
-   * @throws \App\Exceptions\EntityException
    * @throws \App\Exceptions\EntityValidationException
-   * @throws \Illuminate\Validation\ValidationException
    */
-  public function idIsRequired() : void {
+  public function testIdIsRequired() : void {
     $this->expectException(EntityValidationException::class);
     $this->expectExceptionMessage(trans("validation.required", ['attribute' => 'id']));
     $this->expectExceptionCode(400);
 
-    new User('', $this->getValidRoleEntity(), $this->getValidAuthEntity(), $this->getValidUserInfoEntity(),
+    new User('', $this->getValidSuperAdminRole(), $this->getValidAuthEntity(), $this->getValidUserInfoEntity(),
       $this->getValidTimestampEntity());
   }
 
   /**
    * @return void
-   * @throws \App\Exceptions\EntityException
-   * @throws \Illuminate\Validation\ValidationException
-   *
-   * @test
+   * @throws \App\Exceptions\EntityValidationException
    */
-  public function idIsRequiredAndAlsoValidateWhitespace() {
+  public function testIdIsRequiredAndAlsoValidateWhitespace() {
     $this->expectException(EntityValidationException::class);
     $this->expectExceptionMessage(trans("validation.required", ['attribute' => 'id']));
 
-    new User(' ', $this->getValidRoleEntity(), $this->getValidAuthEntity(), $this->getValidUserInfoEntity(),
+    new User(' ', $this->getValidSuperAdminRole(), $this->getValidAuthEntity(), $this->getValidUserInfoEntity(),
       $this->getValidTimestampEntity());
   }
 
   /**
    * @return void
-   * @throws \App\Exceptions\EntityException
    * @throws \App\Exceptions\EntityValidationException
-   * @throws \Illuminate\Validation\ValidationException
-   *
-   * @test
    */
-  public function itShouldHaveMainGetterForTheProps() {
-    $user = new User($this->getValidUserId(), $this->getValidRoleEntity(), $this->getValidAuthEntity(), $this->getValidUserInfoEntity(),
+  public function testItShouldHaveMainGetterForTheProps() {
+    $user = new User($this->getValidUserId(), $this->getValidSuperAdminRole(), $this->getValidAuthEntity(), $this->getValidUserInfoEntity(),
       $this->getValidTimestampEntity());
 
     $this->assertEquals($this->getValidUserId(), $user->getId());
-    $this->assertEquals($this->getValidRoleEntity(), $user->getRole());
-    $this->assertInstanceOf(Role::class, $user->getRole());
+    $this->assertEquals($this->getValidSuperAdminRole(), $user->getRole());
+    $this->assertIsArray($user->getRole());
+    for($i = 0; $i < count($user->getRole()); $i++) {
+      $this->assertInstanceOf(Role::class, $user->getRole()[$i]);
+    }
 
     $this->assertEquals($this->getValidAuthEntity(), $user->getAuth());
     $this->assertInstanceOf(Auth::class, $user->getAuth());

@@ -18,15 +18,16 @@ return new class extends F30_Migration {
    */
   public function up() : void {
     Schema::create($this->getTable(), function(Blueprint $table) {
-      $table->uuid('id')
-        ->primary();
-      $table->string('name');
-      $table->string('email')
-        ->unique();
-      $table->timestamp('email_verified_at')
-        ->nullable();
+      $table->uuid('id')->primary();
+      $table->string('first_name');
+      $table->string('last_name')->nullable();
+      $table->string('username', 28)->unique();
+      $table->string('email')->unique();
+      $table->timestamp('email_verified_at')->nullable();
       $table->string('password');
       $table->rememberToken();
+      $table->timestamp('locked_at')->nullable();
+      $table->tinyInteger('login_fail_attempt', false, true)->default(0);
 
       // add timestamp to users table
       $this->addTimestamp($table, true);
