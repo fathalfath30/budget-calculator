@@ -58,10 +58,6 @@ class Auth extends Entity implements IEntity {
       throw new EntityValidationException('validation.required', ['attribute' => self::PASSWORD]);
     }
 
-    if(preg_match(VALIDATION_REGEX_PASSWORD, $this->password) !== 1) {
-      throw new EntityValidationException('validation.regex', ['attribute' => self::PASSWORD]);
-    }
-
     $this->locked_at = trim($locked_at);
     if(empty($this->locked_at)) {
       $this->locked_at = null;
@@ -109,6 +105,16 @@ class Auth extends Entity implements IEntity {
    */
   public function getLockedAt() : ?string {
     return $this->locked_at;
+  }
+
+  /**
+   * Return true if $locked_at is not empty
+   *
+   * @return bool
+   * @see \App\Domain\Entity\Auth::getLockedAt()
+   */
+  public function isLocked() : bool {
+    return !empty(trim($this->locked_at));
   }
 
   /**
