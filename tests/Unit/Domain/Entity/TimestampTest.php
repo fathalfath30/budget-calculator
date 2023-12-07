@@ -16,10 +16,9 @@
 //
 */
 
-namespace Domain\Entity;
+namespace Tests\Unit\Domain\Entity;
 
 use App\Domain\Entity\Timestamp;
-use App\Exceptions\EntityException;
 use App\Exceptions\EntityValidationException;
 use Exception;
 use Tests\TestCase;

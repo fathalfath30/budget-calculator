@@ -16,11 +16,10 @@
 //
 */
 
-namespace Repository\Mapper;
+namespace Tests\Unit\Repository\Mapper;
 
 use App\Domain\Entity\Role as RoleEntity;
 use App\Repository\Mapper\Role as RoleMapper;
-use App\Repository\Models\Role;
 use App\Repository\Models\Role as RoleModel;
 use Tests\TestCase;
 

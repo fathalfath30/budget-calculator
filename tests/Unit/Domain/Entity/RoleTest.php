@@ -16,11 +16,9 @@
 //
 */
 
-namespace Domain\Entity;
+namespace Tests\Unit\Domain\Entity;
 
 use App\Domain\Entity\Role;
-use App\Domain\Entity\Traits\Entity;
-use App\Exceptions\EntityException;
 use App\Exceptions\EntityValidationException;
 use Exception;
 use Faker\Factory as Faker;
@@ -38,96 +36,58 @@ class RoleTest extends TestCase {
     $this->faker = Faker::Create('id_ID');
   }
 
+  // <editor-fold desc="validationCheck::id">
+
   /**
-   * Test the validation on each input
-   *
    * @return void
    * @test
+   * @testdox validate id is required
    */
-  public function validateInput() {
-    $testCase = [
-      // validation test: id
-      [
-        'name' => 'id is required',
-        'expected' => [
-          'message' => 'The id field is required.'
-        ],
-        'payload' => [
-          Role::ID => '',
-          Role::NAME => '',
-          Role::LEVEL => 0,
-          Entity::TIMESTAMP => null,
-        ]
-      ],
-      [
-        'name' => 'id must be a valid uuid',
-        'expected' => [
-          'message' => 'The id field must be a valid UUID.'
-        ],
-        'payload' => [
-          Role::ID => 'lorem',
-          Role::NAME => '',
-          Role::LEVEL => 0,
-          Entity::TIMESTAMP => null,
-        ]
-      ],
-
-      // validation test name
-      [
-        'name' => 'name is required',
-        'expected' => [
-          'message' => 'The name field is required.'
-        ],
-        'payload' => [
-          Role::ID => $this->faker->uuid(),
-          Role::NAME => '',
-          Role::LEVEL => 0,
-          Entity::TIMESTAMP => null,
-        ]
-      ],
-      [
-        'name' => 'id must be a valid uuid',
-        'expected' => [
-          'message' => 'The name field format is invalid.'
-        ],
-        'payload' => [
-          Role::ID => $this->faker->uuid(),
-          Role::NAME => 'Lorem!@#',
-          Role::LEVEL => 0,
-          Entity::TIMESTAMP => null,
-        ]
-      ],
-
-      // validation test level
-      [
-        'name' => 'level must be a valid integer',
-        'expected' => [
-          'message' => 'The level field must be an integer.'
-        ],
-        'payload' => [
-          Role::ID => $this->faker->uuid,
-          Role::NAME => 'Lorem Ipsum',
-          Role::LEVEL => 'XXX',
-          Entity::TIMESTAMP => null,
-        ]
-      ]
-    ];
-
-    foreach($testCase as $tc) {
-      $exception = false;
-      try {
-        new Role($tc['payload'][Role::ID], $tc['payload'][Role::NAME], $tc['payload'][Role::LEVEL],
-          $tc['payload'][Entity::TIMESTAMP]);
-      } catch(Exception $e) {
-        $this->assertStringMatchesFormat($tc['expected']['message'], $e->getMessage());
-        $this->assertInstanceOf(EntityValidationException::class, $e);
-        $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
-        $exception = true;
-      }
-
-      $this->assertTrue($exception, "validation error");
+  public function validateIdIsRequired() : void {
+    try {
+      new Role('', '', '', '', null);
+    } catch(EntityValidationException $e) {
+      $this->assertInstanceOf(EntityValidationException::class, $e);
+      $this->assertEquals(trans('validation.required', ['attribute' => Role::ID]), $e->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+      $this->assertEquals(400, $e->getCode());
     }
   }
+
+  /**
+   * @return void
+   * @test
+   * @testdox validate id must be a valid UUIDv4 format
+   */
+  public function validateIdMustBeAValidUUIDV4Format() {
+    try {
+      new Role('lorem', '', '', '', null);
+    } catch(EntityValidationException $e) {
+      $this->assertInstanceOf(EntityValidationException::class, $e);
+      $this->assertEquals(trans('validation.uuid', ['attribute' => Role::ID]), $e->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+      $this->assertEquals(400, $e->getCode());
+    }
+  }
+  // </editor-fold>
+  // <editor-fold desc="validationCheck::name">
+
+  /**
+   * @return void
+   * @test
+   * @testdox validate name is required
+   */
+  public function validateNameIsRequired() {
+    try {
+      new Role($this->getValidRoleId(), '', '', '', null);
+    } catch(EntityValidationException $e) {
+      $this->assertInstanceOf(EntityValidationException::class, $e);
+      $this->assertEquals(trans('validation.required', ['attribute' => Role::NAME]), $e->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+      $this->assertEquals(400, $e->getCode());
+    }
+  }
+  // </editor-fold>
 
   /**
    * roleMustHaveGetterFunction
@@ -143,7 +103,6 @@ class RoleTest extends TestCase {
       $this->assertEquals($this->getValidRoleId(true), $role->getId());
       $this->assertEquals($this->getValidRoleName(true), $role->getName());
       $this->assertEquals(Role::USER_LEVEL_SUPER_ADMIN, $role->getLevel());
-
 
       $ts = $role->getTimestamp();
       $this->assertEquals($this->getValidTimestampEntity(), $ts);

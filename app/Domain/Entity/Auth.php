@@ -108,6 +108,16 @@ class Auth extends Entity implements IEntity {
   }
 
   /**
+   * Return true if $locked_at is not empty
+   *
+   * @return bool
+   * @see \App\Domain\Entity\Auth::getLockedAt()
+   */
+  public function isLocked() : bool {
+    return !empty(trim($this->locked_at));
+  }
+
+  /**
    * Return total fail attempt count
    *
    * @return int

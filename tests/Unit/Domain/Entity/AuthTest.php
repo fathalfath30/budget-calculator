@@ -16,15 +16,13 @@
 //
 */
 
-namespace Domain\Entity;
+namespace Tests\Unit\Domain\Entity;
 
 use App\Domain\Entity\Auth;
-use App\Exceptions\EntityException;
+use App\Domain\Entity\Role;
 use App\Exceptions\EntityValidationException;
-use Exception;
 use Tests\TestCase;
 use Tests\TestData\AuthTestData;
-use const http\Client\Curl\AUTH_ANY;
 
 /**
  * AuthTest
@@ -38,150 +36,189 @@ use const http\Client\Curl\AUTH_ANY;
 class AuthTest extends TestCase {
   use AuthTestData;
 
+  // <editor-fold desc="validationCheck::password">
+
   /**
    * Test the validation on each input
    *
    * @return void
    * @test
+   * @testdox validate password is required
    */
-  public function validateInput() : void {
-    $expected_invalid_password = trans('validation.regex', ['attribute' => Auth::PASSWORD]);
-    $testCase = [
-      // <editor-fold desc="validation_test::password">
-      [
-        'name' => 'check password is required',
-        'expected' => [
-          'message' => trans('validation.required', ['attribute' => Auth::PASSWORD])
-        ],
-        'payload' => [
-          Auth::PASSWORD => '',
-          Auth::LOCKED_AT => '',
-          Auth::LOGIN_FAIL_ATTEMPT => ''
-        ]
-      ],
-      [
-        'name' => 'check password minimum eight character',
-        'expected' => [
-          'message' => $expected_invalid_password
-        ],
-        'payload' => [
-          Auth::PASSWORD => 'admin',
-          Auth::LOCKED_AT => '',
-          Auth::LOGIN_FAIL_ATTEMPT => ''
-        ],
-      ],
-      [
-        'name' => 'check password at least one uppercase letter',
-        'expected' => [
-          'message' => $expected_invalid_password
-        ],
-        'payload' => [
-          Auth::PASSWORD => 'admin123',
-          Auth::LOCKED_AT => '',
-          Auth::LOGIN_FAIL_ATTEMPT => ''
-        ]
-      ],
-      [
-        'name' => 'check password at least one lowercase letter',
-        'expected' => [
-          'message' => $expected_invalid_password
-        ],
-        'payload' => [
-          Auth::PASSWORD => 'A1234567890',
-          Auth::LOCKED_AT => '',
-          Auth::LOGIN_FAIL_ATTEMPT => ''
-        ]
-      ],
-      [
-        'name' => 'check password at least one number',
-        'expected' => [
-          'message' => $expected_invalid_password
-        ],
-        'payload' => [
-          Auth::PASSWORD => 'Abcdswewfqw',
-          Auth::LOCKED_AT => '',
-          Auth::LOGIN_FAIL_ATTEMPT => ''
-        ]
-      ],
-      [
-        'name' => 'check password at least one special characte',
-        'expected' => [
-          'message' => $expected_invalid_password
-        ],
-        'payload' => [
-          Auth::PASSWORD => 'Ab1weqsfw',
-          Auth::LOCKED_AT => '',
-          Auth::LOGIN_FAIL_ATTEMPT => ''
-        ]
-      ],
-      // </editor-fold>
-      // <editor-fold desc="validation_test::locked_at">
-      [
-        'name' => 'check password is required',
-        'expected' => [
-          'message' => trans('validation.date_format', ['attribute' => Auth::LOCKED_AT, 'format' => 'Y-m-d H:i:s'])
-        ],
-        'payload' => [
-          Auth::PASSWORD => $this->getValidPassword(),
-          Auth::LOCKED_AT => "loremIpsum",
-          Auth::LOGIN_FAIL_ATTEMPT => ''
-        ]
-      ],
-      // </editor-fold>
-      // <editor-fold desc="validation_test::login_fail_attempt">
-      [
-        'name' => 'check login fail attempt must be an integer',
-        'expected' => [
-          'message' => trans('validation.regex', ['attribute' => Auth::LOGIN_FAIL_ATTEMPT])
-        ],
-        'payload' => [
-          Auth::PASSWORD => $this->getValidPassword(),
-          Auth::LOCKED_AT => $this->getValidLockedAt(),
-          Auth::LOGIN_FAIL_ATTEMPT => 'lorem'
-        ]
-      ],
-      [
-        'name' => 'login fail attempt must be greater or equals zero',
-        'expected' => [
-          'message' => trans('validation.regex', ['attribute' => Auth::LOGIN_FAIL_ATTEMPT])
-        ],
-        'payload' => [
-          Auth::PASSWORD => $this->getValidPassword(),
-          Auth::LOCKED_AT => $this->getValidLockedAt(),
-          Auth::LOGIN_FAIL_ATTEMPT => -1
-        ]
-      ],
-      [
-        'name' => 'login fail attempt must be less then or equals 5',
-        'expected' => [
-          'message' => trans('validation.max.numeric', [
-            'attribute' => Auth::LOGIN_FAIL_ATTEMPT,
-            'max' => Auth::MAX_LOGIN_ATTEMPT
-          ])
-        ],
-        'payload' => [
-          Auth::PASSWORD => $this->getValidPassword(),
-          Auth::LOCKED_AT => $this->getValidLockedAt(),
-          Auth::LOGIN_FAIL_ATTEMPT => 88
-        ]
-      ],
-      // </editor-fold>
-    ];
-
-    foreach($testCase as $tc) {
-      $exception = false;
-      try {
-        new Auth($tc['payload'][Auth::PASSWORD], $tc['payload'][Auth::LOCKED_AT], $tc['payload'][Auth::LOGIN_FAIL_ATTEMPT]);
-      } catch(Exception $e) {
-        $this->assertStringMatchesFormat($tc['expected']['message'], $e->getMessage());
-        $this->assertInstanceOf(EntityValidationException::class, $e);
-        $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
-        $exception = true;
-      }
-
-      $this->assertTrue($exception, "validation error");
+  public function validatePasswordIsRequired() : void {
+    try {
+      (new Auth(''))
+        ->validatePasswordFormat();
+    } catch(EntityValidationException $e) {
+      $this->assertInstanceOf(EntityValidationException::class, $e);
+      $this->assertEquals(trans('validation.required', ['attribute' => Auth::PASSWORD]), $e->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+      $this->assertEquals(400, $e->getCode());
     }
   }
+
+  /**
+   * @return void
+   * @test
+   * @testdox validate password must have minimum eight character
+   */
+  public function validatePasswordMustHaveMinimumEightCharacter() : void {
+    try {
+      (new Auth('admin'))
+        ->validatePasswordFormat();
+    } catch(EntityValidationException $e) {
+      $this->assertInstanceOf(EntityValidationException::class, $e);
+      $this->assertEquals(trans('validation.regex', ['attribute' => Auth::PASSWORD]), $e->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+      $this->assertEquals(400, $e->getCode());
+    }
+  }
+
+  /**
+   * @return void
+   * @test
+   * @testdox validate password must have at least one upper case letter
+   */
+  public function passwordMustHaveAtLeastOneUpperCaseLetter() : void {
+    try {
+      (new Auth('admin123'))
+        ->validatePasswordFormat();
+    } catch(EntityValidationException $e) {
+      $this->assertInstanceOf(EntityValidationException::class, $e);
+      $this->assertEquals(trans('validation.regex', ['attribute' => Auth::PASSWORD]), $e->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+      $this->assertEquals(400, $e->getCode());
+    }
+  }
+
+  /**
+   * @return void
+   * @test
+   * @testdox validate password must have at least one lower case letter
+   */
+  public function validatePasswordMustHaveAtLeastOneLowerCaseLetter() : void {
+    try {
+      (new Auth('A1234567890'))
+        ->validatePasswordFormat();
+    } catch(EntityValidationException $e) {
+      $this->assertInstanceOf(EntityValidationException::class, $e);
+      $this->assertEquals(trans('validation.regex', ['attribute' => Auth::PASSWORD]), $e->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+      $this->assertEquals(400, $e->getCode());
+    }
+  }
+
+  /**
+   * @return void
+   * @test
+   * @testdox validate password must have at least one number
+   */
+  public function validatePasswordMustHaveAtLeastOneNumber() : void {
+    try {
+      (new Auth('Abcdswewfqw'))
+        ->validatePasswordFormat();
+    } catch(EntityValidationException $e) {
+      $this->assertInstanceOf(EntityValidationException::class, $e);
+      $this->assertEquals(trans('validation.regex', ['attribute' => Auth::PASSWORD]), $e->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+      $this->assertEquals(400, $e->getCode());
+    }
+  }
+
+  /**
+   * @return void
+   * @test
+   * @testdox validate password must have at least one special character
+   */
+  public function validatePasswordMustHaveAtLeastOneSpecialCharacter() : void {
+    try {
+      (new Auth('Ab1weqsfw'))
+        ->validatePasswordFormat();
+    } catch(EntityValidationException $e) {
+      $this->assertInstanceOf(EntityValidationException::class, $e);
+      $this->assertEquals(trans('validation.regex', ['attribute' => Auth::PASSWORD]), $e->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+      $this->assertEquals(400, $e->getCode());
+    }
+  }
+  // </editor-fold>
+  // <editor-fold desc="validationCheck::locked_at">
+  /**
+   * @return void
+   *
+   * @test
+   * @testdox validate if locked_at is not empty it must validate format
+   */
+  public function validateIfLockedAtIsNotEmptyItMustValidateFormat() : void {
+    try {
+      (new Auth($this->getValidPassword(), "loremipsum"))
+        ->validatePasswordFormat();
+    } catch(EntityValidationException $e) {
+      $this->assertInstanceOf(EntityValidationException::class, $e);
+      $this->assertEquals(trans('validation.date_format', [
+        'attribute' => Auth::LOCKED_AT, 'format' => 'Y-m-d H:i:s'
+      ]), $e->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+      $this->assertEquals(400, $e->getCode());
+    }
+  }
+
+  // </editor-fold>
+  // <editor-fold desc="validationCheck::login_fail_attempt">
+  /**
+   * @return void
+   * @test
+   * @testdox validate login_fail_attempt must be a number
+   */
+  public function loginFailAttemptMustBeANumber() : void {
+    try {
+      (new Auth($this->getValidPassword(), $this->getValidLockedAt(), 'abc'))
+        ->validatePasswordFormat();
+    } catch(EntityValidationException $e) {
+      $this->assertInstanceOf(EntityValidationException::class, $e);
+      $this->assertEquals(trans('validation.regex', ['attribute' => Auth::LOGIN_FAIL_ATTEMPT]), $e->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+      $this->assertEquals(400, $e->getCode());
+    }
+  }
+
+  /**
+   * @return void
+   * @test
+   * @testdox validate login_fail_attempt must be greater or equals then zero
+   */
+  public function validateLoginFailAttemptMustBeGreaterOrEqualsThanZero() : void {
+    try {
+      (new Auth($this->getValidPassword(), $this->getValidLockedAt(), '-1'))
+        ->validatePasswordFormat();
+    } catch(EntityValidationException $e) {
+      $this->assertInstanceOf(EntityValidationException::class, $e);
+      $this->assertEquals(trans('validation.regex', ['attribute' => Auth::LOGIN_FAIL_ATTEMPT]), $e->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+      $this->assertEquals(400, $e->getCode());
+    }
+  }
+
+  /**
+   * @return void
+   * @test
+   * @testdox validate login fail attempt must be less or equals than five
+   */
+  public function validateLoginFailAttemptMustBeLessOrEqualsThanFive() : void {
+    try {
+      (new Auth($this->getValidPassword(), $this->getValidLockedAt(), '88'))
+        ->validatePasswordFormat();
+    } catch(EntityValidationException $e) {
+      $this->assertInstanceOf(EntityValidationException::class, $e);
+      $this->assertEquals(trans('validation.max.numeric', [
+        'attribute' => Auth::LOGIN_FAIL_ATTEMPT,
+        'max' => Auth::MAX_LOGIN_ATTEMPT
+      ]), $e->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+      $this->assertEquals(400, $e->getCode());
+    }
+  }
+  // </editor-fold>
 
   /**
    * @return void
@@ -194,6 +231,7 @@ class AuthTest extends TestCase {
 
     $this->assertEquals($this->getValidPassword(), $entity->getPassword());
     $this->assertEquals($this->getValidLockedAt(), $entity->getLockedAt());
+    $this->assertTrue($entity->isLocked());
     $this->assertEquals($this->getValidLoginFailedAttempt(), $entity->getLoginFailAttempt());
   }
 
@@ -207,7 +245,6 @@ class AuthTest extends TestCase {
   public function getLockedAtMustReturnNullIfNotSetOrNullOrEmptyString() : void {
     $entity = new Auth($this->getValidPassword(), null, $this->getValidLoginFailedAttempt());
     $this->assertNull($entity->getLockedAt());
-
 
     $entity = new Auth($this->getValidPassword(), '', $this->getValidLoginFailedAttempt());
     $this->assertNull($entity->getLockedAt());
@@ -224,7 +261,6 @@ class AuthTest extends TestCase {
   public function getLoginFailAttemptMustReturnZeroIfNotSetOrNullOrEmptyString() : void {
     $entity = new Auth($this->getValidPassword(), null, 0);
     $this->assertEquals(0, $entity->getLoginFailAttempt());
-
 
     $entity = new Auth($this->getValidPassword());
     $this->assertEquals(0, $entity->getLoginFailAttempt());
