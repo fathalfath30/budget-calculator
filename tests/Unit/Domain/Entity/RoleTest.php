@@ -16,11 +16,10 @@
 //
 */
 
-namespace Domain\Entity;
+namespace Tests\Unit\Domain\Entity;
 
 use App\Domain\Entity\Role;
 use App\Domain\Entity\Traits\Entity;
-use App\Exceptions\EntityException;
 use App\Exceptions\EntityValidationException;
 use Exception;
 use Faker\Factory as Faker;

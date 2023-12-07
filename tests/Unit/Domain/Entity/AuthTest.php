@@ -16,7 +16,7 @@
 //
 */
 
-namespace Domain\Entity;
+namespace Tests\Unit\Domain\Entity;
 
 use App\Domain\Entity\Auth;
 use App\Exceptions\EntityValidationException;

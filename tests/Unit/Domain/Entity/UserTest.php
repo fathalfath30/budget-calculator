@@ -16,7 +16,7 @@
 //
 */
 
-namespace Domain\Entity;
+namespace Tests\Unit\Domain\Entity;
 
 use App\Domain\Entity\Auth;
 use App\Domain\Entity\Role;
@@ -26,7 +26,6 @@ use App\Domain\Entity\UserInfo;
 use App\Exceptions\EntityValidationException;
 use Tests\TestCase;
 use Tests\TestData\AuthTestData;
-use Tests\TestData\RoleTestData;
 use Tests\TestData\TimestampTestData;
 use Tests\TestData\UserInfoTestData;
 use Tests\TestData\UserRoleTestData;
