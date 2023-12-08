@@ -43,10 +43,10 @@ class DataTables extends Entity implements IEntity {
   const MAX_LIMIT_THRESHOLD = 100;
 
   /** @var null|string $search_by */
-  private ?string $search_by;
+  private ?string $search_by = null;
 
   /** @var null|string $keyword */
-  private ?string $keyword;
+  private ?string $keyword = null;
 
   /** @var int $page */
   private int $page;
@@ -110,8 +110,9 @@ class DataTables extends Entity implements IEntity {
    *
    * @version 1.0.0
    */
-  public function getKeyword() : ?string {
-    return $this->keyword;
+  public function getKeyword(bool $lowerCase = true) : ?string {
+    return ($lowerCase) ?
+      strtolower($this->keyword) : $this->keyword;
   }
 
   /**

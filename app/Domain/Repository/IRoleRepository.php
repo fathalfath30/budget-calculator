@@ -23,9 +23,15 @@ use App\Domain\Entity\Role;
 
 interface IRoleRepository {
   /**
-   * This method will return all available roles in database
+   * Get all available role on database base on $dataTables
+   * parameter
    *
-   * @return null|\App\Domain\Entity\Role[]|array
+   * @param \App\Domain\Entity\DataTables $dataTables
+   *
+   * @return null|array|\App\Domain\Entity\Role[]
+   *
+   * @author fathalfath30
+   * @version 1.0.0
    */
   public function get(DataTables $dataTables) : ?array;
 

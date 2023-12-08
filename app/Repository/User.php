@@ -32,17 +32,13 @@ class User implements IUserRepository {
     $this->userModel = $userModel;
   }
 
-  /**
-   * @inheritDoc
-   */
-  public function Get(string $userId) : UserEntity {
+  /** @inheritDoc */
+  public function Get(UserEntity $payload) : UserEntity {
     // TODO: Implement Get() method.
     throw new NotImplementedException;
   }
 
-  /**
-   * @inheritDoc
-   */
+  /** @inheritDoc */
   public function Create(UserEntity $payload) : UserEntity {
     // TODO: Implement Create() method.
     throw new NotImplementedException;
