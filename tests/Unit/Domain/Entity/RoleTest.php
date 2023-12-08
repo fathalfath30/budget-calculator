@@ -85,7 +85,50 @@ class RoleTest extends TestCase {
       $this->assertEquals(trans('validation.required', ['attribute' => Role::NAME]), $e->getMessage());
       $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
       $this->assertEquals(400, $e->getCode());
+      return;
     }
+    $this->fail("expecting EntityValidationException but receive nothing");
+  }
+  // </editor-fold>
+  // <editor-fold desc="validationCheck::level">
+  /**
+   * @return void
+   * @test
+   * @testdox validate level must be a valid number
+   */
+  public function validateLevelMustBeAValidNumber(){
+    try {
+      new Role($this->getValidRoleId(), $this->getValidRoleName(), 'abcd', '', null);
+    } catch(EntityValidationException $e) {
+      $this->assertInstanceOf(EntityValidationException::class, $e);
+      $this->assertEquals(trans('validation.integer', ['attribute' => Role::LEVEL]), $e->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+      $this->assertEquals(400, $e->getCode());
+      return;
+    }
+    $this->fail("expecting EntityValidationException but receive nothing");
+  }
+
+  /**
+   * @return void
+   * @test
+   * @testdox validate level must be greater than zero
+   */
+  public function validateLevelMustBeLowerThanZero(){
+    try {
+      new Role($this->getValidRoleId(), $this->getValidRoleName(), '1000', '', null);
+    } catch(EntityValidationException $e) {
+      $this->assertInstanceOf(EntityValidationException::class, $e);
+      $this->assertEquals(trans('validation.between.numeric', [
+        'attribute' => 'level',
+        'min' => Role::USER_LEVEL_GUEST,
+        'max' => Role::USER_LEVEL_SUPER_ADMIN
+      ]), $e->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+      $this->assertEquals(400, $e->getCode());
+      return;
+    }
+    $this->fail("expecting EntityValidationException but receive nothing");
   }
   // </editor-fold>
 
@@ -103,6 +146,7 @@ class RoleTest extends TestCase {
       $this->assertEquals($this->getValidRoleId(true), $role->getId());
       $this->assertEquals($this->getValidRoleName(true), $role->getName());
       $this->assertEquals(Role::USER_LEVEL_SUPER_ADMIN, $role->getLevel());
+      $this->assertEquals($this->getValidRoleIcon(), $role->getIcon());
 
       $ts = $role->getTimestamp();
       $this->assertEquals($this->getValidTimestampEntity(), $ts);

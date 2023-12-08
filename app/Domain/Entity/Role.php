@@ -77,6 +77,14 @@ class Role extends Entity implements IEntity {
       ]);
     }
 
+    if($level < self::USER_LEVEL_GUEST || $level > self::USER_LEVEL_SUPER_ADMIN) {
+      throw new EntityValidationException('validation.between.numeric', [
+        'attribute' => 'level',
+        'min' => self::USER_LEVEL_GUEST,
+        'max' => self::USER_LEVEL_SUPER_ADMIN
+      ]);
+    }
+
     $this->level = $level;
     if(!empty($icon)) {
       $this->icon = trim($icon);
