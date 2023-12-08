@@ -18,6 +18,7 @@
 
 namespace App\Domain\Repository;
 
+use App\Domain\Entity\DataTables;
 use App\Domain\Entity\Role;
 
 interface IRoleRepository {
@@ -26,7 +27,7 @@ interface IRoleRepository {
    *
    * @return null|\App\Domain\Entity\Role[]|array
    */
-  public function get() : ?array;
+  public function get(DataTables $dataTables) : ?array;
 
   public function insert(Role $payload) : Role;
 }
