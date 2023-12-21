@@ -6,20 +6,25 @@ use App\Domain\Entity\DataTables;
 use App\Domain\Entity\Role;
 use App\Domain\Repository\IRoleRepository;
 use App\Repository\Models\Role as RoleModel;
+use Database\Seeders\RoleSeeder;
 use Exception;
 use Faker\Factory;
 use Faker\Generator;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Tests\TestCase;
 
 class RoleTest extends TestCase {
+  use RefreshDatabase;
+
   /** @var \App\Domain\Repository\IRoleRepository $repository */
   private IRoleRepository $repository;
   private Generator $faker;
 
   protected function setUp() : void {
     parent::setUp();
+    
     $this->repository = app(IRoleRepository::class);
     $this->faker = Factory::create(app()->getLocale());
   }
@@ -31,13 +36,8 @@ class RoleTest extends TestCase {
    */
   public function itCanDisplayAvailableRolesForDataTables() {
     try {
-      $role = RoleModel::create([
-        RoleModel::ID => $this->faker->uuid,
-        RoleModel::NAME => 'sample roles 1',
-        RoleModel::LEVEL => Role::USER_LEVEL_GUEST,
-        RoleModel::CREATED_AT => now(),
-        RoleModel::UPDATED_AT => now()
-      ]);
+      // seed database with default roles data
+      $this->seed([RoleSeeder::class]);
 
       $result = $this->repository->get(new DataTables('admin'));
       $this->assertNotNull($result);
@@ -47,8 +47,6 @@ class RoleTest extends TestCase {
         $this->assertIsString($data->getName());
         $this->assertIsInt($data->getLevel());
       }
-
-      $role->delete();
     } catch(NotFoundExceptionInterface|ContainerExceptionInterface|Exception $e) {
       $this->assertNull($e);
     }
