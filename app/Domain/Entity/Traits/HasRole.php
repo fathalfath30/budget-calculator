@@ -18,8 +18,6 @@
 
 namespace App\Domain\Entity\Traits;
 
-use App\Domain\Entity\Role;
-
 /**
  * HasRole
  *
