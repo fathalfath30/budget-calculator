@@ -18,7 +18,6 @@
 
 namespace Repository\Mapper;
 
-use App\Domain\Entity\Role as RoleEntity;
 use App\Domain\Entity\User as UserEntity;
 use App\Repository\Mapper\User as UserMapper;
 use App\Repository\Models\User as UserModel;

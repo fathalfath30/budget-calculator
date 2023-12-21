@@ -96,7 +96,7 @@ class RoleTest extends TestCase {
    * @test
    * @testdox validate level must be a valid number
    */
-  public function validateLevelMustBeAValidNumber(){
+  public function validateLevelMustBeAValidNumber() {
     try {
       new Role($this->getValidRoleId(), $this->getValidRoleName(), 'abcd', '', null);
     } catch(EntityValidationException $e) {
@@ -114,7 +114,7 @@ class RoleTest extends TestCase {
    * @test
    * @testdox validate level must be greater than zero
    */
-  public function validateLevelMustBeLowerThanZero(){
+  public function validateLevelMustBeLowerThanZero() {
     try {
       new Role($this->getValidRoleId(), $this->getValidRoleName(), '1000', '', null);
     } catch(EntityValidationException $e) {

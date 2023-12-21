@@ -5,7 +5,6 @@ namespace Tests\Unit\Repository;
 use App\Domain\Entity\DataTables;
 use App\Domain\Entity\Role;
 use App\Domain\Repository\IRoleRepository;
-use App\Repository\Models\Role as RoleModel;
 use Database\Seeders\RoleSeeder;
 use Exception;
 use Faker\Factory;
