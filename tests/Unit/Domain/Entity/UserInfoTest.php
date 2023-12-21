@@ -18,6 +18,7 @@
 
 namespace Tests\Unit\Domain\Entity;
 
+use App\Domain\Entity\Role;
 use App\Domain\Entity\UserInfo;
 use App\Exceptions\EntityValidationException;
 use Exception;
@@ -52,6 +53,69 @@ class UserInfoTest extends TestCase {
     $this->assertEquals($this->getValidEmail(), $entity->getEmail());
   }
 
+
+  // <editor-fold desc="Validation">
+  // <editor-fold desc="Validation::FirstName">
+  /**
+   * @return void
+   * @test
+   * @testdox firstname is required
+   */
+  public function firstNameIsRequired() {
+    try {
+      new UserInfo('', '', '', '');
+    } catch(EntityValidationException $e) {
+      $this->assertInstanceOf(EntityValidationException::class, $e);
+      $this->assertEquals(trans('validation.required', ['attribute' => UserInfo::FIRST_NAME]), $e->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+      $this->assertEquals(400, $e->getCode());
+    }
+  }
+
+  /**
+   * @return void
+   * @test
+   * @testdox first name must have valid format
+   */
+  public function firstNameMustHaveValidFormat() {
+    try {
+      new UserInfo('lorem1psum', '', '', '');
+    } catch(EntityValidationException $e) {
+      $this->assertInstanceOf(EntityValidationException::class, $e);
+      $this->assertEquals(trans('validation.regex', ['attribute' => UserInfo::FIRST_NAME]), $e->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+      $this->assertEquals(400, $e->getCode());
+    }
+
+    try {
+      new UserInfo('lorem 1psum', '', '', '');
+    } catch(EntityValidationException $e) {
+      $this->assertInstanceOf(EntityValidationException::class, $e);
+      $this->assertEquals(trans('validation.regex', ['attribute' => UserInfo::FIRST_NAME]), $e->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+      $this->assertEquals(400, $e->getCode());
+    }
+
+    try {
+      new UserInfo('lorem @psum', '', '', '');
+    } catch(EntityValidationException $e) {
+      $this->assertInstanceOf(EntityValidationException::class, $e);
+      $this->assertEquals(trans('validation.regex', ['attribute' => UserInfo::FIRST_NAME]), $e->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+      $this->assertEquals(400, $e->getCode());
+    }
+
+    try {
+      new UserInfo('lorem.', '', '', '');
+    } catch(EntityValidationException $e) {
+      $this->assertInstanceOf(EntityValidationException::class, $e);
+      $this->assertEquals(trans('validation.regex', ['attribute' => UserInfo::FIRST_NAME]), $e->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+      $this->assertEquals(400, $e->getCode());
+    }
+  }
+  // </editor-fold>
+  // <editor-fold desc="Validation::LastName">
   /**
    * @return void
    * @throws \App\Exceptions\EntityValidationException
@@ -68,4 +132,111 @@ class UserInfoTest extends TestCase {
       $this->getValidEmail());
     $this->assertNull($entity->getLastName());
   }
+
+  /**
+   * @return void
+   * @test
+   * @testdox validate last name if not empty
+   */
+  public function validateLastNameIfNotEmpty() {
+    try {
+      new UserInfo($this->getValidFirstName(), 'lorem1psum', '', '');
+    } catch(EntityValidationException $e) {
+      $this->assertInstanceOf(EntityValidationException::class, $e);
+      $this->assertEquals(trans('validation.regex', ['attribute' => UserInfo::LAST_NAME]), $e->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+      $this->assertEquals(400, $e->getCode());
+    }
+
+    try {
+      new UserInfo($this->getValidFirstName(), 'lorem 1psum', '', '');
+    } catch(EntityValidationException $e) {
+      $this->assertInstanceOf(EntityValidationException::class, $e);
+      $this->assertEquals(trans('validation.regex', ['attribute' => UserInfo::LAST_NAME]), $e->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+      $this->assertEquals(400, $e->getCode());
+    }
+
+    try {
+      new UserInfo($this->getValidFirstName(), 'lorem @psum', '', '');
+    } catch(EntityValidationException $e) {
+      $this->assertInstanceOf(EntityValidationException::class, $e);
+      $this->assertEquals(trans('validation.regex', ['attribute' => UserInfo::LAST_NAME]), $e->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+      $this->assertEquals(400, $e->getCode());
+    }
+
+    try {
+      new UserInfo($this->getValidLastName(), 'lorem.', '', '');
+    } catch(EntityValidationException $e) {
+      $this->assertInstanceOf(EntityValidationException::class, $e);
+      $this->assertEquals(trans('validation.regex', ['attribute' => UserInfo::LAST_NAME]), $e->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+      $this->assertEquals(400, $e->getCode());
+    }
+  }
+  // </editor-fold>
+  // <editor-fold desc="Validation::Username">
+  /**
+   * @return void
+   * @test
+   * @testdox validate username is required
+   */
+  public function validateUsernameIsRequired() {
+    try {
+      new UserInfo($this->getValidFirstName(), $this->getValidLastName(),
+        '', '');
+    } catch(EntityValidationException $e) {
+      $this->assertInstanceOf(EntityValidationException::class, $e);
+      $this->assertEquals(trans('validation.required', ['attribute' => UserInfo::USERNAME]), $e->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+      $this->assertEquals(400, $e->getCode());
+    }
+  }
+
+  /**
+   * @return void
+   * @test
+   * @testdox validate username format
+   */
+  public function validateUsernameFormat() {
+    try {
+      new UserInfo($this->getValidFirstName(), $this->getValidLastName(),
+        'lorem_.', '');
+    } catch(EntityValidationException $e) {
+      $this->assertInstanceOf(EntityValidationException::class, $e);
+      $this->assertEquals(trans('validation.regex', ['attribute' => UserInfo::USERNAME]), $e->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+      $this->assertEquals(400, $e->getCode());
+    }
+    try {
+      new UserInfo($this->getValidFirstName(), $this->getValidLastName(),
+        'lorem_ ', '');
+    } catch(EntityValidationException $e) {
+      $this->assertInstanceOf(EntityValidationException::class, $e);
+      $this->assertEquals(trans('validation.regex', ['attribute' => UserInfo::USERNAME]), $e->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+      $this->assertEquals(400, $e->getCode());
+    }
+  }
+  // </editor-fold>
+  // <editor-fold desc="Validation::Email">
+  /**
+   * @return void
+   * @test
+   * @testdox validate email is required
+   */
+  public function validateEmailIsRequired() {
+    try {
+      new UserInfo($this->getValidFirstName(), $this->getValidLastName(),
+        $this->getValidUsername(), '');
+    } catch(EntityValidationException $e) {
+      $this->assertInstanceOf(EntityValidationException::class, $e);
+      $this->assertEquals(trans('validation.email', ['attribute' => UserInfo::EMAIL]), $e->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+      $this->assertEquals(400, $e->getCode());
+    }
+  }
+  // </editor-fold>
+  // </editor-fold>
 }
