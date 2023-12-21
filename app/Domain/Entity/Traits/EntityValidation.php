@@ -42,16 +42,21 @@ trait EntityValidation {
   }
 
   /**
-   * @param string $value
+   * @param null|string $value
    * @param string $attribute
    * @param bool $allow_empty
+   * @param bool $defaultNull
    *
-   * @return string
+   * @return null|string
    * @throws \App\Exceptions\EntityValidationException
    */
-  protected function validateGeneralName(string $value, string $attribute = 'name', bool $allow_empty = false) : string {
+  protected function validateGeneralName(?string $value, string $attribute = 'name', bool $allow_empty = false, bool $defaultNull = true) : ?string {
     $value = trim($value);
-    if(!$allow_empty && empty($value)) {
+    if($allow_empty && empty($value)) {
+      return $defaultNull ? null : "";
+    }
+
+    if(empty($value)) {
       throw new EntityValidationException('validation.required', ['attribute' => $attribute]);
     }
 
