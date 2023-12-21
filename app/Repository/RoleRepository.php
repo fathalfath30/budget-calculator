@@ -22,11 +22,11 @@ class RoleRepository implements IRoleRepository {
     // initiate model
     $model = Models\Role::select();
 
+    // assign datatables filter if databases is not empty
     if(!is_null($dataTables)) {
-      // assign datatables filter
+      // insert keyword to search using specific data
       if(!empty($dataTables->getKeyword())) {
         if(!empty($dataTables->getSearchBy())) {
-
           $model->where($dataTables->getSearchBy(), 'like', '%' . $dataTables->getKeyword() . '%');
         } else {
           $model->where(function($q) use ($dataTables) {
@@ -36,6 +36,9 @@ class RoleRepository implements IRoleRepository {
           });
         }
       }
+
+      // add pagination filter
+      $model->take($dataTables->getLimit())->skip($dataTables->getOffset());
     }
 
     foreach($model->get() as $data) {

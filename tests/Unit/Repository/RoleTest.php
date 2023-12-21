@@ -24,7 +24,7 @@ class RoleTest extends TestCase {
 
   protected function setUp() : void {
     parent::setUp();
-    
+
     $this->repository = app(IRoleRepository::class);
     $this->faker = Factory::create(app()->getLocale());
   }
@@ -39,8 +39,10 @@ class RoleTest extends TestCase {
       // seed database with default roles data
       $this->seed([RoleSeeder::class]);
 
-      $result = $this->repository->get(new DataTables('admin'));
+      $result = $this->repository->get(new DataTables(null, null, 1, 1));
       $this->assertNotNull($result);
+      $this->assertEquals(1, sizeof($result));
+
       foreach($result as $data) {
         $this->assertInstanceOf(Role::class, $data);
         $this->assertIsString($data->getId());
