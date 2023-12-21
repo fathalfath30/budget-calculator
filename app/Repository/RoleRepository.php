@@ -5,22 +5,33 @@ namespace App\Repository;
 use App\Domain\Entity\DataTables;
 use App\Domain\Entity\Role;
 use App\Domain\Repository\IRoleRepository;
-use App\Exceptions\NotImplementedException;
+use App\Exceptions\RepositoryException;
 use App\Repository\Mapper\Role as RoleMapper;
+use App\Repository\Models\Role as RoleModel;
+use Exception;
 
+/**
+ * RoleRepository
+ *
+ * This class should handle and manipulate role data
+ * in database
+ *
+ * @author fathalfath30
+ * @version 1.0.0
+ * @since 1.0.0
+ *
+ * @see \App\Domain\Repository\IRoleRepository
+ * @see \App\Repository\Models\Role
+ * @see \App\Domain\Entity\Role
+ */
 class RoleRepository implements IRoleRepository {
 
-  /**
-   * @param null|\App\Domain\Entity\DataTables $dataTables
-   *
-   * @return null|array|\App\Domain\Entity\Role[]
-   * @throws \App\Exceptions\EntityValidationException
-   */
+  /** @inheritDoc */
   public function get(?DataTables $dataTables) : ?array {
     $result = [];
 
     // initiate model
-    $model = Models\Role::select();
+    $model = RoleModel::select();
 
     // assign datatables filter if databases is not empty
     if(!is_null($dataTables)) {
@@ -48,8 +59,20 @@ class RoleRepository implements IRoleRepository {
     return $result;
   }
 
+  /** @inheritDoc */
   public function insert(Role $payload) : Role {
-    // TODO: Implement insert() method.
-    throw new NotImplementedException;
+    try {
+      $role = new RoleModel;
+      $role->id = $payload->getId();
+      $role->name = $payload->getName();
+      $role->level = $payload->getLevel();
+      $role->icon = $payload->getIcon();
+      $role->save();
+    } catch(Exception $exception) {
+      // convert to repository exception
+      throw new RepositoryException($exception->getMessage(), 500);
+    }
+
+    return $payload;
   }
 }

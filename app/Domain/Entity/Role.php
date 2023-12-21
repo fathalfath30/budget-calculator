@@ -50,7 +50,7 @@ class Role extends Entity implements IEntity {
   private string $id;
   private string $name;
   private int $level;
-  private ?string $icon;
+  private ?string $icon = null;
   private ?Timestamp $timestamp = null;
 
   /**
@@ -62,7 +62,7 @@ class Role extends Entity implements IEntity {
    *
    * @throws \App\Exceptions\EntityValidationException
    */
-  public function __construct(string $id, string $name, int|string $level, ?string $icon, ?Timestamp $timestamp = null) {
+  public function __construct(string $id, string $name, int|string $level = 1, ?string $icon = null, ?Timestamp $timestamp = null) {
     $this->id = $this->validateId($id);
     $this->name = $this->validateGeneralName($name);
 
@@ -89,6 +89,7 @@ class Role extends Entity implements IEntity {
     if(!empty($icon)) {
       $this->icon = trim($icon);
     }
+
     $this->timestamp = $timestamp;
   }
 
