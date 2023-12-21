@@ -105,6 +105,8 @@ class DataTables extends Entity implements IEntity {
   /**
    * Get $keyword values
    *
+   * @param bool $lowerCase
+   *
    * @return null|string
    * @author Fathalfath30
    *
@@ -138,6 +140,19 @@ class DataTables extends Entity implements IEntity {
    */
   public function getLimit() : int {
     return $this->limit;
+  }
+
+  /**
+   * Get offset for mysql
+   *
+   * @return int
+   * @author Fathalfath30
+   *
+   * @version 1.0.0
+   */
+  public function getOffset() : int {
+    return ($this->getPage() == 0) ? 0 :
+      $this->getLimit() * ($this->getPage() - 1);
   }
 
   /**

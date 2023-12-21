@@ -58,6 +58,7 @@ class DataTablesTest extends TestCase {
       $this->assertEquals($this->getValidDataTablesPage(), $entity->getPage());
       $this->assertEquals($this->getValidDataTablesLimit(), $entity->getLimit());
       $this->assertEquals($this->getValidDataTablesOrderBy(), $entity->getOrderBy());
+      $this->assertEquals(0, $entity->getOffset());
     } catch(Exception $exception) {
       $this->assertNull($exception);
     }
