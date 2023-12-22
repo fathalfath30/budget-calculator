@@ -18,6 +18,8 @@
 
 namespace Tests\TestData;
 
+use App\Domain\Entity\User as UserEntity;
+
 /**
  * UserTestData
  *
@@ -28,7 +30,26 @@ namespace Tests\TestData;
  * @see \App\Domain\Entity\User
  */
 trait UserTestData {
+  use UserRoleTestData, AuthTestData, UserInfoTestData, TimestampTestData;
+
+  /**
+   * @return string
+   */
   public function getValidUserId() : string {
     return "40797635-7cad-4e9a-8159-2f09191e1061";
+  }
+
+  /**
+   * @return \App\Domain\Entity\User
+   * @throws \App\Exceptions\EntityValidationException
+   */
+  public function getValidUserEntity() : UserEntity {
+    return new UserEntity(
+      $this->getValidUserId(),
+      $this->getValidSuperAdminRole(),
+      $this->getValidAuthEntity(),
+      $this->getValidUserInfoEntity(true),
+      $this->getValidTimestampEntity()
+    );
   }
 }

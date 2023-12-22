@@ -19,6 +19,7 @@
 namespace Tests\TestData;
 
 use App\Domain\Entity\Auth;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * AuthTestData
@@ -64,7 +65,12 @@ trait AuthTestData {
    * @return \App\Domain\Entity\Auth
    * @throws \App\Exceptions\EntityValidationException
    */
-  public function getValidAuthEntity() : Auth {
-    return new Auth($this->getValidPassword(), $this->getValidLockedAt(), $this->getValidLoginFailedAttempt());
+  public function getValidAuthEntity(bool $encrypt = false) : Auth {
+    $password = $this->getValidPassword();
+    if($encrypt) {
+      $password = Hash::make($encrypt);
+    }
+
+    return new Auth($password, $this->getValidLockedAt(), $this->getValidLoginFailedAttempt());
   }
 }

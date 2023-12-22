@@ -1,0 +1,46 @@
+<?php
+
+namespace Tests\Unit\Http\Mapper;
+
+use App\Domain\Entity\User as UserEntity;
+use App\Http\Mapper\UserMapper;
+use App\Http\Request\FormRequest;
+use Exception;
+use Illuminate\Support\Facades\Hash;
+use Mockery\MockInterface;
+use Tests\TestCase;
+use Tests\TestData\UserTestData;
+
+class UserMapperTest extends TestCase {
+  use UserTestData;
+
+    /**
+     * @return void
+     * @test
+     * @testdox it can map from form request to user entity
+     */
+    public function itCanMapFromFormRequestToUserEntity() {
+      try {
+        /** @var \Mockery\MockInterface|\App\Http\Request\FormRequest $request */
+        $request = $this->mock(FormRequest::class,
+          function(MockInterface $mock) {
+            $mock->shouldReceive('toArray')
+              ->once()
+              ->withAnyArgs()
+              ->andReturn([
+                'email' => 'fathalfath30@gmail.com',
+                'password' => 'admin123'
+              ]);
+          });
+
+        $result = UserMapper::loginRequestToEntity($request);
+        $this->assertInstanceOf(UserEntity::class, $result);
+        $this->assertEquals("fathalfath30@gmail.com", $result->getUserInfo()->getEmail());
+        $this->assertTrue(Hash::check("admin123",
+          $result->getAuth()->getPassword(true)
+        ));
+      } catch(Exception $exception) {
+        $this->assertNull($exception);
+      }
+    }
+}

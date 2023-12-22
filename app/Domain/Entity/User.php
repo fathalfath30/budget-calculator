@@ -68,4 +68,8 @@ class User extends Entity implements IEntity {
   public function getId() : string {
     return $this->id;
   }
+
+  public static function MakeAuth()  {
+
+  }
 }

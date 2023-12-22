@@ -18,11 +18,19 @@
 
 namespace App\UseCases\Authentication;
 
-use App\Http\Request\IFormRequest;
-use App\UseCases\IUseCase;
+use App\Domain\Entity\User as UserEntity;
+use App\Domain\Repository\IUserRepository;
 
-class LoginUseCase implements IUseCase {
-  public function execute(IFormRequest $request) {
+class LoginUseCase {
+  private IUserRepository $repository;
+
+  public function __construct(IUserRepository $repository) {
+    $this->repository = $repository;
+  }
+
+  public function execute(UserEntity $request) : array {
+    $data = $request->toArray();
     // TODO: Implement execute() method.
+    return [];
   }
 }
