@@ -20,6 +20,7 @@ namespace App\Repository;
 
 use App\Domain\Entity\User as UserEntity;
 use App\Domain\Repository\IUserRepository;
+use App\Exceptions\NotImplementedException;
 use App\Repository\Models\User as UserModel;
 
 class User implements IUserRepository {
@@ -31,17 +32,15 @@ class User implements IUserRepository {
     $this->userModel = $userModel;
   }
 
-  /**
-   * @inheritDoc
-   */
-  public function Get(string $userId) : UserEntity {
+  /** @inheritDoc */
+  public function Get(UserEntity $payload) : UserEntity {
     // TODO: Implement Get() method.
+    throw new NotImplementedException;
   }
 
-  /**
-   * @inheritDoc
-   */
+  /** @inheritDoc */
   public function Create(UserEntity $payload) : UserEntity {
     // TODO: Implement Create() method.
+    throw new NotImplementedException;
   }
 }

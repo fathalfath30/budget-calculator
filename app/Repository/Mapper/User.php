@@ -18,7 +18,6 @@
 
 namespace App\Repository\Mapper;
 
-use App\Domain\Entity\Auth;
 use App\Domain\Entity\Auth as AuthEntity;
 use App\Domain\Entity\Role as RoleEntity;
 use App\Domain\Entity\Timestamp;

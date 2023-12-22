@@ -18,7 +18,6 @@
 
 namespace App\Domain\Entity\Traits;
 
-use App\Domain\Entity\Timestamp;
 use App\Domain\Entity\UserInfo;
 
 /**

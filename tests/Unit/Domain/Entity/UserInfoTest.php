@@ -18,6 +18,7 @@
 
 namespace Tests\Unit\Domain\Entity;
 
+use App\Domain\Entity\Role;
 use App\Domain\Entity\UserInfo;
 use App\Exceptions\EntityValidationException;
 use Exception;
@@ -37,228 +38,11 @@ class UserInfoTest extends TestCase {
   use UserInfoTestData;
 
   /**
-   * Test the validation on each input
-   *
    * @return void
-   * @test
-   */
-  public function validateInput() : void {
-    $testCase = [
-      // <editor-fold desc="first_name">
-      [
-        'name' => 'first name is required',
-        'expected' => [
-          'message' => trans('validation.required', ['attribute' => UserInfo::FIRST_NAME])
-        ],
-        'payload' => [
-          UserInfo::FIRST_NAME => '',
-          UserInfo::LAST_NAME => null,
-          UserInfo::USERNAME => '',
-          UserInfo::EMAIL => ''
-        ]
-      ],
-      [
-        'name' => 'first name must have a valid format (1)',
-        'expected' => [
-          'message' => trans('validation.regex', ['attribute' => UserInfo::FIRST_NAME])
-        ],
-        'payload' => [
-          UserInfo::FIRST_NAME => 'lorem1psum',
-          UserInfo::LAST_NAME => null,
-          UserInfo::USERNAME => '',
-          UserInfo::EMAIL => ''
-        ]
-      ],
-      [
-        'name' => 'first name must have a valid format (2)',
-        'expected' => [
-          'message' => trans('validation.regex', ['attribute' => UserInfo::FIRST_NAME])
-        ],
-        'payload' => [
-          UserInfo::FIRST_NAME => 'lorem 1psum',
-          UserInfo::LAST_NAME => null,
-          UserInfo::USERNAME => '',
-          UserInfo::EMAIL => ''
-        ]
-      ],
-      [
-        'name' => 'first name must have a valid format (3)',
-        'expected' => [
-          'message' => trans('validation.regex', ['attribute' => UserInfo::FIRST_NAME])
-        ],
-        'payload' => [
-          UserInfo::FIRST_NAME => 'lorem @psum',
-          UserInfo::LAST_NAME => null,
-          UserInfo::USERNAME => '',
-          UserInfo::EMAIL => ''
-        ]
-      ],
-      [
-        'name' => 'first name must have a valid format (4)',
-        'expected' => [
-          'message' => trans('validation.regex', ['attribute' => UserInfo::FIRST_NAME])
-        ],
-        'payload' => [
-          UserInfo::FIRST_NAME => 'lorem.',
-          UserInfo::LAST_NAME => null,
-          UserInfo::USERNAME => '',
-          UserInfo::EMAIL => ''
-        ]
-      ],
-      // </editor-fold>
-
-      // <editor-fold desc="last_name">
-      [
-        'name' => 'last name must have a valid format (1)',
-        'expected' => [
-          'message' => trans('validation.regex', ['attribute' => UserInfo::LAST_NAME])
-        ],
-        'payload' => [
-          UserInfo::FIRST_NAME => $this->getValidFirstName(),
-          UserInfo::LAST_NAME => 'lorem1psum',
-          UserInfo::USERNAME => '',
-          UserInfo::EMAIL => ''
-        ]
-      ],
-      [
-        'name' => 'last name must have a valid format (2)',
-        'expected' => [
-          'message' => trans('validation.regex', ['attribute' => UserInfo::LAST_NAME])
-        ],
-        'payload' => [
-          UserInfo::FIRST_NAME => $this->getValidFirstName(),
-          UserInfo::LAST_NAME => 'lorem 1psum',
-          UserInfo::USERNAME => '',
-          UserInfo::EMAIL => ''
-        ]
-      ],
-      [
-        'name' => 'last name must have a valid format (3)',
-        'expected' => [
-          'message' => trans('validation.regex', ['attribute' => UserInfo::LAST_NAME])
-        ],
-        'payload' => [
-          UserInfo::FIRST_NAME => $this->getValidFirstName(),
-          UserInfo::LAST_NAME => 'lorem @psum',
-          UserInfo::USERNAME => '',
-          UserInfo::EMAIL => ''
-        ]
-      ],
-      [
-        'name' => 'last name must have a valid format (4)',
-        'expected' => [
-          'message' => trans('validation.regex', ['attribute' => UserInfo::LAST_NAME])
-        ],
-        'payload' => [
-          UserInfo::FIRST_NAME => $this->getValidFirstName(),
-          UserInfo::LAST_NAME => 'lorem.',
-          UserInfo::USERNAME => '',
-          UserInfo::EMAIL => ''
-        ]
-      ],
-      // </editor-fold>
-
-      // <editor-fold desc="username">
-      [
-        'name' => 'username is required',
-        'expected' => [
-          'message' => 'The username field is required.'
-        ],
-        'payload' => [
-          UserInfo::FIRST_NAME => $this->getValidFirstName(),
-          UserInfo::LAST_NAME => $this->getValidLastName(),
-          UserInfo::USERNAME => '',
-          UserInfo::EMAIL => ''
-        ]
-      ],
-      [
-        'name' => 'validate username format (1)',
-        'expected' => [
-          'message' => trans('validation.regex', ['attribute' => UserInfo::USERNAME])
-        ],
-        'payload' => [
-          UserInfo::FIRST_NAME => $this->getValidFirstName(),
-          UserInfo::LAST_NAME => $this->getValidLastName(),
-          UserInfo::USERNAME => 'lorem_.',
-          UserInfo::EMAIL => ''
-        ],
-      ],
-      [
-        'name' => 'validate username format (2)',
-        'expected' => [
-          'message' => trans('validation.regex', ['attribute' => UserInfo::USERNAME])
-        ],
-        'payload' => [
-          UserInfo::FIRST_NAME => $this->getValidFirstName(),
-          UserInfo::LAST_NAME => $this->getValidLastName(),
-          UserInfo::USERNAME => 'lorem_ ',
-          UserInfo::EMAIL => ''
-        ],
-      ],
-      // </editor-fold>
-
-      // <editor-fold desc="email">
-      [
-        'name' => 'username is required',
-        'expected' => [
-          'message' => trans('validation.email', ['attribute' => UserInfo::EMAIL])
-        ],
-        'payload' => [
-          UserInfo::FIRST_NAME => $this->getValidFirstName(),
-          UserInfo::LAST_NAME => $this->getValidLastName(),
-          UserInfo::USERNAME => $this->getValidUsername(),
-          UserInfo::EMAIL => ''
-        ]
-      ],
-      [
-        'name' => 'validate username format (1)',
-        'expected' => [
-          'message' => trans('validation.email', ['attribute' => UserInfo::EMAIL])
-        ],
-        'payload' => [
-          UserInfo::FIRST_NAME => $this->getValidFirstName(),
-          UserInfo::LAST_NAME => $this->getValidLastName(),
-          UserInfo::USERNAME => $this->getValidUsername(),
-          UserInfo::EMAIL => 'loremipsum.com'
-        ],
-      ],
-      [
-        'name' => 'validate username format (2)',
-        'expected' => [
-          'message' => trans('validation.email', ['attribute' => UserInfo::EMAIL])
-        ],
-        'payload' => [
-          UserInfo::FIRST_NAME => $this->getValidFirstName(),
-          UserInfo::LAST_NAME => $this->getValidLastName(),
-          UserInfo::USERNAME => $this->getValidUsername(),
-          UserInfo::EMAIL => '!@#_loremipsum@gmail.com'
-        ],
-      ],
-      // </editor-fold>
-    ];
-
-    foreach($testCase as $tc) {
-      $exception = false;
-      try {
-        new UserInfo($tc['payload'][UserInfo::FIRST_NAME], $tc['payload'][UserInfo::LAST_NAME],
-          $tc['payload'][UserInfo::USERNAME], $tc['payload'][UserInfo::EMAIL]);
-      } catch(Exception $e) {
-        $this->assertStringMatchesFormat($tc['expected']['message'], $e->getMessage());
-        $this->assertInstanceOf(EntityValidationException::class, $e);
-        $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
-        $exception = true;
-      }
-
-      $this->assertTrue($exception, "validation error");
-    }
-  }
-
-  /**
-   * @return void
-   * @throws \App\Exceptions\EntityException
-   * @throws \Illuminate\Validation\ValidationException
+   * @throws \App\Exceptions\EntityValidationException
    *
    * @test
+   * @testdox user info must have basic getter to get object value
    */
   public function userInfoMustHaveBasicGetterToGetObjectValue() : void {
     $entity = $this->getValidUserInfoEntity();
@@ -269,9 +53,75 @@ class UserInfoTest extends TestCase {
     $this->assertEquals($this->getValidEmail(), $entity->getEmail());
   }
 
+
+  // <editor-fold desc="Validation">
+  // <editor-fold desc="Validation::FirstName">
+  /**
+   * @return void
+   * @test
+   * @testdox firstname is required
+   */
+  public function firstNameIsRequired() {
+    try {
+      new UserInfo('', '', '', '');
+    } catch(EntityValidationException $e) {
+      $this->assertInstanceOf(EntityValidationException::class, $e);
+      $this->assertEquals(trans('validation.required', ['attribute' => UserInfo::FIRST_NAME]), $e->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+      $this->assertEquals(400, $e->getCode());
+    }
+  }
+
+  /**
+   * @return void
+   * @test
+   * @testdox first name must have valid format
+   */
+  public function firstNameMustHaveValidFormat() {
+    try {
+      new UserInfo('lorem1psum', '', '', '');
+    } catch(EntityValidationException $e) {
+      $this->assertInstanceOf(EntityValidationException::class, $e);
+      $this->assertEquals(trans('validation.regex', ['attribute' => UserInfo::FIRST_NAME]), $e->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+      $this->assertEquals(400, $e->getCode());
+    }
+
+    try {
+      new UserInfo('lorem 1psum', '', '', '');
+    } catch(EntityValidationException $e) {
+      $this->assertInstanceOf(EntityValidationException::class, $e);
+      $this->assertEquals(trans('validation.regex', ['attribute' => UserInfo::FIRST_NAME]), $e->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+      $this->assertEquals(400, $e->getCode());
+    }
+
+    try {
+      new UserInfo('lorem @psum', '', '', '');
+    } catch(EntityValidationException $e) {
+      $this->assertInstanceOf(EntityValidationException::class, $e);
+      $this->assertEquals(trans('validation.regex', ['attribute' => UserInfo::FIRST_NAME]), $e->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+      $this->assertEquals(400, $e->getCode());
+    }
+
+    try {
+      new UserInfo('lorem.', '', '', '');
+    } catch(EntityValidationException $e) {
+      $this->assertInstanceOf(EntityValidationException::class, $e);
+      $this->assertEquals(trans('validation.regex', ['attribute' => UserInfo::FIRST_NAME]), $e->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+      $this->assertEquals(400, $e->getCode());
+    }
+  }
+  // </editor-fold>
+  // <editor-fold desc="Validation::LastName">
   /**
    * @return void
    * @throws \App\Exceptions\EntityValidationException
+   *
+   * @test
+   * @testdox get last name must return null if not set or null or empty string
    */
   public function getLastNameMustReturnNullIfNotSetOrNullOrEmptyString() : void {
     $entity = new UserInfo($this->getValidFirstName(), null, $this->getValidUsername(),
@@ -282,4 +132,111 @@ class UserInfoTest extends TestCase {
       $this->getValidEmail());
     $this->assertNull($entity->getLastName());
   }
+
+  /**
+   * @return void
+   * @test
+   * @testdox validate last name if not empty
+   */
+  public function validateLastNameIfNotEmpty() {
+    try {
+      new UserInfo($this->getValidFirstName(), 'lorem1psum', '', '');
+    } catch(EntityValidationException $e) {
+      $this->assertInstanceOf(EntityValidationException::class, $e);
+      $this->assertEquals(trans('validation.regex', ['attribute' => UserInfo::LAST_NAME]), $e->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+      $this->assertEquals(400, $e->getCode());
+    }
+
+    try {
+      new UserInfo($this->getValidFirstName(), 'lorem 1psum', '', '');
+    } catch(EntityValidationException $e) {
+      $this->assertInstanceOf(EntityValidationException::class, $e);
+      $this->assertEquals(trans('validation.regex', ['attribute' => UserInfo::LAST_NAME]), $e->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+      $this->assertEquals(400, $e->getCode());
+    }
+
+    try {
+      new UserInfo($this->getValidFirstName(), 'lorem @psum', '', '');
+    } catch(EntityValidationException $e) {
+      $this->assertInstanceOf(EntityValidationException::class, $e);
+      $this->assertEquals(trans('validation.regex', ['attribute' => UserInfo::LAST_NAME]), $e->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+      $this->assertEquals(400, $e->getCode());
+    }
+
+    try {
+      new UserInfo($this->getValidLastName(), 'lorem.', '', '');
+    } catch(EntityValidationException $e) {
+      $this->assertInstanceOf(EntityValidationException::class, $e);
+      $this->assertEquals(trans('validation.regex', ['attribute' => UserInfo::LAST_NAME]), $e->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+      $this->assertEquals(400, $e->getCode());
+    }
+  }
+  // </editor-fold>
+  // <editor-fold desc="Validation::Username">
+  /**
+   * @return void
+   * @test
+   * @testdox validate username is required
+   */
+  public function validateUsernameIsRequired() {
+    try {
+      new UserInfo($this->getValidFirstName(), $this->getValidLastName(),
+        '', '');
+    } catch(EntityValidationException $e) {
+      $this->assertInstanceOf(EntityValidationException::class, $e);
+      $this->assertEquals(trans('validation.required', ['attribute' => UserInfo::USERNAME]), $e->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+      $this->assertEquals(400, $e->getCode());
+    }
+  }
+
+  /**
+   * @return void
+   * @test
+   * @testdox validate username format
+   */
+  public function validateUsernameFormat() {
+    try {
+      new UserInfo($this->getValidFirstName(), $this->getValidLastName(),
+        'lorem_.', '');
+    } catch(EntityValidationException $e) {
+      $this->assertInstanceOf(EntityValidationException::class, $e);
+      $this->assertEquals(trans('validation.regex', ['attribute' => UserInfo::USERNAME]), $e->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+      $this->assertEquals(400, $e->getCode());
+    }
+    try {
+      new UserInfo($this->getValidFirstName(), $this->getValidLastName(),
+        'lorem_ ', '');
+    } catch(EntityValidationException $e) {
+      $this->assertInstanceOf(EntityValidationException::class, $e);
+      $this->assertEquals(trans('validation.regex', ['attribute' => UserInfo::USERNAME]), $e->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+      $this->assertEquals(400, $e->getCode());
+    }
+  }
+  // </editor-fold>
+  // <editor-fold desc="Validation::Email">
+  /**
+   * @return void
+   * @test
+   * @testdox validate email is required
+   */
+  public function validateEmailIsRequired() {
+    try {
+      new UserInfo($this->getValidFirstName(), $this->getValidLastName(),
+        $this->getValidUsername(), '');
+    } catch(EntityValidationException $e) {
+      $this->assertInstanceOf(EntityValidationException::class, $e);
+      $this->assertEquals(trans('validation.email', ['attribute' => UserInfo::EMAIL]), $e->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
+      $this->assertEquals(400, $e->getCode());
+    }
+  }
+  // </editor-fold>
+  // </editor-fold>
 }

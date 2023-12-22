@@ -21,14 +21,21 @@ namespace Tests\Unit\Repository\Mapper;
 use App\Domain\Entity\Role as RoleEntity;
 use App\Repository\Mapper\Role as RoleMapper;
 use App\Repository\Models\Role as RoleModel;
+use Database\Seeders\RoleSeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class RoleTest extends TestCase {
+  use RefreshDatabase;
+
   /**
    * @return void
    * @throws \App\Exceptions\EntityValidationException
    */
   public function testItCanMappingFromModelToRoleEntity() {
+    // seed database with default roles data
+    $this->seed([RoleSeeder::class]);
+
     $roleModel = RoleModel::where(['id' => DEFAULT_ROLE_SUPER_ADMIN_ID])->first();
     if(empty($roleModel)) {
       $this->fail("role is empty");

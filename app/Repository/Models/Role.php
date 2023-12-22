@@ -59,6 +59,8 @@ class Role extends F30_Model {
   /** @var bool $incrementing disabling AUTO_INCREMENT command, we used UUID */
   public $incrementing = false;
 
+  protected $fillable = ['id', 'name', 'level', 'created_at', 'updated_at', 'deleted_at'];
+
   /**
    * @return \Illuminate\Database\Eloquent\Factories\Factory
    */

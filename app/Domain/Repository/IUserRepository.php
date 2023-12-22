@@ -35,15 +35,14 @@ interface IUserRepository {
   /**
    * Get user data by id
    *
-   * @param string $userId user id must be a valid UUID
+   * @param \App\Domain\Entity\User $payload
    *
    * @return \App\Domain\Entity\User
    * @since 1.0.0
    *
    * @see \App\Domain\Entity\User
    */
-  public function Get(string $userId) : User;
-
+  public function Get(User $payload) : User;
 
   /**
    * Create new user data using user entity
