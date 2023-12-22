@@ -1,0 +1,77 @@
+<?php
+/*
+//
+//  ______    _   _           _  __      _   _     ____   ___
+// |  ____|  | | | |         | |/ _|    | | | |   |___ \ / _ \
+// | |__ __ _| |_| |__   __ _| | |_ __ _| |_| |__   __) | | | |
+// |  __/ _` | __| '_ \ / _` | |  _/ _` | __| '_ \ |__ <| | | |
+// | | | (_| | |_| | | | (_| | | || (_| | |_| | | |___) | |_| |
+// |_|  \__,_|\__|_| |_|\__,_|_|_| \__,_|\__|_| |_|____/ \___/
+//
+// Written by Fathalfath30.
+// Email : fathalfath30@gmail.com
+// Follow me on:
+//  Github : https://github.com/fathalfath30
+//  Gitlab : https://gitlab.com/Fathalfath30
+//
+*/
+
+namespace App\Domain\Entity;
+
+use App\Domain\Entity\Traits\Entity;
+use App\Domain\Entity\Traits\EntityValidation;
+use App\Domain\Entity\Traits\ToArray;
+
+/**
+ * Role
+ *
+ * This class will handle role entity, should be used to handle security.
+ *
+ * @author Fathalfath30
+ * @version 1.0.0
+ * @since 1.0.0
+ *
+ * @see \App\Domain\Entity\IEntity
+ * @see \App\Domain\Entity\Traits\ToArray
+ * @see \App\Domain\Entity\Traits\EntityValidation
+ */
+class Role extends Entity implements IEntity {
+  use ToArray, EntityValidation;
+
+  const Id = 'id';
+  const Name = 'name';
+  const Icon = 'icon';
+  const Level = 'level';
+
+  const USER_LEVEL_SUPER_ADMIN = 999;
+  const USER_LEVEL_GUEST = 0;
+
+  /** @var string $id */
+  private string $id;
+
+  /** @var string $name */
+  private string $name;
+
+  /** @var int $level */
+  private int $level;
+
+  /** @var null|string $icon */
+  private ?string $icon = null;
+
+  /** @var null|\App\Domain\Entity\Timestamp $timestamp */
+  private ?Timestamp $timestamp = null;
+
+  /**
+   * @inheritDoc
+   */
+  public static function make(array $payload = []) : IEntity {
+    // TODO: Implement make() method.
+  }
+
+  /** @inheritDoc */
+  public static function create(array $payload = []) : IEntity {
+    // TODO: Implement create() method.
+  }
+
+
+}
