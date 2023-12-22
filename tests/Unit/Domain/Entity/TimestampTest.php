@@ -19,8 +19,10 @@
 namespace Tests\Unit\Domain\Entity;
 
 use App\Domain\Entity\Timestamp;
+use App\Domain\Entity\Timestamp as TimestampEntity;
 use App\Exceptions\EntityValidationException;
 use Exception;
+use Ramsey\Uuid\Type\Time;
 use Tests\TestCase;
 use Tests\TestData\TimestampTestData;
 
@@ -40,106 +42,211 @@ class TimestampTest extends TestCase {
   use TimestampTestData;
 
   /**
-   * Test the validation on each input
-   *
    * @return void
    * @test
+   * @testdox it can make timestamp entity
    */
-  public function validateInput() {
-    $now = date('Y-m-d H:i:s');
-    $testCase = [
-      [
-        'name' => 'check created_at is required',
-        'expected' => [
-          'message' => trans('validation.required', ['attribute' => 'created_at'])
-        ],
-        'payload' => [
-          Timestamp::CREATED_AT => '',
-          Timestamp::UPDATED_AT => '',
-          Timestamp::DELETED_AT => null
-        ]
-      ],
-      [
-        'name' => 'check created at must be valid date time',
-        'expected' => [
-          'message' => trans('validation.regex', ['attribute' => 'created_at'])
-        ],
-        'payload' => [
-          Timestamp::CREATED_AT => 'lorem ipsum',
-          Timestamp::UPDATED_AT => '',
-          Timestamp::DELETED_AT => null
-        ]
-      ],
-      [
-        'name' => 'check updated_at is required',
-        'expected' => [
-          'message' => trans('validation.required', ['attribute' => 'updated_at'])
-        ],
-        'payload' => [
-          Timestamp::CREATED_AT => $now,
-          Timestamp::UPDATED_AT => '',
-          Timestamp::DELETED_AT => null
-        ]
-      ],
-      [
-        'name' => 'check deleted at must be valid date time',
-        'expected' => [
-          'message' => trans('validation.regex', ['attribute' => 'updated_at'])
-        ],
-        'payload' => [
-          Timestamp::CREATED_AT => $now,
-          Timestamp::UPDATED_AT => 'lorem ipsum',
-          Timestamp::DELETED_AT => null
-        ]
-      ],
-      [
-        'name' => 'check deleted at must be valid date time',
-        'expected' => [
-          'message' => trans('validation.regex', ['attribute' => 'deleted_at'])
-        ],
-        'payload' => [
-          Timestamp::CREATED_AT => $now,
-          Timestamp::UPDATED_AT => $now,
-          Timestamp::DELETED_AT => 'lorem ipsum'
-        ]
-      ],
-    ];
+  public function itCanMakeTimestampEntity() {
+    try {
+      $result = TimestampEntity::make([
+        TimestampEntity::created_at => $this->getValidSampleTimestamp(),
+        TimestampEntity::updated_at => $this->getValidSampleTimestamp(),
+        TimestampEntity::deleted_at => $this->getValidSampleTimestamp()
+      ]);
 
-    foreach($testCase as $tc) {
-      $exception = false;
-      try {
-        new Timestamp($tc['payload'][Timestamp::CREATED_AT], $tc['payload'][Timestamp::UPDATED_AT],
-          $tc['payload'][Timestamp::DELETED_AT]);
-      } catch(Exception $e) {
-        $this->assertStringMatchesFormat($tc['expected']['message'], $e->getMessage());
-        $this->assertInstanceOf(EntityValidationException::class, $e);
-        $this->assertEquals(config('response_code.user.error.bad_request'), $e->getStatusCode());
-        $exception = true;
-      }
+      $this->assertNotNull($result);
+      $this->assertInstanceOf(TimestampEntity::class, $result);
+      $this->assertEquals($this->getValidSampleTimestamp(), $result->getCreatedAt());
+      $this->assertEquals($this->getValidSampleTimestamp(), $result->getUpdatedAt());
+      $this->assertEquals($this->getValidSampleTimestamp(), $result->getDeletedAt());
 
-      $this->assertTrue($exception, "validation error");
+    } catch(Exception $exception) {
+      $this->assertNull($exception);
     }
   }
 
   /**
    * @return void
-   * @throws \App\Exceptions\EntityValidationException
+   * @test
+   * @testdox if deleted_at is empty it should convert into null
+   */
+  public function ifDeletedAtIsEmptyItShouldConvertedIntoNull() {
+    // <editor-fold desc="using empty string should be null">
+    try {
+      $result = TimestampEntity::make([
+        TimestampEntity::created_at => $this->getValidSampleTimestamp(),
+        TimestampEntity::updated_at => $this->getValidSampleTimestamp(),
+        TimestampEntity::deleted_at => ""
+      ]);
+
+      $this->assertNotNull($result);
+      $this->assertInstanceOf(TimestampEntity::class, $result);
+      $this->assertNull($result->getDeletedAt());
+
+    } catch(Exception $exception) {
+      $this->assertNull($exception);
+    }
+    // </editor-fold>
+    // <editor-fold desc="if null then it should be null">
+    try {
+      $result = TimestampEntity::make([
+        TimestampEntity::created_at => $this->getValidSampleTimestamp(),
+        TimestampEntity::updated_at => $this->getValidSampleTimestamp(),
+        TimestampEntity::deleted_at => null
+      ]);
+
+      $this->assertNotNull($result);
+      $this->assertInstanceOf(TimestampEntity::class, $result);
+      $this->assertNull($result->getDeletedAt());
+
+    } catch(Exception $exception) {
+      $this->assertNull($exception);
+    }
+    // </editor-fold>
+  }
+
+  /**
+   * @return void
    *
    * @test
+   * @testdox it can create new timestamp
    */
-  public function createdAtAndUpdateAtMustReturnConstructedValue() {
-    $now = date('Y-m-d H:i:s');
-    $cls = $this->getValidTimestampEntity($now);
+  public function itCanCreateNewTimestamp() {
+    try {
+      $result = TimestampEntity::create([
+        TimestampEntity::created_at => $this->getValidSampleTimestamp(),
+        TimestampEntity::updated_at => $this->getValidSampleTimestamp(),
+        TimestampEntity::deleted_at => null
+      ]);
 
-    $this->assertSame($now, $cls->getCreatedAt());
-    $this->assertSame($now, $cls->getUpdatedAt());
-    $this->assertSame($now, $cls->getDeletedAt());
+      $this->assertNotNull($result);
+      $this->assertInstanceOf(TimestampEntity::class, $result);
+      $this->assertNull($result->getDeletedAt());
 
-    $clsArray = $cls->toArray();
-    $this->assertIsArray($clsArray);
-
-    $this->assertArrayHasKey(Timestamp::CREATED_AT, $clsArray);
-    $this->assertArrayHasKey(Timestamp::UPDATED_AT, $clsArray);
-    $this->assertArrayHasKey(Timestamp::DELETED_AT, $clsArray);
+    } catch(Exception $exception) {
+      $this->assertNull($exception);
+    }
   }
+
+  // <editor-fold desc="validationTest">
+  // <editor-fold desc="validationTest::created_at">
+  /**
+   * @return void
+   * @test
+   * @testdox validate created_at is required
+   */
+  public function validateCreatedAtIsRequired() {
+    try {
+      TimestampEntity::create([
+        TimestampEntity::created_at => '',
+      ]);
+    } catch(Exception $exception) {
+      $this->assertNotNull($exception);
+      $this->assertInstanceOf(EntityValidationException::class, $exception);
+
+      $this->assertEquals(trans('validation.required', ['attribute' => TimestampEntity::created_at]),
+        $exception->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $exception->getStatusCode());
+      $this->assertEquals(400, $exception->getCode());
+    }
+  }
+
+  /**
+   * @return void
+   * @test
+   * @testdox validate created_at format must be valid "Y-m-d H:i:s"
+   */
+  public function validateCreatedAtFormatMustBeValidYmdHis() {
+    try {
+      TimestampEntity::create([
+        TimestampEntity::created_at => 'xxxx',
+      ]);
+    } catch(Exception $exception) {
+      $this->assertNotNull($exception);
+      $this->assertInstanceOf(EntityValidationException::class, $exception);
+
+      $this->assertEquals(trans('validation.date_format', [
+        'attribute' => TimestampEntity::created_at, 'format' => 'Y-m-d H:i:s'
+      ]), $exception->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $exception->getStatusCode());
+      $this->assertEquals(400, $exception->getCode());
+    }
+  }
+  // </editor-fold>
+  // <editor-fold desc="validationTest::updated_at">
+  /**
+   * @return void
+   * @test
+   * @testdox validate updated_at is required
+   */
+  public function validateUpdatedAtIsRequired() {
+    try {
+      TimestampEntity::create([
+        TimestampEntity::created_at => $this->getValidSampleTimestamp(),
+      ]);
+    } catch(Exception $exception) {
+      $this->assertNotNull($exception);
+      $this->assertInstanceOf(EntityValidationException::class, $exception);
+
+      $this->assertEquals(trans('validation.required', ['attribute' => TimestampEntity::updated_at]),
+        $exception->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $exception->getStatusCode());
+      $this->assertEquals(400, $exception->getCode());
+    }
+  }
+
+  /**
+   * @return void
+   * @test
+   * @testdox validate updated_at format must be valid "Y-m-d H:i:s"
+   */
+  public function validateUpdatedAtFormatMustBeValidYmdHis() {
+    try {
+      TimestampEntity::create([
+        TimestampEntity::created_at => $this->getValidSampleTimestamp(),
+        TimestampEntity::updated_at => 'xxx'
+      ]);
+    } catch(Exception $exception) {
+      $this->assertNotNull($exception);
+      $this->assertInstanceOf(EntityValidationException::class, $exception);
+
+      $this->assertEquals(trans('validation.date_format', [
+        'attribute' => TimestampEntity::updated_at, 'format' => 'Y-m-d H:i:s'
+      ]), $exception->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $exception->getStatusCode());
+      $this->assertEquals(400, $exception->getCode());
+    }
+  }
+  // </editor-fold>
+  // <editor-fold desc="validationTest::updated_at">
+  /**
+   * @return void
+   * @test
+   * @testdox validate deleted_at is required
+   */
+  /**
+   * @return void
+   * @test
+   * @testdox validate deleted_at format must be valid "Y-m-d H:i:s"
+   */
+  public function validateDeletedAtFormatMustBeValidYmdHis() {
+    try {
+      TimestampEntity::create([
+        TimestampEntity::created_at => $this->getValidSampleTimestamp(),
+        TimestampEntity::updated_at =>  $this->getValidSampleTimestamp(),
+        TimestampEntity::deleted_at => 'xxx'
+      ]);
+    } catch(Exception $exception) {
+      $this->assertNotNull($exception);
+      $this->assertInstanceOf(EntityValidationException::class, $exception);
+
+      $this->assertEquals(trans('validation.date_format', [
+        'attribute' => TimestampEntity::deleted_at, 'format' => 'Y-m-d H:i:s'
+      ]), $exception->getMessage());
+      $this->assertEquals(config('response_code.user.error.bad_request'), $exception->getStatusCode());
+      $this->assertEquals(400, $exception->getCode());
+    }
+  }
+  // </editor-fold>
+  // </editor-fold>
 }

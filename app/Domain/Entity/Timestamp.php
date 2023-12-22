@@ -20,7 +20,6 @@ namespace App\Domain\Entity;
 
 use App\Domain\Entity\Traits\Entity;
 use App\Domain\Entity\Traits\ToArray;
-use App\Exceptions\EntityValidationException;
 
 /**
  * Timestamp
@@ -35,9 +34,9 @@ use App\Exceptions\EntityValidationException;
 class Timestamp extends Entity implements IEntity {
   use ToArray;
 
-  public const CREATED_AT = 'created_at';
-  public const UPDATED_AT = 'updated_at';
-  public const DELETED_AT = 'deleted_at';
+  public const created_at = 'created_at';
+  public const updated_at = 'updated_at';
+  public const deleted_at = 'deleted_at';
 
   /** @var string|mixed $created_at */
   public string $created_at;
@@ -48,41 +47,53 @@ class Timestamp extends Entity implements IEntity {
   /** @var null|string|mixed $deleted_at */
   private ?string $deleted_at;
 
-  /** @var bool $rebuildClass */
-  private bool $rebuildClass = false;
-
-  /**
-   * @param string $created_at
-   * @param string $updated_at
-   * @param null|string $deleted_at
-   *
-   * @throws \App\Exceptions\EntityValidationException
-   */
-  public function __construct(string $created_at, string $updated_at, ?string $deleted_at = null) {
-    $this->created_at = trim($created_at);
-    if(empty($this->created_at)) {
-      throw new EntityValidationException("validation.required", ['attribute' => 'created_at']);
+  public static function make(array $payload = []) : Timestamp {
+    $self = new self;
+    $self->created_at = trim($payload[self::created_at]);
+    $self->updated_at = trim($payload[self::updated_at]);
+    $self->deleted_at = trim($payload[self::deleted_at]);
+    if(empty($self->deleted_at)) {
+      $self->deleted_at = null;
     }
 
-    if(preg_match(VALIDATION_REGEX_DATETIME_YMD_HIS, $this->created_at) !== 1) {
-      throw new EntityValidationException("validation.regex", ['attribute' => 'created_at']);
-    }
+    return $self;
+  }
 
-    $this->updated_at = trim($updated_at);
-    if(empty($this->updated_at)) {
-      throw new EntityValidationException("validation.required", ['attribute' => 'updated_at']);
-    }
-
-    if(preg_match(VALIDATION_REGEX_DATETIME_YMD_HIS, $this->updated_at) !== 1) {
-      throw new EntityValidationException("validation.regex", ['attribute' => 'updated_at']);
-    }
-
-    if(!empty($deleted_at)) {
-      $this->deleted_at = $deleted_at;
-      if(preg_match(VALIDATION_REGEX_DATETIME_YMD_HIS, $this->deleted_at) !== 1) {
-        throw new EntityValidationException("validation.regex", ['attribute' => 'deleted_at']);
-      }
-    }
+  /** @inheritDoc */
+  public static function create(array $payload = []) : IEntity {
+    return self::make((new self)->validate($payload,
+      [
+        self::created_at => ['required', 'date_format:Y-m-d H:i:s'],
+        self::updated_at => ['required', 'date_format:Y-m-d H:i:s'],
+        self::deleted_at => ['nullable', 'date_format:Y-m-d H:i:s']
+      ],
+      [
+        self::created_at => [
+          'required' => trans('validation.required', [
+            'attribute' => self::created_at
+          ]),
+          'date_format' => trans('validation.date_format', [
+            'attribute' => self::created_at,
+            'format' => 'Y-m-d H:i:s'
+          ])
+        ],
+        self::updated_at => [
+          'required' => trans('validation.required', [
+            'attribute' => self::updated_at
+          ]),
+          'date_format' => trans('validation.date_format', [
+            'attribute' => self::updated_at,
+            'format' => 'Y-m-d H:i:s'
+          ])
+        ],
+        self::deleted_at => [
+          'date_format' => trans('validation.date_format', [
+            'attribute' => self::deleted_at,
+            'format' => 'Y-m-d H:i:s'
+          ])
+        ]
+      ]
+    ));
   }
 
   /**
