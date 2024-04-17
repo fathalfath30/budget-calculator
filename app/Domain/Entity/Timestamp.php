@@ -23,6 +23,7 @@ use App\Domain\Entity\Traits\ToArray;
 use App\Exceptions\EntityValidationException;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Validator;
+use function Laravel\Prompts\search;
 
 /**
  * Timestamp
@@ -62,20 +63,21 @@ class Timestamp extends Entity implements IEntity {
    * @param null|string $deleted_at
    *
    * @return \App\Domain\Entity\Timestamp
-   * @throws \App\Exceptions\EntityValidationException
+   * @throws \App\Exceptions\EntityException
+   * @throws \Illuminate\Validation\ValidationException
    */
   public static function create(string $created_at, string $updated_at, ?string $deleted_at = null) : Timestamp {
     $self = new self;
-    $validate = Validator::make(
+    $validate = $self->validate(
       [
-        'created_at' => $created_at,
-        'updated_at' => $updated_at,
-        'deleted_at' => $deleted_at
+        self::CREATED_AT => $created_at,
+        self::UPDATED_AT => $updated_at,
+        self::DELETED_AT => $deleted_at
       ],
       [
-        'created_at' => ['required', 'date_format:Y-m-d H:i:s'],
-        'updated_at' => ['required', 'date_format:Y-m-d H:i:s'],
-        'deleted_at' => ['nullable', 'date_format:Y-m-d H:i:s'],
+        self::CREATED_AT => ['required', 'date_format:Y-m-d H:i:s'],
+        self::UPDATED_AT => ['required', 'date_format:Y-m-d H:i:s'],
+        self::DELETED_AT => ['nullable', 'date_format:Y-m-d H:i:s'],
       ],
       [
         'created_at.required' => trans('validation.required', ['attribute' => 'created_at']),
@@ -86,13 +88,9 @@ class Timestamp extends Entity implements IEntity {
       ]
     );
 
-    if($validate->fails()) {
-      throw new EntityValidationException($validate->errors()->first());
-    }
-
-    $self->created_at = Carbon::parse(trim($created_at));
-    $self->updated_at = Carbon::parse(trim($updated_at));
-    $self->deleted_at = Carbon::parse(trim($deleted_at));
+    $self->created_at = Carbon::parse(trim($validate[self::CREATED_AT]));
+    $self->updated_at = Carbon::parse(trim($validate[self::DELETED_AT]));
+    $self->deleted_at = Carbon::parse(trim($validate[self::DELETED_AT]));
 
     return $self;
   }

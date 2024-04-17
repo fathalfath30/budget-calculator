@@ -28,36 +28,6 @@ namespace App\Domain\Entity;
  */
 interface IEntity {
   /**
-   * Make IEntity from existing data, this method should
-   * be used for selecting existing data from database
-   * or from user request.
-   *
-   * @param array $payload
-   *
-   * @return \App\Domain\Entity\IEntity
-   * @author Fathalfath30
-   * @version 1.0.0
-   * @since 1.0.0
-   */
-  public static function make(array $payload = []) : IEntity;
-
-  /**
-   * Initialize new IEntity class, this method should be used to
-   * create new data and also add validation in this method.
-   *
-   * @param array $payload
-   *
-   * @return \App\Domain\Entity\IEntity
-   * @throws \App\Exceptions\EntityException
-   * @throws \App\Exceptions\EntityValidationException
-   * @throws \Illuminate\Validation\ValidationException
-   * @author Fathalfath30
-   * @version 1.0.0
-   * @since 1.0.0
-   */
-  public static function create(array $payload = []) : IEntity;
-
-  /**
    * Generate array from current entity
    *
    * @return array
