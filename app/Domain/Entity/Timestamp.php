@@ -63,8 +63,8 @@ class Timestamp extends Entity implements IEntity {
    * @param null|string $deleted_at
    *
    * @return \App\Domain\Entity\Timestamp
-   * @throws \App\Exceptions\EntityException
    * @throws \Illuminate\Validation\ValidationException
+   * @throws \App\Exceptions\EntityValidationException
    */
   public static function create(string $created_at, string $updated_at, ?string $deleted_at = null) : Timestamp {
     $self = new self;
