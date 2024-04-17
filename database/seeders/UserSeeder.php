@@ -59,7 +59,6 @@ class UserSeeder extends Seeder {
     ]);
 
     // guest
-
     UserRole::create([
       UserRole::ID => Uuid::uuid4()->toString(),
       UserRole::USER_ID => DEFAULT_USER_GUEST_ID,

@@ -77,7 +77,7 @@ trait UserInfoTestData {
    */
   public function getValidUserInfoEntity(bool $last_name = false) : UserInfo {
     $last_name = null;
-    if (!$last_name){
+    if(!$last_name) {
       $last_name = $this->getValidLastName();
     }
     return new UserInfo($this->getValidFirstName(), $last_name, $this->getValidUsername(),

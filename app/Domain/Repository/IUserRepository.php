@@ -55,4 +55,14 @@ interface IUserRepository {
    * @see \App\Domain\Entity\User
    */
   public function Create(User $payload) : User;
+
+  /**
+   * Return single user data search by email address, and
+   * throw BusinessException if data is not present
+   *
+   * @param string $email
+   *
+   * @return \App\Domain\Entity\User
+   */
+  public function GetByEmail(string $email) : User;
 }

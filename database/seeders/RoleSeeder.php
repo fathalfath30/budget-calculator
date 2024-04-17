@@ -27,15 +27,15 @@ class RoleSeeder extends Seeder {
       ->createMany([
         [
           Role::ID => DEFAULT_ROLE_SUPER_ADMIN_ID,
-          Role::NAME => 'Super Administrator',
-          Role::LEVEL => 999,
+          Role::NAME => DEFAULT_ROLE_SUPER_ADMIN_NAME,
+          Role::LEVEL => DEFAULT_ROLE_SUPER_ADMIN_LEVEL,
           Model::CREATED_AT => $now,
           Model::UPDATED_AT => $now
         ],
         [
           Role::ID => DEFAULT_ROLE_GUEST_ID,
-          Role::NAME => 'Guest',
-          Role::LEVEL => 0,
+          Role::NAME => DEFAULT_ROLE_GUEST_NAME,
+          Role::LEVEL => DEFAULT_ROLE_GUEST_LEVEL,
           Model::CREATED_AT => $now,
           Model::UPDATED_AT => $now
         ]

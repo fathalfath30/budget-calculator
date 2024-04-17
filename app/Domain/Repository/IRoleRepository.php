@@ -26,14 +26,26 @@ interface IRoleRepository {
    * Get all available role on database base on $dataTables
    * parameter
    *
-   * @param \App\Domain\Entity\DataTables $dataTables
+   * @param null|\App\Domain\Entity\DataTables $dataTables
    *
    * @return null|array|\App\Domain\Entity\Role[]
+   * @throws \App\Exceptions\EntityValidationException
    *
    * @author fathalfath30
    * @version 1.0.0
    */
   public function get(DataTables $dataTables) : ?array;
 
+  /**
+   * Insert new data to role table
+   *
+   * @param \App\Domain\Entity\Role $payload
+   *
+   * @return \App\Domain\Entity\Role
+   * @throws \App\Exceptions\RepositoryException
+   *
+   * @author fathalfath30
+   * @version 1.0.0
+   */
   public function insert(Role $payload) : Role;
 }

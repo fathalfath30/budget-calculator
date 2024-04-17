@@ -43,4 +43,10 @@ class User implements IUserRepository {
     // TODO: Implement Create() method.
     throw new NotImplementedException;
   }
+
+  /** @inheritDoc */
+  public function GetByEmail(string $email) : UserEntity {
+    // TODO: Implement Create() method.
+    throw new NotImplementedException;
+  }
 }
