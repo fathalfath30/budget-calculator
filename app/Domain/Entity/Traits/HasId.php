@@ -16,40 +16,29 @@
 //
 */
 
-namespace Tests\TestData;
+namespace App\Domain\Entity\Traits;
 
-use App\Domain\Entity\Timestamp;
+use App\Domain\Entity\Role;
 
 /**
- * TimestampTestData
+ * HasRole
  *
  * @version 1.0.0
  * @since 1.0.0
  *
- * @see \App\Domain\Entity\Timestamp
+ * @see \App\Domain\Entity\Role
  * @author Fathalfath30
  */
-trait TimestampTestData {
-  const SAMPLE_DATE_TIME = "2023-01-01 00:00:00";
+trait HasId {
+  const ID = 'id';
+
+  /** @var string primary key for the entity */
+  private string $id;
 
   /**
-   * Return valid sample timestamp entity
-   *
-   * @param string $value
-   *
-   * @return \App\Domain\Entity\Timestamp
-   * @throws \App\Exceptions\EntityValidationException
-   */
-  public function getValidTimestampEntity(string $value = self::SAMPLE_DATE_TIME) : Timestamp {
-    return Timestamp::create($value, $value, $value);
-  }
-
-  /**
-   * Return valid timestamp with format Y-m-d H:i:s
-   *
    * @return string
    */
-  public function getValidSampleTimestamp() : string {
-    return "2023-01-01 00:00:00";
+  public function getId() : string {
+    return $this->id;
   }
 }
