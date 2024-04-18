@@ -20,10 +20,7 @@ namespace App\Domain\Entity;
 
 use App\Domain\Entity\Traits\Entity;
 use App\Domain\Entity\Traits\ToArray;
-use App\Exceptions\EntityValidationException;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Validator;
-use function Laravel\Prompts\search;
 
 /**
  * Timestamp

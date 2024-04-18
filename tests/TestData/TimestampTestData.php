@@ -39,6 +39,7 @@ trait TimestampTestData {
    *
    * @return \App\Domain\Entity\Timestamp
    * @throws \App\Exceptions\EntityValidationException
+   * @throws \Illuminate\Validation\ValidationException
    */
   public function getValidTimestampEntity(string $value = self::SAMPLE_DATE_TIME) : Timestamp {
     return Timestamp::create($value, $value, $value);
