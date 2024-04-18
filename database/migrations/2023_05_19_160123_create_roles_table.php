@@ -25,9 +25,9 @@ use Illuminate\Support\Facades\Schema;
  * This migration file will create `roles` table that will store
  * all roles information
  *
- * @author Fathalfath30
  * @version 1.0.0
  * @since 1.0.0
+ * @author Fathalfath30
  */
 return new class extends F30_Migration {
   public function __construct() {
@@ -46,12 +46,14 @@ return new class extends F30_Migration {
         ->nullable();
       $table->integer('level', false, true)
         ->default(0);
+      $table->tinyInteger('is_admin', false, true)
+        ->default(0);
 
       // add timestamp
       $this->addTimestamp($table, true);
 
       // add index
-      $this->addIndex($table, ['level']);
+      $this->addIndex($table, ['is_admin']);
     });
   }
 

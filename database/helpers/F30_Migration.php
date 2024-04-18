@@ -104,9 +104,7 @@ class F30_Migration extends Migration {
   protected function addForeign(Blueprint $blueprint, string $column, string $on, string $reference = 'id',
     string $onUpdate = 'cascade', string $onDelete = 'cascade') : void {
     $blueprint->foreign($column, sprintf("fk_%s_%d", $this->getTable(), $this->foreignKeyCounter++))
-      ->references($reference)
-      ->on($on)
-      ->onUpdate($onUpdate)
-      ->onDelete($onDelete);
+      ->references($reference)->on($on)
+      ->onUpdate($onUpdate)->onDelete($onDelete);
   }
 }
