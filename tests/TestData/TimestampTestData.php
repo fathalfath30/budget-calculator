@@ -23,11 +23,11 @@ use App\Domain\Entity\Timestamp;
 /**
  * TimestampTestData
  *
- * @author Fathalfath30
  * @version 1.0.0
  * @since 1.0.0
  *
  * @see \App\Domain\Entity\Timestamp
+ * @author Fathalfath30
  */
 trait TimestampTestData {
   const SAMPLE_DATE_TIME = "2023-01-01 00:00:00";
@@ -39,9 +39,10 @@ trait TimestampTestData {
    *
    * @return \App\Domain\Entity\Timestamp
    * @throws \App\Exceptions\EntityValidationException
+   * @throws \Illuminate\Validation\ValidationException
    */
   public function getValidTimestampEntity(string $value = self::SAMPLE_DATE_TIME) : Timestamp {
-    return new Timestamp($value, $value, $value);
+    return Timestamp::create($value, $value, $value);
   }
 
   /**

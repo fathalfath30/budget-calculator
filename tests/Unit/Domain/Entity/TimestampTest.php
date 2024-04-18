@@ -30,11 +30,11 @@ use Tests\TestData\TimestampTestData;
  * This class is used to testing some business rules for Timestamp entity, for example
  * testing __constructor and validation and more.
  *
- * @author Fathalfath30
  * @version 1.0.0
  * @since 1.0.0
  *
  * @see \App\Domain\Entity\Timestamp
+ * @author Fathalfath30
  */
 class TimestampTest extends TestCase {
   use TimestampTestData;
@@ -108,7 +108,7 @@ class TimestampTest extends TestCase {
     foreach($testCase as $tc) {
       $exception = false;
       try {
-        new Timestamp($tc['payload'][Timestamp::CREATED_AT], $tc['payload'][Timestamp::UPDATED_AT],
+        Timestamp::create($tc['payload'][Timestamp::CREATED_AT], $tc['payload'][Timestamp::UPDATED_AT],
           $tc['payload'][Timestamp::DELETED_AT]);
       } catch(Exception $e) {
         $this->assertStringMatchesFormat($tc['expected']['message'], $e->getMessage());
@@ -131,9 +131,9 @@ class TimestampTest extends TestCase {
     $now = date('Y-m-d H:i:s');
     $cls = $this->getValidTimestampEntity($now);
 
-    $this->assertSame($now, $cls->getCreatedAt());
-    $this->assertSame($now, $cls->getUpdatedAt());
-    $this->assertSame($now, $cls->getDeletedAt());
+    $this->assertSame($now, $cls->getCreatedAt()->format("Y-m-d H:i:s"));
+    $this->assertSame($now, $cls->getUpdatedAt()->format("Y-m-d H:i:s"));
+    $this->assertSame($now, $cls->getDeletedAt()->format("Y-m-d H:i:s"));
 
     $clsArray = $cls->toArray();
     $this->assertIsArray($clsArray);

@@ -19,6 +19,7 @@
 namespace App\Domain\Entity\Traits;
 
 use App\Exceptions\EntityException;
+use App\Exceptions\EntityValidationException;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Facades\Validator;
 
@@ -27,20 +28,26 @@ use Illuminate\Support\Facades\Validator;
  *
  * This parent of all entity, it should be used for all entity
  *
- * @author Fathalfath30
  * @version 1.0.0
  * @since 1.0.0
+ * @author Fathalfath30
  */
 abstract class Entity implements Arrayable {
   const TIMESTAMP = 'timestamp';
 
   /**
-   * @throws \Illuminate\Validation\ValidationException|\App\Exceptions\EntityException
+   * @param array $payload
+   * @param array $rules
+   * @param null|array $message
+   *
+   * @return array
+   * @throws \App\Exceptions\EntityValidationException
+   * @throws \Illuminate\Validation\ValidationException
    */
   public function validate(array $payload, array $rules, ?array $message = []) : array {
     $validate = Validator::make($payload, $rules, $message);
     if($validate->fails()) {
-      throw new EntityException($validate->errors()->first());
+      throw new EntityValidationException($validate->errors()->first());
     }
 
     return $validate->validated();

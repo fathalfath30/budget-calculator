@@ -23,12 +23,12 @@ use App\Domain\Entity\Role;
 /**
  * RoleTestData
  *
- * @author Fathalfath30
  * @version 1.0.0
  * @since 1.0.0
  *
  * @see \App\Domain\Entity\Timestamp
  * @see \Tests\TestData\TimestampTestData
+ * @author Fathalfath30
  */
 trait RoleTestData {
   use TimestampTestData;
@@ -41,8 +41,7 @@ trait RoleTestData {
    * @return string
    */
   public function getValidRoleId(bool $admin = false) : string {
-    return ($admin) ?
-      '8723b59f-10a9-4b79-9b04-11cdd8bd164c' : '06a11a2f-3dc6-4455-9ab9-5003c5f66128';
+    return ($admin) ? '8723b59f-10a9-4b79-9b04-11cdd8bd164c' : '06a11a2f-3dc6-4455-9ab9-5003c5f66128';
   }
 
   /**
@@ -53,7 +52,7 @@ trait RoleTestData {
    * @return string
    */
   public function getValidRoleName(bool $admin = false) : string {
-    return "Test Role " . ($admin) ? "Admin" : "Guest";
+    return "Test Role " . (($admin) ? "Admin" : "Guest");
   }
 
   /**
@@ -64,7 +63,7 @@ trait RoleTestData {
    * @return null|string
    */
   public function getValidRoleIcon(bool $nullable = false) : ?string {
-    return ($nullable) ? null : "icon.jpg";
+    return (($nullable) ? null : "icon.jpg");
   }
 
   /**
@@ -74,6 +73,7 @@ trait RoleTestData {
    *
    * @return \App\Domain\Entity\Role
    * @throws \App\Exceptions\EntityValidationException
+   * @throws \Illuminate\Validation\ValidationException
    */
   public function getValidRoleEntity(bool $admin = false) : Role {
     return (new Role($this->getValidRoleId($admin), $this->getValidRoleName($admin),

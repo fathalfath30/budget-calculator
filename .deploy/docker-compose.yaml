@@ -1,0 +1,28 @@
+# docker-compose.yaml
+# this file is used to deploy this application using docker, you'll need docker and 'docker-compose' to used it
+# and also docker basic knowledge.
+#
+# some configuration are set dynamically by the .env, you can locate the .env in the same directory with this file,
+# otherwise you can copy .env.example
+version: '3.0'
+
+services:
+  database:
+    container_name: budget_calculator_db
+    # we will usin mysql8.0 with debian bullseye os
+    image: mysql:8.0-bullseye
+    restart: always
+    # [Port exposed]:[MySQL Port running inside container]
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      # password for root access
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      # you don't have to use root, but you can if you like
+      MYSQL_USER: ${MYSQL_USER}
+      # You can use whatever password you like
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      # where our data will be persisted
+      - ./storages/mysql:/var/lib/mysql

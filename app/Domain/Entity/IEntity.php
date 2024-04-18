@@ -17,7 +17,23 @@
 */
 
 namespace App\Domain\Entity;
+
+/**
+ * IEntity is the main interface for all entity in
+ * this application
+ *
+ * @author Fathalfath30
+ * @version 1.0.0
+ * @since 1.0.0
+ */
 interface IEntity {
-  //  public function __construct(array $payload, bool $validate = true);
+  /**
+   * Generate array from current entity
+   *
+   * @return array
+   * @author Fathalfath30
+   * @version 1.0.0
+   * @since 1.0.0
+   */
   public function toArray() : array;
 }

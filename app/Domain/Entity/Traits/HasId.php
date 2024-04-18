@@ -18,28 +18,27 @@
 
 namespace App\Domain\Entity\Traits;
 
-use App\Domain\Entity\Auth;
+use App\Domain\Entity\Role;
 
 /**
- * HasAuth
+ * HasRole
  *
- * @author Fathalfath30
  * @version 1.0.0
  * @since 1.0.0
  *
- * @see \App\Domain\Entity\Auth
+ * @see \App\Domain\Entity\Role
+ * @author Fathalfath30
  */
-trait HasAuth {
-  const AUTH = 'auth';
+trait HasId {
+  const ID = 'id';
 
-  /** @var \App\Domain\Entity\Auth $auth */
-  private Auth $auth;
-
+  /** @var string primary key for the entity */
+  private string $id;
 
   /**
-   * @return \App\Domain\Entity\Auth
+   * @return string
    */
-  public function getAuth() : Auth {
-    return $this->auth;
+  public function getId() : string {
+    return $this->id;
   }
 }
