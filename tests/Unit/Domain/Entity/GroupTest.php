@@ -18,7 +18,7 @@
 
 namespace Domain\Entity;
 
-use App\Domain\Entity\Role;
+use App\Domain\Entity\Group;
 use App\Domain\Entity\Timestamp;
 use App\Domain\Entity\Traits\Entity;
 use App\Exceptions\EntityValidationException;
@@ -27,7 +27,7 @@ use Faker\Factory;
 use Faker\Generator;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
-use Tests\TestData\RoleTestData;
+use Tests\TestData\GroupTestData;
 use Tests\TestData\TimestampTestData;
 
 /**
@@ -42,8 +42,8 @@ use Tests\TestData\TimestampTestData;
  * @see \App\Domain\Entity\Timestamp
  * @author Fathalfath30
  */
-class RoleTest extends TestCase {
-  use RoleTestData, TimestampTestData;
+class GroupTest extends TestCase {
+  use GroupTestData, TimestampTestData;
 
   /** @var \Faker\Generator $faker */
   private Generator $faker;
@@ -69,9 +69,9 @@ class RoleTest extends TestCase {
           'message' => trans('validation.required', ['attribute' => 'id'])
         ],
         'payload' => [
-          Role::ID => '',
-          Role::NAME => '',
-          Role::IS_ADMIN => false,
+          Group::ID => '',
+          Group::NAME => '',
+          Group::DESCRIPTION => null,
           Entity::TIMESTAMP => $this->getValidTimestampEntity()
         ]
       ],
@@ -81,9 +81,9 @@ class RoleTest extends TestCase {
           'message' => trans('validation.uuid', ['attribute' => 'id'])
         ],
         'payload' => [
-          Role::ID => 'abcd',
-          Role::NAME => '',
-          Role::IS_ADMIN => false,
+          Group::ID => 'abcd',
+          Group::NAME => '',
+          Group::DESCRIPTION => null,
           Entity::TIMESTAMP => $this->getValidTimestampEntity()
         ]
       ],
@@ -94,33 +94,33 @@ class RoleTest extends TestCase {
           'message' => trans('validation.required', ['attribute' => 'name'])
         ],
         'payload' => [
-          Role::ID => $this->getValidRoleId(),
-          Role::NAME => '',
-          Role::IS_ADMIN => false,
+          Group::ID => $this->getValidGroupId(),
+          Group::NAME => '',
+          Group::DESCRIPTION => null,
           Entity::TIMESTAMP => $this->getValidTimestampEntity()
         ]
       ],
       [
-        'name' => 'role name should have minimum 3 character',
+        'name' => 'group name should have minimum 3 character',
         'expected' => [
           'message' => trans('validation.min.string', ['attribute' => 'name', 'min' => '3'])
         ],
         'payload' => [
-          Role::ID => $this->getValidRoleId(),
-          Role::NAME => 'a',
-          Role::IS_ADMIN => false,
+          Group::ID => $this->getValidGroupId(),
+          Group::NAME => 'a',
+          Group::DESCRIPTION => null,
           Entity::TIMESTAMP => $this->getValidTimestampEntity()
         ]
       ],
       [
-        'name' => 'role name should not have character more than 150',
+        'name' => 'group name should not have character more than 150',
         'expected' => [
           'message' => trans('validation.max.string', ['attribute' => 'name', 'max' => '150'])
         ],
         'payload' => [
-          Role::ID => $this->getValidRoleId(),
-          Role::NAME => join("", $this->faker->words(155)),
-          Role::IS_ADMIN => false,
+          Group::ID => $this->getValidGroupId(),
+          Group::NAME => join("", $this->faker->words(155)),
+          Group::DESCRIPTION => null,
           Entity::TIMESTAMP => $this->getValidTimestampEntity()
         ]
       ],
@@ -129,7 +129,7 @@ class RoleTest extends TestCase {
     foreach($testCase as $tc) {
       $exception = false;
       try {
-        Role::create($tc['payload'][Role::ID], $tc['payload'][Role::NAME], $tc['payload'][Role::IS_ADMIN],
+        Group::create($tc['payload'][Group::ID], $tc['payload'][Group::NAME], $tc['payload'][Group::DESCRIPTION],
           $tc['payload'][Entity::TIMESTAMP]);
       } catch(Exception $e) {
         $this->assertStringMatchesFormat($tc['expected']['message'], $e->getMessage());
@@ -150,14 +150,17 @@ class RoleTest extends TestCase {
    */
   public function validateEntityGetter() {
     try {
-      $result = Role::create($this->getValidRoleId(), $this->getValidRoleName(), true,
-        $this->getValidTimestampEntity());
+      $result = Group::create($this->getValidGroupId(), $this->getValidGroupName(),
+        $this->getValidGroupDescription(), $this->getValidTimestampEntity());
       $this->assertNotNull($result);
-
-      $this->assertEquals($this->getValidRoleId(), $result->getId());
-      $this->assertEquals($this->getValidRoleName(), $result->getName());
-      $this->assertTrue($result->isAdmin());
+      $this->assertInstanceOf(Group::class, $result);
+      $this->assertEquals($this->getValidGroupId(), $result->getId());
+      $this->assertEquals($this->getValidGroupName(), $result->getName());
+      $this->assertEquals($this->getValidGroupDescription(), $result->getDescription());
+      $this->assertNotNull($result->getTimestamp());
       $this->assertInstanceOf(Timestamp::class, $result->getTimestamp());
+      $this->assertEquals($this->getValidTimestampEntity(), $result->getTimestamp());
+
     } catch(EntityValidationException|ValidationException $e) {
       $this->assertNull($e);
     }
