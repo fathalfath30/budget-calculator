@@ -26,9 +26,6 @@ use App\Domain\Entity\Traits\HasTimestamp;
 use App\Domain\Entity\Traits\ToArray;
 
 /**
- * This entity will handle role system
- *
- *
  * @version 1.0.0
  * @since 1.0.0
  *
@@ -40,75 +37,69 @@ use App\Domain\Entity\Traits\ToArray;
  *
  * @author Fathalfath30
  */
-class Role extends Entity implements IEntity {
+class   Group extends Entity implements IEntity {
   use ToArray;
   use HasId, HasName, HasTimestamp;
 
-  public const IS_ADMIN = 'is_admin';
+  public const DESCRIPTION = 'description';
 
-
-  public const USER_LEVEL_SUPER_ADMIN = '';
-  public const USER_LEVEL_GUEST = '';
-
-
-  /** @var bool $isAdmin */
-  private bool $isAdmin;
+  /** @var null|string $description */
+  private ?string $description;
 
   /**
    * @param string $id
    * @param string $name
-   * @param bool $is_admin
+   * @param null|string $description
    * @param \App\Domain\Entity\Timestamp $timestamp
    *
-   * @return \App\Domain\Entity\Role
+   * @return \App\Domain\Entity\Group
    * @throws \App\Exceptions\EntityValidationException
    * @throws \Illuminate\Validation\ValidationException
    */
-  public static function create(string $id, string $name, bool $is_admin, Timestamp $timestamp) : Role {
+  public static function create(string $id, string $name, ?string $description, Timestamp $timestamp) : Group {
     $validate = (new self)->validate(
       [
         self::ID => $id,
         self::NAME => $name,
-        self::IS_ADMIN => $is_admin,
+        self::DESCRIPTION => $description,
         self::TIMESTAMP => $timestamp
       ],
       [
         self::ID => ['required', 'uuid'],
         self::NAME => ['required', 'string', 'min:3', 'max:150'],
-        self::IS_ADMIN => ['nullable'],
-        self::TIMESTAMP => ['required'],
+        self::DESCRIPTION => ['nullable', 'string'],
+        self::TIMESTAMP => ['required']
       ]
     );
 
-    return self::rebuild($validate[self::ID], $validate[self::NAME], $validate[self::IS_ADMIN],
+    return self::rebuild($validate[self::ID], $validate[self::NAME], $validate[self::DESCRIPTION],
       $validate[self::TIMESTAMP]);
   }
 
   /**
    * @param string $id
    * @param string $name
-   * @param bool $is_admin
+   * @param null|string $description
    * @param \App\Domain\Entity\Timestamp $timestamp
    *
-   * @return \App\Domain\Entity\Role
+   * @return \App\Domain\Entity\Group
    */
-  public static function rebuild(string $id, string $name, bool $is_admin, Timestamp $timestamp) : Role {
-    $cls = new self;
+  public static function rebuild(string $id, string $name, ?string $description, Timestamp $timestamp) : Group {
+    $class = new self;
+    $class->id = trim($id);
+    $class->name = trim($name);
+    if(!empty($description)) {
+      $class->description = trim($description);
+    }
+    $class->timestamp = $timestamp;
 
-    $cls->id = trim($id);
-    $cls->name = trim($name);
-    $cls->isAdmin = $is_admin;
-    $cls->timestamp = $timestamp;
-
-    return $cls;
+    return $class;
   }
 
   /**
-   * Return true if role is admin
-   *
-   * @return bool
+   * @return null|string
    */
-  public function isAdmin() : bool {
-    return $this->isAdmin;
+  public function getDescription() : ?string {
+    return $this->description;
   }
 }
