@@ -51,8 +51,8 @@ class Role extends Entity implements IEntity {
   public const USER_LEVEL_GUEST = '';
 
 
-  /** @var bool $isAdmin */
-  private bool $isAdmin;
+  /** @var bool $is_admin */
+  private bool $is_admin;
 
   /**
    * @param string $id
@@ -97,7 +97,7 @@ class Role extends Entity implements IEntity {
 
     $cls->id = trim($id);
     $cls->name = trim($name);
-    $cls->isAdmin = $is_admin;
+    $cls->is_admin = $is_admin;
     $cls->timestamp = $timestamp;
 
     return $cls;
@@ -108,7 +108,7 @@ class Role extends Entity implements IEntity {
    *
    * @return bool
    */
-  public function isAdmin() : bool {
-    return $this->isAdmin;
+  public function is_admin() : bool {
+    return $this->is_admin;
   }
 }

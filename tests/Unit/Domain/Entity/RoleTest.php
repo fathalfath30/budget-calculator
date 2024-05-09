@@ -156,7 +156,7 @@ class RoleTest extends TestCase {
 
       $this->assertEquals($this->getValidRoleId(), $result->getId());
       $this->assertEquals($this->getValidRoleName(), $result->getName());
-      $this->assertTrue($result->isAdmin());
+      $this->assertTrue($result->is_admin());
       $this->assertInstanceOf(Timestamp::class, $result->getTimestamp());
     } catch(EntityValidationException|ValidationException $e) {
       $this->assertNull($e);
