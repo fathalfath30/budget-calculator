@@ -36,7 +36,7 @@ trait PasswordTestData {
    *
    * @return string
    */
-  public function getValidPassword() : string {
+  public function getSamplePassword() : string {
     return "Lupa@123";
   }
 
@@ -45,8 +45,15 @@ trait PasswordTestData {
    *
    * @return string
    */
-  public function getValidPasswordUpdatedAt() : string {
+  public function getSamplePasswordUpdatedAt() : string {
     return "2024-01-01 23:59:59";
+  }
+
+  /**
+   * @return int
+   */
+  public function getSampleFailAttempts() : int  {
+    return 1;
   }
 
   /**
@@ -57,7 +64,7 @@ trait PasswordTestData {
    * @return \App\Domain\Entity\Password
    */
   public function getPasswordEntity(bool $withConfirm = false) : Password {
-    return Password::rebuild($this->getValidPassword(), (($withConfirm) ? $this->getValidPassword() : null),
-      $this->getValidPasswordUpdatedAt());
+    return Password::rebuild($this->getSamplePassword(), (($withConfirm) ? $this->getSamplePassword() : null),
+      $this->getSamplePasswordUpdatedAt());
   }
 }

@@ -16,7 +16,6 @@
 //
 */
 
-
 namespace App\Domain\Entity;
 
 use App\Domain\Entity\Traits\Entity;
@@ -37,6 +36,11 @@ use Illuminate\Support\Facades\Hash;
 class Password extends Entity implements IEntity {
   use ToArray;
 
+  public const PASSWORD = 'password';
+  public const CONFIRM_PASSWORD = 'confirm_password';
+  public const PASSWORD_UPDATED_AT = 'password_updated_at';
+  public const FAIL_ATTEMPT = 'fail_attempt';
+
   /** @var string $password */
   private string $password;
 
@@ -46,31 +50,33 @@ class Password extends Entity implements IEntity {
   /** @var null|\Carbon\Carbon $updated_at */
   private ?Carbon $updated_at;
 
-  public const PASSWORD = 'password';
-  public const CONFIRM_PASSWORD = 'confirm_password';
-  public const PASSWORD_UPDATED_AT = 'password_updated_at';
+  /** @var int $fail_attempt */
+  private int $fail_attempt = 0;
 
   /**
    * @param string $password
    * @param null|string $confirm_password
    * @param null|string $password_updated_at
+   * @param int $fail_attempt
    *
    * @return \App\Domain\Entity\Password
    * @throws \App\Exceptions\EntityValidationException
    * @throws \Illuminate\Validation\ValidationException
-   * @throws \Carbon\Exceptions\InvalidFormatException
    */
-  public static function create(string $password, ?string $confirm_password, ?string $password_updated_at) : Password {
+  public static function create(string $password, ?string $confirm_password, ?string $password_updated_at,
+    int $fail_attempt = 0) : Password {
     $validate = (new self)->validate(
       [
         self::PASSWORD => $password,
         self::CONFIRM_PASSWORD => $confirm_password,
-        self::PASSWORD_UPDATED_AT => $password_updated_at
+        self::PASSWORD_UPDATED_AT => $password_updated_at,
+        self::FAIL_ATTEMPT => $fail_attempt
       ],
       [
         self::PASSWORD => ['required', 'string', 'min:6'],
         self::CONFIRM_PASSWORD => ['nullable', 'string', 'min:6', ('same:' . self::PASSWORD)],
-        self::PASSWORD_UPDATED_AT => ['nullable', 'string', 'date_format:Y-m-d H:i:s']
+        self::PASSWORD_UPDATED_AT => ['nullable', 'string', 'date_format:Y-m-d H:i:s'],
+        self::FAIL_ATTEMPT => ['required', 'numeric', 'min:0', 'max:3']
       ],
       [
         (self::CONFIRM_PASSWORD . ".min") => trans('validation.min.string', [

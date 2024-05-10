@@ -38,8 +38,8 @@ class User extends Entity implements IEntity {
   use HasId, ToArray;
 
   private UserProfile $profile;
+  private Email $email;
   private Auth $auth;
   private ?Carbon $locked_at;
-  private int $login_fail_attempt;
   private Timestamp $timestamp;
 }

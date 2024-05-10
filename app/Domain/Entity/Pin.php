@@ -19,14 +19,18 @@ use Carbon\Carbon;
 class Pin extends Entity implements IEntity {
   use ToArray;
 
-  const PIN = 'pin';
-  const LAST_UPDATED = 'pin_last_updated';
+  public const PIN = 'pin';
+  public const LAST_UPDATED = 'pin_last_updated';
+  public const FAIL_ATTEMPT = 'fail_attempt';
 
   /** @var string $pin */
   private string $pin;
 
   /** @var \Carbon\Carbon $last_updated */
   private Carbon $last_updated;
+
+  /** @var int $fail_attempt */
+  private int $fail_attempt = 0;
 
   /**
    * @param string $pin

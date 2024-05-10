@@ -21,7 +21,6 @@ namespace App\Domain\Entity;
 use App\Domain\Entity\Traits\Entity;
 use App\Domain\Entity\Traits\ToArray;
 use Exception;
-use Illuminate\Support\Carbon;
 
 /**
  * @version 1.0.0
@@ -39,8 +38,6 @@ class UserProfile extends Entity implements IEntity {
   public const FIRSTNAME = 'firstname';
   public const LASTNAME = 'lastname';
   public const USERNAME = 'username';
-  public const EMAIL = 'email';
-  public const AUTH = 'auth';
 
 
   /** @var string $firstname */
@@ -51,15 +48,6 @@ class UserProfile extends Entity implements IEntity {
 
   /** @var string $username */
   private string $username;
-
-  /** @var string $email */
-  private string $email;
-
-  /** @var \App\Domain\Entity\Auth $auth */
-  private Auth $auth;
-
-  /** @var \App\Domain\Entity\Timestamp $timestamp */
-  private Timestamp $timestamp;
 
   public static function create(string $firstname, ?string $lastname, string $username, string $email, Auth $auth,
     Timestamp $timestamp) : self {

@@ -75,7 +75,7 @@ class PasswordTest extends TestCase {
           'message' => trans('validation.min.string', ['attribute' => Password::CONFIRM_PASSWORD, 'min' => '6'])
         ],
         'payload' => [
-          Password::PASSWORD => $this->getValidPassword(),
+          Password::PASSWORD => $this->getSamplePassword(),
           Password::CONFIRM_PASSWORD => 'aa',
           Password::PASSWORD_UPDATED_AT => ''
         ]
@@ -89,8 +89,8 @@ class PasswordTest extends TestCase {
           ])
         ],
         'payload' => [
-          Password::PASSWORD => $this->getValidPassword(),
-          Password::CONFIRM_PASSWORD => $this->getValidPassword() . "abcd",
+          Password::PASSWORD => $this->getSamplePassword(),
+          Password::CONFIRM_PASSWORD => $this->getSamplePassword() . "abcd",
           Password::PASSWORD_UPDATED_AT => ''
         ]
       ],
@@ -103,8 +103,8 @@ class PasswordTest extends TestCase {
           ])
         ],
         'payload' => [
-          Password::PASSWORD => $this->getValidPassword(),
-          Password::CONFIRM_PASSWORD => $this->getValidPassword(),
+          Password::PASSWORD => $this->getSamplePassword(),
+          Password::CONFIRM_PASSWORD => $this->getSamplePassword(),
           Password::PASSWORD_UPDATED_AT => 'abc'
         ]
       ],
@@ -138,13 +138,13 @@ class PasswordTest extends TestCase {
    */
   public function validateEntityGetter() {
     try {
-      $result = Password::create($this->getValidPassword(), $this->getValidPassword(),
-        $this->getValidPasswordUpdatedAt());
+      $result = Password::create($this->getSamplePassword(), $this->getSamplePassword(),
+        $this->getSamplePasswordUpdatedAt());
       $this->assertNotNull($result);
       $this->assertInstanceOf(Password::class, $result);
-      $this->assertEquals($this->getValidPassword(), $result->getPassword());
-      $this->assertEquals($this->getValidPassword(), $result->getConfirmPassword());
-      $this->assertEquals($this->getValidPasswordUpdatedAt(), $result->getUpdatedAt());
+      $this->assertEquals($this->getSamplePassword(), $result->getPassword());
+      $this->assertEquals($this->getSamplePassword(), $result->getConfirmPassword());
+      $this->assertEquals($this->getSamplePasswordUpdatedAt(), $result->getUpdatedAt());
     } catch(EntityValidationException|ValidationException $exception) {
       $this->assertNull($exception);
     }
@@ -162,14 +162,14 @@ class PasswordTest extends TestCase {
    */
   public function itCanEncryptAndValidatePassword() : void {
     try {
-      $result = Password::create($this->getValidPassword(), $this->getValidPassword(),
-        $this->getValidPasswordUpdatedAt());
+      $result = Password::create($this->getSamplePassword(), $this->getSamplePassword(),
+        $this->getSamplePasswordUpdatedAt());
       $this->assertNotNull($result);
       $this->assertInstanceOf(Password::class, $result);
 
       $result->encrypt();
       $this->assertTrue($result->validatePassword(
-        $this->getValidPassword(), $result->getPassword()));
+        $this->getSamplePassword(), $result->getPassword()));
     } catch(EntityValidationException|ValidationException $exception) {
       $this->assertNull($exception);
     }
