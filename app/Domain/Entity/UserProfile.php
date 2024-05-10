@@ -36,6 +36,13 @@ use Illuminate\Support\Carbon;
 class UserProfile extends Entity implements IEntity {
   use ToArray;
 
+  public const FIRSTNAME = 'firstname';
+  public const LASTNAME = 'lastname';
+  public const USERNAME = 'username';
+  public const EMAIL = 'email';
+  public const AUTH = 'auth';
+
+
   /** @var string $firstname */
   private string $firstname;
 
@@ -48,16 +55,19 @@ class UserProfile extends Entity implements IEntity {
   /** @var string $email */
   private string $email;
 
-  /** @var null|\Illuminate\Support\Carbon $password_verified_at */
-  private ?Carbon $password_verified_at;
+  /** @var \App\Domain\Entity\Auth $auth */
+  private Auth $auth;
 
-  public static function create(string $firstname, ?string $lastname, string $username, string $email,
-    ?Carbon $password_verified_at) : self {
+  /** @var \App\Domain\Entity\Timestamp $timestamp */
+  private Timestamp $timestamp;
+
+  public static function create(string $firstname, ?string $lastname, string $username, string $email, Auth $auth,
+    Timestamp $timestamp) : self {
     throw new Exception("not implemented");
   }
 
-  public static function rebuild(string $firstname, ?string $lastname, string $username, string $email,
-    ?Carbon $password_verified_at) : self {
+  public static function rebuild(string $firstname, ?string $lastname, string $username, string $email, Auth $auth,
+    Timestamp $timestamp) : self {
     throw new Exception("not implemented");
   }
 }
