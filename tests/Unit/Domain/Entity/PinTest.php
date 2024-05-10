@@ -19,13 +19,15 @@
 namespace Tests\Unit\Domain\Entity;
 
 use App\Domain\Entity\Password;
+use App\Domain\Entity\Pin;
 use App\Exceptions\EntityValidationException;
 use Exception;
 use Faker\Factory;
 use Faker\Generator;
+use Illuminate\Support\Carbon;
 use Nette\Schema\ValidationException;
 use Tests\TestCase;
-use Tests\TestData\PasswordTestData;
+use Tests\TestData\PinTestData;
 
 /**
  * @version 1.0.0
@@ -35,8 +37,8 @@ use Tests\TestData\PasswordTestData;
  * @see \Tests\TestData\PasswordTestData
  * @author Fathalfath30
  */
-class PasswordTest extends TestCase {
-  use PasswordTestData;
+class PinTest extends TestCase {
+  use PinTestData;
 
   /** @var \Faker\Generator $faker */
   private Generator $faker;
@@ -60,73 +62,51 @@ class PasswordTest extends TestCase {
   public function validateUserInput() {
     $testCase = [
       [
-        'name' => 'password is required',
+        'name' => 'pin is required',
         'expected' => [
-          'message' => trans('validation.required', ['attribute' => 'password'])
+          'message' => trans('validation.required', ['attribute' => 'pin'])
         ],
         'payload' => [
-          Password::PASSWORD => '',
-          Password::CONFIRM_PASSWORD => '',
-          Password::PASSWORD_UPDATED_AT => ''
+          Pin::PIN => '',
+          Pin::LAST_UPDATED => $this->getSampleLastUpdated()
         ]
       ],
       [
-        'name' => 'password must have at least 6 character',
+        'name' => 'pin is must be a valid integer',
         'expected' => [
-          'message' => trans('validation.min.string', ['attribute' => 'password', 'min' => '6'])
+          'message' => trans('validation.numeric', ['attribute' => 'pin'])
         ],
         'payload' => [
-          Password::PASSWORD => 'admin',
-          Password::CONFIRM_PASSWORD => '',
-          Password::PASSWORD_UPDATED_AT => ''
+          Pin::PIN => 'lorem',
+          Pin::LAST_UPDATED => $this->getSampleLastUpdated()
         ]
       ],
       [
-        'name' => 'confirm password must have at least 6 character if not empty',
+        'name' => 'pin must be 6 digits',
         'expected' => [
-          'message' => trans('validation.min.string', ['attribute' => Password::CONFIRM_PASSWORD, 'min' => '6'])
+          'message' => trans('validation.digits', ['attribute' => 'pin', 'digits' => '6'])
         ],
         'payload' => [
-          Password::PASSWORD => $this->getValidPassword(),
-          Password::CONFIRM_PASSWORD => 'aa',
-          Password::PASSWORD_UPDATED_AT => ''
+          Pin::PIN => '0999900',
+          Pin::LAST_UPDATED => $this->getSampleLastUpdated()
         ]
       ],
       [
-        'name' => 'confirm password must be equals with password if not empty',
+        'name' => 'pin must be 6 digits 2',
         'expected' => [
-          'message' => trans('validation.same', [
-            'attribute' => Password::CONFIRM_PASSWORD,
-            'other' => Password::PASSWORD
-          ])
+          'message' => trans('validation.digits', ['attribute' => 'pin', 'digits' => '6'])
         ],
         'payload' => [
-          Password::PASSWORD => $this->getValidPassword(),
-          Password::CONFIRM_PASSWORD => $this->getValidPassword() . "abcd",
-          Password::PASSWORD_UPDATED_AT => ''
+          Pin::PIN => '00000',
+          Pin::LAST_UPDATED => $this->getSampleLastUpdated()
         ]
-      ],
-      [
-        'name' => 'password_updated_at must have valid format Y-m-d H:i:s',
-        'expected' => [
-          'message' => trans('validation.date_format', [
-            'attribute' => Password::PASSWORD_UPDATED_AT,
-            'format' => 'Y-m-d H:i:s'
-          ])
-        ],
-        'payload' => [
-          Password::PASSWORD => $this->getValidPassword(),
-          Password::CONFIRM_PASSWORD => $this->getValidPassword(),
-          Password::PASSWORD_UPDATED_AT => 'abc'
-        ]
-      ],
+      ]
     ];
 
     foreach($testCase as $tc) {
       $exception = false;
       try {
-        Password::create($tc['payload'][Password::PASSWORD], $tc['payload'][Password::CONFIRM_PASSWORD],
-          $tc['payload'][Password::PASSWORD_UPDATED_AT]);
+        Pin::create($tc['payload'][Pin::PIN], $tc['payload'][Pin::LAST_UPDATED]);
       } catch(Exception $e) {
         $this->assertStringMatchesFormat($tc['expected']['message'], $e->getMessage());
         $this->assertInstanceOf(EntityValidationException::class, $e);
@@ -147,13 +127,12 @@ class PasswordTest extends TestCase {
    */
   public function validateEntityGetter() {
     try {
-      $result = Password::create($this->getValidPassword(), $this->getValidPassword(),
-        $this->getValidPasswordUpdatedAt());
+      $result = Pin::create($this->getSamplePin(), $this->getSampleLastUpdated());
       $this->assertNotNull($result);
-      $this->assertInstanceOf(Password::class, $result);
-      $this->assertEquals($this->getValidPassword(), $result->getPassword());
-      $this->assertEquals($this->getValidPassword(), $result->getConfirmPassword());
-      $this->assertEquals($this->getValidPasswordUpdatedAt(), $result->getUpdatedAt());
+      $this->assertInstanceOf(Pin::class, $result);
+      $this->assertEquals($this->getSamplePin(), $result->getPin());
+      $this->assertNotNull($result->getLastUpdated());
+      $this->assertInstanceOf(Carbon::class, $result->getLastUpdated());
     } catch(EntityValidationException|ValidationException $exception) {
       $this->assertNull($exception);
     }
@@ -163,7 +142,7 @@ class PasswordTest extends TestCase {
    * @return void
    * @throws \Illuminate\Validation\ValidationException
    *
-   * @test
+   * test
    * @testdox it can encrypt and validate password
    */
   public function itCanEncryptAndValidatePassword() : void {

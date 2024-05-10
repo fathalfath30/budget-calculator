@@ -43,8 +43,8 @@ class Password extends Entity implements IEntity {
   /** @var null|string $confirm_password */
   private ?string $confirm_password;
 
-  /** @var null|\Carbon\Carbon $password_updated_at */
-  private ?Carbon $password_updated_at;
+  /** @var null|\Carbon\Carbon $updated_at */
+  private ?Carbon $updated_at;
 
   public const PASSWORD = 'password';
   public const CONFIRM_PASSWORD = 'confirm_password';
@@ -105,7 +105,7 @@ class Password extends Entity implements IEntity {
       $cls->confirm_password = trim($confirm_password);
     }
 
-    $cls->password_updated_at = Carbon::parse(trim($password_updated_at));
+    $cls->updated_at = Carbon::parse(trim($password_updated_at));
     return $cls;
   }
 
@@ -132,8 +132,8 @@ class Password extends Entity implements IEntity {
    *
    * @return null|\Carbon\Carbon
    */
-  public function getPasswordUpdatedAt() : ?Carbon {
-    return $this->password_updated_at;
+  public function getUpdatedAt() : ?Carbon {
+    return $this->updated_at;
   }
 
   /**

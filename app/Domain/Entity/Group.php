@@ -37,7 +37,7 @@ use App\Domain\Entity\Traits\ToArray;
  *
  * @author Fathalfath30
  */
-class   Group extends Entity implements IEntity {
+class Group extends Entity implements IEntity {
   use ToArray;
   use HasId, HasName, HasTimestamp;
 
