@@ -25,15 +25,13 @@ use Tests\TestCase;
 use Tests\TestData\TimestampTestData;
 
 /**
- * TimestampTest
- *
- * This class is used to testing some business rules for Timestamp entity, for example
- * testing __constructor and validation and more.
  *
  * @version 1.0.0
  * @since 1.0.0
  *
  * @see \App\Domain\Entity\Timestamp
+ * @see \Tests\TestData\TimestampTestData
+ *
  * @author Fathalfath30
  */
 class TimestampTest extends TestCase {
@@ -124,8 +122,10 @@ class TimestampTest extends TestCase {
   /**
    * @return void
    * @throws \App\Exceptions\EntityValidationException
+   * @throws \Illuminate\Validation\ValidationException
    *
    * @test
+   * @testdox created_at and updated_at must return constructed value
    */
   public function createdAtAndUpdateAtMustReturnConstructedValue() {
     $now = date('Y-m-d H:i:s');

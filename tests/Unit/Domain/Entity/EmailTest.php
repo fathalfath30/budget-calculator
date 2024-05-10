@@ -26,7 +26,16 @@ use Tests\TestCase;
 use Tests\TestData\EmailTestData;
 use Tests\TestData\TimestampTestData;
 
-
+/**
+ * @version 1.0.0
+ * @since 1.0.0
+ *
+ * @see \App\Domain\Entity\Email
+ * @see \Tests\TestData\EmailTestData
+ * @see \Tests\TestData\TimestampTestData
+ *
+ * @author Fathalfath30
+ */
 class EmailTest extends TestCase {
   use EmailTestData, TimestampTestData;
 
@@ -35,6 +44,10 @@ class EmailTest extends TestCase {
    *
    * @return void
    * @test
+   * @testdox validate input
+   *
+   * @version 1.0.0
+   * @since 1.0.0
    */
   public function validateInput() {
     $now = date('Y-m-d H:i:s');
@@ -83,6 +96,9 @@ class EmailTest extends TestCase {
    *
    * @test
    * @testdox validate entity getter
+   *
+   * @version 1.0.0
+   * @since 1.0.0
    */
   public function validateEntityGetter() {
     $result = Email::create($this->getSampleEmail(), $this->getSampleEmailVerifiedAt());

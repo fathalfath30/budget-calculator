@@ -21,8 +21,6 @@ namespace Tests\Unit\Domain\Entity;
 use App\Domain\Entity\Password;
 use App\Exceptions\EntityValidationException;
 use Exception;
-use Faker\Factory;
-use Faker\Generator;
 use Nette\Schema\ValidationException;
 use Tests\TestCase;
 use Tests\TestData\PasswordTestData;
@@ -38,24 +36,14 @@ use Tests\TestData\PasswordTestData;
 class PasswordTest extends TestCase {
   use PasswordTestData;
 
-  /** @var \Faker\Generator $faker */
-  private Generator $faker;
-
-  /**
-   * Set up the test case
-   *
-   * @return void
-   */
-  protected function setUp() : void {
-    parent::setUp();
-    $this->faker = Factory::create(app()->getLocale());
-  }
-
   /**
    * @return void
    *
    * @test
    * @testdox validate user input
+   *
+   * @version 1.0.0
+   * @since 1.0.0
    */
   public function validateUserInput() {
     $testCase = [
@@ -144,6 +132,9 @@ class PasswordTest extends TestCase {
    *
    * @test
    * @testdox validate entity getter
+   *
+   * @version 1.0.0
+   * @since 1.0.0
    */
   public function validateEntityGetter() {
     try {
@@ -165,6 +156,9 @@ class PasswordTest extends TestCase {
    *
    * @test
    * @testdox it can encrypt and validate password
+   *
+   * @version 1.0.0
+   * @since 1.0.0
    */
   public function itCanEncryptAndValidatePassword() : void {
     try {

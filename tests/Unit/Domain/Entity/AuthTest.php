@@ -29,7 +29,9 @@ use Tests\TestData\PinTestData;
  * @version 1.0.0
  * @since 1.0.0
  *
+ * @see \App\Domain\Entity\Auth
  * @see \App\Domain\Entity\Password
+ * @see \App\Domain\Entity\Pin
  * @see \Tests\TestData\PasswordTestData
  * @see \Tests\TestData\PinTestData
  *
@@ -39,21 +41,15 @@ class AuthTest extends TestCase {
   use PasswordTestData, PinTestData;
 
   /**
-   * Set up the test case
-   *
-   * @return void
-   */
-  protected function setUp() : void {
-    parent::setUp();
-  }
-
-  /**
    * @return void
    * @throws \App\Exceptions\EntityValidationException
    * @throws \Illuminate\Validation\ValidationException
    *
    * @test
    * @testdox it can rebuild auth entity
+   *
+   * @version 1.0.0
+   * @since 1.0.0
    */
   public function itCanRebuildAuth() {
     $result = Auth::rebuild($this->getPasswordEntity(), $this->getSamplePinEntity());

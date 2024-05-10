@@ -18,12 +18,9 @@
 
 namespace Tests\Unit\Domain\Entity;
 
-use App\Domain\Entity\Password;
 use App\Domain\Entity\Pin;
 use App\Exceptions\EntityValidationException;
 use Exception;
-use Faker\Factory;
-use Faker\Generator;
 use Illuminate\Support\Carbon;
 use Nette\Schema\ValidationException;
 use Tests\TestCase;
@@ -33,31 +30,22 @@ use Tests\TestData\PinTestData;
  * @version 1.0.0
  * @since 1.0.0
  *
- * @see \App\Domain\Entity\Password
- * @see \Tests\TestData\PasswordTestData
+ * @see \App\Domain\Entity\Pin
+ * @see \Tests\TestData\PinTestData
+ *
  * @author Fathalfath30
  */
 class PinTest extends TestCase {
   use PinTestData;
-
-  /** @var \Faker\Generator $faker */
-  private Generator $faker;
-
-  /**
-   * Set up the test case
-   *
-   * @return void
-   */
-  protected function setUp() : void {
-    parent::setUp();
-    $this->faker = Factory::create(app()->getLocale());
-  }
 
   /**
    * @return void
    *
    * @test
    * @testdox validate user input
+   *
+   * @version 1.0.0
+   * @since 1.0.0
    */
   public function validateUserInput() {
     $testCase = [
@@ -124,6 +112,9 @@ class PinTest extends TestCase {
    *
    * @test
    * @testdox validate entity getter
+   *
+   * @version 1.0.0
+   * @since 1.0.0
    */
   public function validateEntityGetter() {
     try {
@@ -133,28 +124,6 @@ class PinTest extends TestCase {
       $this->assertEquals($this->getSamplePin(), $result->getPin());
       $this->assertNotNull($result->getLastUpdated());
       $this->assertInstanceOf(Carbon::class, $result->getLastUpdated());
-    } catch(EntityValidationException|ValidationException $exception) {
-      $this->assertNull($exception);
-    }
-  }
-
-  /**
-   * @return void
-   * @throws \Illuminate\Validation\ValidationException
-   *
-   * test
-   * @testdox it can encrypt and validate password
-   */
-  public function itCanEncryptAndValidatePassword() : void {
-    try {
-      $result = Password::create($this->getValidPassword(), $this->getValidPassword(),
-        $this->getValidPasswordUpdatedAt());
-      $this->assertNotNull($result);
-      $this->assertInstanceOf(Password::class, $result);
-
-      $result->encrypt();
-      $this->assertTrue($result->validatePassword(
-        $this->getValidPassword(), $result->getPassword()));
     } catch(EntityValidationException|ValidationException $exception) {
       $this->assertNull($exception);
     }

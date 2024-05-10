@@ -31,15 +31,13 @@ use Tests\TestData\GroupTestData;
 use Tests\TestData\TimestampTestData;
 
 /**
- * TimestampTest
- *
- * This class is used to testing some business rules for Timestamp entity, for example
- * testing __constructor and validation and more.
- *
  * @version 1.0.0
  * @since 1.0.0
  *
- * @see \App\Domain\Entity\Timestamp
+ * @see \App\Domain\Entity\Group
+ * @see \Tests\TestData\GroupTestData
+ * @see \Tests\TestData\EmailTestData
+ *
  * @author Fathalfath30
  */
 class GroupTest extends TestCase {
@@ -48,6 +46,12 @@ class GroupTest extends TestCase {
   /** @var \Faker\Generator $faker */
   private Generator $faker;
 
+  /**
+   * @return void
+   *
+   * @version 1.0.0
+   * @since 1.0.0
+   */
   protected function setUp() : void {
     parent::setUp();
     $this->faker = Factory::create(app()->getLocale());
@@ -60,6 +64,9 @@ class GroupTest extends TestCase {
    *
    * @test
    * @testdox validate user input
+   *
+   * @version 1.0.0
+   * @since 1.0.0
    */
   public function validateUserInput() {
     $testCase = [
@@ -147,6 +154,9 @@ class GroupTest extends TestCase {
    *
    * @test
    * @testdox validate entity getter
+   *
+   * @version 1.0.0
+   * @since 1.0.0
    */
   public function validateEntityGetter() {
     try {
