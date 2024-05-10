@@ -18,18 +18,45 @@
 
 namespace Tests\TestData;
 
+use App\Domain\Entity\Pin;
 use Illuminate\Support\Carbon;
 
+/**
+ * PinTestData
+ * This trait will have valid pin and valid pin_last_updated
+ *
+ * @see \App\Domain\Entity\Pin
+ * @see \Illuminate\Support\Carbon
+ */
 trait PinTestData {
+
+  /**
+   * @return string
+   */
   public function getSamplePin() : string {
     return "503829";
   }
 
+  /**
+   * @return string
+   */
   public function getSampleStrLastUpdated() : string {
     return "2023-01-01 00:00:00";
   }
 
+  /**
+   * @return \Illuminate\Support\Carbon
+   */
   public function getSampleLastUpdated() : Carbon {
     return Carbon::parse($this->getSampleStrLastUpdated());
+  }
+
+  /**
+   * @return \App\Domain\Entity\Pin
+   * @throws \App\Exceptions\EntityValidationException
+   * @throws \Illuminate\Validation\ValidationException
+   */
+  public function getSamplePinEntity() : Pin {
+    return Pin::create($this->getSamplePin(), $this->getSampleLastUpdated());
   }
 }

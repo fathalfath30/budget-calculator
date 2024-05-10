@@ -38,14 +38,19 @@ class Auth extends Entity implements IEntity {
   /** @var null|\App\Domain\Entity\Password $password */
   private ?Password $password;
 
+  /** @var null|\App\Domain\Entity\Pin $pin */
+  private ?Pin $pin;
+
   /**
    * @param null|\App\Domain\Entity\Password $password
+   * @param null|\App\Domain\Entity\Pin $pin
    *
    * @return \App\Domain\Entity\Auth
    */
-  public static function rebuild(?Password $password) : Auth {
+  public static function rebuild(?Password $password = null, ?Pin $pin = null) : Auth {
     $cls = new self;
     $cls->password = $password;
+    $cls->pin = $pin;
 
     return $cls;
   }
@@ -57,5 +62,12 @@ class Auth extends Entity implements IEntity {
    */
   public function getPassword() : ?Password {
     return $this->password;
+  }
+
+  /**
+   * @return null|\App\Domain\Entity\Pin
+   */
+  public function getPin() : ?Pin {
+    return $this->pin;
   }
 }

@@ -20,8 +20,10 @@ namespace Tests\Unit\Domain\Entity;
 
 use App\Domain\Entity\Auth;
 use App\Domain\Entity\Password;
+use App\Domain\Entity\Pin;
 use Tests\TestCase;
 use Tests\TestData\PasswordTestData;
+use Tests\TestData\PinTestData;
 
 /**
  * @version 1.0.0
@@ -29,11 +31,12 @@ use Tests\TestData\PasswordTestData;
  *
  * @see \App\Domain\Entity\Password
  * @see \Tests\TestData\PasswordTestData
+ * @see \Tests\TestData\PinTestData
  *
  * @author Fathalfath30
  */
 class AuthTest extends TestCase {
-  use PasswordTestData;
+  use PasswordTestData, PinTestData;
 
   /**
    * Set up the test case
@@ -46,15 +49,21 @@ class AuthTest extends TestCase {
 
   /**
    * @return void
+   * @throws \App\Exceptions\EntityValidationException
+   * @throws \Illuminate\Validation\ValidationException
    *
    * @test
    * @testdox it can rebuild auth entity
    */
   public function itCanRebuildAuth() {
-    $result = Auth::rebuild($this->getPasswordEntity());
+    $result = Auth::rebuild($this->getPasswordEntity(), $this->getSamplePinEntity());
     $this->assertNotNull($result);
     $this->assertInstanceOf(Auth::class, $result);
+
     $this->assertNotNull($result->getPassword());
     $this->assertInstanceOf(Password::class, $result->getPassword());
+
+    $this->assertNotNull($result->getPin());
+    $this->assertInstanceOf(Pin::class, $result->getPin());
   }
 }
