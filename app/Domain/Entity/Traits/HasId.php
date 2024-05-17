@@ -30,7 +30,7 @@ use App\Domain\Entity\Role;
  * @author Fathalfath30
  */
 trait HasId {
-  const ID = 'id';
+  public const Id = 'id';
 
   /** @var string primary key for the entity */
   private string $id;

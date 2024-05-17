@@ -30,7 +30,7 @@ use App\Domain\Entity\Timestamp;
  * @author Fathalfath30
  */
 trait HasTimestamp {
-  const TIMESTAMP = 'timestamp';
+  public const Timestamp = 'timestamp';
 
   /** @var \App\Domain\Entity\Timestamp $timestamp */
   private Timestamp $timestamp;

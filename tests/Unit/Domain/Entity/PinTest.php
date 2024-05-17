@@ -55,8 +55,8 @@ class PinTest extends TestCase {
           'message' => trans('validation.required', ['attribute' => 'pin'])
         ],
         'payload' => [
-          Pin::PIN => '',
-          Pin::LAST_UPDATED => $this->getSampleLastUpdated()
+          Pin::Pin => '',
+          Pin::LastUpdated => $this->getSampleLastUpdated()
         ]
       ],
       [
@@ -65,8 +65,8 @@ class PinTest extends TestCase {
           'message' => trans('validation.numeric', ['attribute' => 'pin'])
         ],
         'payload' => [
-          Pin::PIN => 'lorem',
-          Pin::LAST_UPDATED => $this->getSampleLastUpdated()
+          Pin::Pin => 'lorem',
+          Pin::LastUpdated => $this->getSampleLastUpdated()
         ]
       ],
       [
@@ -75,8 +75,8 @@ class PinTest extends TestCase {
           'message' => trans('validation.digits', ['attribute' => 'pin', 'digits' => '6'])
         ],
         'payload' => [
-          Pin::PIN => '0999900',
-          Pin::LAST_UPDATED => $this->getSampleLastUpdated()
+          Pin::Pin => '0999900',
+          Pin::LastUpdated => $this->getSampleLastUpdated()
         ]
       ],
       [
@@ -85,8 +85,8 @@ class PinTest extends TestCase {
           'message' => trans('validation.digits', ['attribute' => 'pin', 'digits' => '6'])
         ],
         'payload' => [
-          Pin::PIN => '00000',
-          Pin::LAST_UPDATED => $this->getSampleLastUpdated()
+          Pin::Pin => '00000',
+          Pin::LastUpdated => $this->getSampleLastUpdated()
         ]
       ]
     ];
@@ -94,7 +94,7 @@ class PinTest extends TestCase {
     foreach($testCase as $tc) {
       $exception = false;
       try {
-        Pin::create($tc['payload'][Pin::PIN], $tc['payload'][Pin::LAST_UPDATED]);
+        Pin::create($tc['payload'][Pin::Pin], $tc['payload'][Pin::LastUpdated]);
       } catch(Exception $e) {
         $this->assertStringMatchesFormat($tc['expected']['message'], $e->getMessage());
         $this->assertInstanceOf(EntityValidationException::class, $e);

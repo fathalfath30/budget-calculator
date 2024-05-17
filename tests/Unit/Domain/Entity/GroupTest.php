@@ -76,10 +76,10 @@ class GroupTest extends TestCase {
           'message' => trans('validation.required', ['attribute' => 'id'])
         ],
         'payload' => [
-          Group::ID => '',
-          Group::NAME => '',
-          Group::DESCRIPTION => null,
-          Entity::TIMESTAMP => $this->getValidTimestampEntity()
+          Group::Id => '',
+          Group::Name => '',
+          Group::Description => null,
+          Entity::Timestamp => $this->getValidTimestampEntity()
         ]
       ],
       [
@@ -88,10 +88,10 @@ class GroupTest extends TestCase {
           'message' => trans('validation.uuid', ['attribute' => 'id'])
         ],
         'payload' => [
-          Group::ID => 'abcd',
-          Group::NAME => '',
-          Group::DESCRIPTION => null,
-          Entity::TIMESTAMP => $this->getValidTimestampEntity()
+          Group::Id => 'abcd',
+          Group::Name => '',
+          Group::Description => null,
+          Entity::Timestamp => $this->getValidTimestampEntity()
         ]
       ],
 
@@ -101,10 +101,10 @@ class GroupTest extends TestCase {
           'message' => trans('validation.required', ['attribute' => 'name'])
         ],
         'payload' => [
-          Group::ID => $this->getValidGroupId(),
-          Group::NAME => '',
-          Group::DESCRIPTION => null,
-          Entity::TIMESTAMP => $this->getValidTimestampEntity()
+          Group::Id => $this->getValidGroupId(),
+          Group::Name => '',
+          Group::Description => null,
+          Entity::Timestamp => $this->getValidTimestampEntity()
         ]
       ],
       [
@@ -113,10 +113,10 @@ class GroupTest extends TestCase {
           'message' => trans('validation.min.string', ['attribute' => 'name', 'min' => '3'])
         ],
         'payload' => [
-          Group::ID => $this->getValidGroupId(),
-          Group::NAME => 'a',
-          Group::DESCRIPTION => null,
-          Entity::TIMESTAMP => $this->getValidTimestampEntity()
+          Group::Id => $this->getValidGroupId(),
+          Group::Name => 'a',
+          Group::Description => null,
+          Entity::Timestamp => $this->getValidTimestampEntity()
         ]
       ],
       [
@@ -125,10 +125,10 @@ class GroupTest extends TestCase {
           'message' => trans('validation.max.string', ['attribute' => 'name', 'max' => '150'])
         ],
         'payload' => [
-          Group::ID => $this->getValidGroupId(),
-          Group::NAME => join("", $this->faker->words(155)),
-          Group::DESCRIPTION => null,
-          Entity::TIMESTAMP => $this->getValidTimestampEntity()
+          Group::Id => $this->getValidGroupId(),
+          Group::Name => join("", $this->faker->words(155)),
+          Group::Description => null,
+          Entity::Timestamp => $this->getValidTimestampEntity()
         ]
       ],
     ];
@@ -136,8 +136,8 @@ class GroupTest extends TestCase {
     foreach($testCase as $tc) {
       $exception = false;
       try {
-        Group::create($tc['payload'][Group::ID], $tc['payload'][Group::NAME], $tc['payload'][Group::DESCRIPTION],
-          $tc['payload'][Entity::TIMESTAMP]);
+        Group::create($tc['payload'][Group::Id], $tc['payload'][Group::Name], $tc['payload'][Group::Description],
+          $tc['payload'][Entity::Timestamp]);
       } catch(Exception $e) {
         $this->assertStringMatchesFormat($tc['expected']['message'], $e->getMessage());
         $this->assertInstanceOf(EntityValidationException::class, $e);

@@ -53,9 +53,9 @@ class PasswordTest extends TestCase {
           'message' => trans('validation.required', ['attribute' => 'password'])
         ],
         'payload' => [
-          Password::PASSWORD => '',
-          Password::CONFIRM_PASSWORD => '',
-          Password::PASSWORD_UPDATED_AT => ''
+          Password::Password => '',
+          Password::ConfirmPassword => '',
+          Password::PasswordUpdatedAt => ''
         ]
       ],
       [
@@ -64,48 +64,48 @@ class PasswordTest extends TestCase {
           'message' => trans('validation.min.string', ['attribute' => 'password', 'min' => '6'])
         ],
         'payload' => [
-          Password::PASSWORD => 'admin',
-          Password::CONFIRM_PASSWORD => '',
-          Password::PASSWORD_UPDATED_AT => ''
+          Password::Password => 'admin',
+          Password::ConfirmPassword => '',
+          Password::PasswordUpdatedAt => ''
         ]
       ],
       [
         'name' => 'confirm password must have at least 6 character if not empty',
         'expected' => [
-          'message' => trans('validation.min.string', ['attribute' => Password::CONFIRM_PASSWORD, 'min' => '6'])
+          'message' => trans('validation.min.string', ['attribute' => Password::ConfirmPassword, 'min' => '6'])
         ],
         'payload' => [
-          Password::PASSWORD => $this->getSamplePassword(),
-          Password::CONFIRM_PASSWORD => 'aa',
-          Password::PASSWORD_UPDATED_AT => ''
+          Password::Password => $this->getSamplePassword(),
+          Password::ConfirmPassword => 'aa',
+          Password::PasswordUpdatedAt => ''
         ]
       ],
       [
         'name' => 'confirm password must be equals with password if not empty',
         'expected' => [
           'message' => trans('validation.same', [
-            'attribute' => Password::CONFIRM_PASSWORD,
-            'other' => Password::PASSWORD
+            'attribute' => Password::ConfirmPassword,
+            'other' => Password::Password
           ])
         ],
         'payload' => [
-          Password::PASSWORD => $this->getSamplePassword(),
-          Password::CONFIRM_PASSWORD => $this->getSamplePassword() . "abcd",
-          Password::PASSWORD_UPDATED_AT => ''
+          Password::Password => $this->getSamplePassword(),
+          Password::ConfirmPassword => $this->getSamplePassword() . "abcd",
+          Password::PasswordUpdatedAt => ''
         ]
       ],
       [
         'name' => 'password_updated_at must have valid format Y-m-d H:i:s',
         'expected' => [
           'message' => trans('validation.date_format', [
-            'attribute' => Password::PASSWORD_UPDATED_AT,
+            'attribute' => Password::PasswordUpdatedAt,
             'format' => 'Y-m-d H:i:s'
           ])
         ],
         'payload' => [
-          Password::PASSWORD => $this->getSamplePassword(),
-          Password::CONFIRM_PASSWORD => $this->getSamplePassword(),
-          Password::PASSWORD_UPDATED_AT => 'abc'
+          Password::Password => $this->getSamplePassword(),
+          Password::ConfirmPassword => $this->getSamplePassword(),
+          Password::PasswordUpdatedAt => 'abc'
         ]
       ],
     ];
@@ -113,8 +113,8 @@ class PasswordTest extends TestCase {
     foreach($testCase as $tc) {
       $exception = false;
       try {
-        Password::create($tc['payload'][Password::PASSWORD], $tc['payload'][Password::CONFIRM_PASSWORD],
-          $tc['payload'][Password::PASSWORD_UPDATED_AT]);
+        Password::create($tc['payload'][Password::Password], $tc['payload'][Password::ConfirmPassword],
+          $tc['payload'][Password::PasswordUpdatedAt]);
       } catch(Exception $e) {
         $this->assertStringMatchesFormat($tc['expected']['message'], $e->getMessage());
         $this->assertInstanceOf(EntityValidationException::class, $e);

@@ -33,7 +33,7 @@ use Illuminate\Support\Facades\Validator;
  * @author Fathalfath30
  */
 abstract class Entity implements Arrayable {
-  const TIMESTAMP = 'timestamp';
+  public const Timestamp = 'timestamp';
 
   /**
    * @param array $payload

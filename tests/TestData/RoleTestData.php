@@ -77,7 +77,7 @@ trait RoleTestData {
    */
   public function getValidRoleEntity(bool $admin = false) : Role {
     return (new Role($this->getValidRoleId($admin), $this->getValidRoleName($admin),
-      ($admin ? Role::USER_LEVEL_SUPER_ADMIN : Role::USER_LEVEL_GUEST), $this->getValidRoleIcon(),
+      ($admin ? Role::UserLevelSuperAdmin : Role::UserLevelGuest), $this->getValidRoleIcon(),
       $this->getValidTimestampEntity()));
   }
 }

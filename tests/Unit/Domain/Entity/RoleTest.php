@@ -76,10 +76,10 @@ class RoleTest extends TestCase {
           'message' => trans('validation.required', ['attribute' => 'id'])
         ],
         'payload' => [
-          Role::ID => '',
-          Role::NAME => '',
-          Role::IS_ADMIN => false,
-          Entity::TIMESTAMP => $this->getValidTimestampEntity()
+          Role::Id => '',
+          Role::Name => '',
+          Role::IsAdmin => false,
+          Entity::Timestamp => $this->getValidTimestampEntity()
         ]
       ],
       [
@@ -88,10 +88,10 @@ class RoleTest extends TestCase {
           'message' => trans('validation.uuid', ['attribute' => 'id'])
         ],
         'payload' => [
-          Role::ID => 'abcd',
-          Role::NAME => '',
-          Role::IS_ADMIN => false,
-          Entity::TIMESTAMP => $this->getValidTimestampEntity()
+          Role::Id => 'abcd',
+          Role::Name => '',
+          Role::IsAdmin => false,
+          Entity::Timestamp => $this->getValidTimestampEntity()
         ]
       ],
 
@@ -101,10 +101,10 @@ class RoleTest extends TestCase {
           'message' => trans('validation.required', ['attribute' => 'name'])
         ],
         'payload' => [
-          Role::ID => $this->getValidRoleId(),
-          Role::NAME => '',
-          Role::IS_ADMIN => false,
-          Entity::TIMESTAMP => $this->getValidTimestampEntity()
+          Role::Id => $this->getValidRoleId(),
+          Role::Name => '',
+          Role::IsAdmin => false,
+          Entity::Timestamp => $this->getValidTimestampEntity()
         ]
       ],
       [
@@ -113,10 +113,10 @@ class RoleTest extends TestCase {
           'message' => trans('validation.min.string', ['attribute' => 'name', 'min' => '3'])
         ],
         'payload' => [
-          Role::ID => $this->getValidRoleId(),
-          Role::NAME => 'a',
-          Role::IS_ADMIN => false,
-          Entity::TIMESTAMP => $this->getValidTimestampEntity()
+          Role::Id => $this->getValidRoleId(),
+          Role::Name => 'a',
+          Role::IsAdmin => false,
+          Entity::Timestamp => $this->getValidTimestampEntity()
         ]
       ],
       [
@@ -125,10 +125,10 @@ class RoleTest extends TestCase {
           'message' => trans('validation.max.string', ['attribute' => 'name', 'max' => '150'])
         ],
         'payload' => [
-          Role::ID => $this->getValidRoleId(),
-          Role::NAME => join("", $this->faker->words(155)),
-          Role::IS_ADMIN => false,
-          Entity::TIMESTAMP => $this->getValidTimestampEntity()
+          Role::Id => $this->getValidRoleId(),
+          Role::Name => join("", $this->faker->words(155)),
+          Role::IsAdmin => false,
+          Entity::Timestamp => $this->getValidTimestampEntity()
         ]
       ],
     ];
@@ -136,8 +136,8 @@ class RoleTest extends TestCase {
     foreach($testCase as $tc) {
       $exception = false;
       try {
-        Role::create($tc['payload'][Role::ID], $tc['payload'][Role::NAME], $tc['payload'][Role::IS_ADMIN],
-          $tc['payload'][Entity::TIMESTAMP]);
+        Role::create($tc['payload'][Role::Id], $tc['payload'][Role::Name], $tc['payload'][Role::IsAdmin],
+          $tc['payload'][Entity::Timestamp]);
       } catch(Exception $e) {
         $this->assertStringMatchesFormat($tc['expected']['message'], $e->getMessage());
         $this->assertInstanceOf(EntityValidationException::class, $e);

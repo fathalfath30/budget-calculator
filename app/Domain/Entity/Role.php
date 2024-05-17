@@ -44,11 +44,10 @@ class Role extends Entity implements IEntity {
   use ToArray;
   use HasId, HasName, HasTimestamp;
 
-  public const IS_ADMIN = 'is_admin';
+  public const IsAdmin = 'is_admin';
 
-
-  public const USER_LEVEL_SUPER_ADMIN = '';
-  public const USER_LEVEL_GUEST = '';
+  public const UserLevelSuperAdmin = '';
+  public const UserLevelGuest = '';
 
 
   /** @var bool $is_admin */
@@ -67,21 +66,21 @@ class Role extends Entity implements IEntity {
   public static function create(string $id, string $name, bool $is_admin, Timestamp $timestamp) : Role {
     $validate = (new self)->validate(
       [
-        self::ID => $id,
-        self::NAME => $name,
-        self::IS_ADMIN => $is_admin,
-        self::TIMESTAMP => $timestamp
+        self::Id => $id,
+        self::Name => $name,
+        self::IsAdmin => $is_admin,
+        self::Timestamp => $timestamp
       ],
       [
-        self::ID => ['required', 'uuid'],
-        self::NAME => ['required', 'string', 'min:3', 'max:150'],
-        self::IS_ADMIN => ['nullable'],
-        self::TIMESTAMP => ['required'],
+        self::Id => ['required', 'uuid'],
+        self::Name => ['required', 'string', 'min:3', 'max:150'],
+        self::IsAdmin => ['nullable'],
+        self::Timestamp => ['required'],
       ]
     );
 
-    return self::rebuild($validate[self::ID], $validate[self::NAME], $validate[self::IS_ADMIN],
-      $validate[self::TIMESTAMP]);
+    return self::rebuild($validate[self::Id], $validate[self::Name], $validate[self::IsAdmin],
+      $validate[self::Timestamp]);
   }
 
   /**

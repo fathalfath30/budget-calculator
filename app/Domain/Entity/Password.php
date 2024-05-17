@@ -36,10 +36,10 @@ use Illuminate\Support\Facades\Hash;
 class Password extends Entity implements IEntity {
   use ToArray;
 
-  public const PASSWORD = 'password';
-  public const CONFIRM_PASSWORD = 'confirm_password';
-  public const PASSWORD_UPDATED_AT = 'password_updated_at';
-  public const FAIL_ATTEMPT = 'fail_attempt';
+  public const Password = 'password';
+  public const ConfirmPassword = 'confirm_password';
+  public const PasswordUpdatedAt = 'password_updated_at';
+  public const FailAttempt = 'fail_attempt';
 
   /** @var string $password */
   private string $password;
@@ -67,33 +67,33 @@ class Password extends Entity implements IEntity {
     int $fail_attempt = 0) : Password {
     $validate = (new self)->validate(
       [
-        self::PASSWORD => $password,
-        self::CONFIRM_PASSWORD => $confirm_password,
-        self::PASSWORD_UPDATED_AT => $password_updated_at,
-        self::FAIL_ATTEMPT => $fail_attempt
+        self::Password => $password,
+        self::ConfirmPassword => $confirm_password,
+        self::PasswordUpdatedAt => $password_updated_at,
+        self::FailAttempt => $fail_attempt
       ],
       [
-        self::PASSWORD => ['required', 'string', 'min:6'],
-        self::CONFIRM_PASSWORD => ['nullable', 'string', 'min:6', ('same:' . self::PASSWORD)],
-        self::PASSWORD_UPDATED_AT => ['nullable', 'string', 'date_format:Y-m-d H:i:s'],
-        self::FAIL_ATTEMPT => ['required', 'numeric', 'min:0', 'max:3']
+        self::Password => ['required', 'string', 'min:6'],
+        self::ConfirmPassword => ['nullable', 'string', 'min:6', ('same:' . self::Password)],
+        self::PasswordUpdatedAt => ['nullable', 'string', 'date_format:Y-m-d H:i:s'],
+        self::FailAttempt => ['required', 'numeric', 'min:0', 'max:3']
       ],
       [
-        (self::CONFIRM_PASSWORD . ".min") => trans('validation.min.string', [
-          'attribute' => self::CONFIRM_PASSWORD, 'min' => '6'
+        (self::ConfirmPassword . ".min") => trans('validation.min.string', [
+          'attribute' => self::ConfirmPassword, 'min' => '6'
         ]),
-        (self::CONFIRM_PASSWORD . ".same") => trans('validation.same', [
-          'attribute' => Password::CONFIRM_PASSWORD,
-          'other' => Password::PASSWORD
+        (self::ConfirmPassword . ".same") => trans('validation.same', [
+          'attribute' => Password::ConfirmPassword,
+          'other' => Password::Password
         ]),
-        (self::PASSWORD_UPDATED_AT . ".date_format") => trans('validation.date_format', [
-          'attribute' => Password::PASSWORD_UPDATED_AT,
+        (self::PasswordUpdatedAt . ".date_format") => trans('validation.date_format', [
+          'attribute' => Password::PasswordUpdatedAt,
           'format' => 'Y-m-d H:i:s'
         ])
       ]
     );
 
-    return self::rebuild($validate[self::PASSWORD], $validate[self::CONFIRM_PASSWORD], $validate[self::PASSWORD_UPDATED_AT]);
+    return self::rebuild($validate[self::Password], $validate[self::ConfirmPassword], $validate[self::PasswordUpdatedAt]);
   }
 
   /**

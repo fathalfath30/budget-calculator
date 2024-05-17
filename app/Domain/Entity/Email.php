@@ -18,8 +18,8 @@ use Illuminate\Support\Carbon;
 class Email extends Entity implements IEntity {
   use ToArray;
 
-  public const  EMAIL = 'email';
-  public const EMAIL_VERIFIED_AT = 'email_verified_at';
+  public const  Email = 'email';
+  public const EmailVerifiedAt = 'email_verified_at';
 
   /** @var string $email */
   private string $email;
@@ -38,16 +38,16 @@ class Email extends Entity implements IEntity {
   public static function create(string $email, ?Carbon $email_verified_at) : self {
     $payload = (new self)->validate(
       [
-        self::EMAIL => $email,
-        self::EMAIL_VERIFIED_AT => $email_verified_at
+        self::Email => $email,
+        self::EmailVerifiedAt => $email_verified_at
       ],
       [
-        self::EMAIL => ['required', 'email'],
-        self::EMAIL_VERIFIED_AT => ['nullable']
+        self::Email => ['required', 'email'],
+        self::EmailVerifiedAt => ['nullable']
       ]
     );
 
-    return self::rebuild($payload[self::EMAIL], $payload[self::EMAIL_VERIFIED_AT]);
+    return self::rebuild($payload[self::Email], $payload[self::EmailVerifiedAt]);
   }
 
   /**

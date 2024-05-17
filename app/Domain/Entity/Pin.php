@@ -19,9 +19,9 @@ use Carbon\Carbon;
 class Pin extends Entity implements IEntity {
   use ToArray;
 
-  public const PIN = 'pin';
-  public const LAST_UPDATED = 'pin_last_updated';
-  public const FAIL_ATTEMPT = 'fail_attempt';
+  public const Pin = 'pin';
+  public const LastUpdated = 'pin_last_updated';
+  public const FailAttempt = 'fail_attempt';
 
   /** @var string $pin */
   private string $pin;
@@ -44,17 +44,17 @@ class Pin extends Entity implements IEntity {
   public static function create(string $pin, Carbon $lastUpdated) : Pin {
     $payload = (new self)->validate(
       [
-        self::PIN => trim($pin),
-        self::LAST_UPDATED => $lastUpdated
+        self::Pin => trim($pin),
+        self::LastUpdated => $lastUpdated
       ],
       [
-        self::PIN => ['required', 'numeric', 'digits:6'],
-        self::LAST_UPDATED => ['required']
+        self::Pin => ['required', 'numeric', 'digits:6'],
+        self::LastUpdated => ['required']
       ]
     );
 
     // rebuild the payload
-    return self::rebuild($payload[self::PIN], $payload[self::LAST_UPDATED]);
+    return self::rebuild($payload[self::Pin], $payload[self::LastUpdated]);
   }
 
   /**

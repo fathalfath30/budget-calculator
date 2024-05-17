@@ -35,9 +35,9 @@ use Illuminate\Support\Carbon;
 class Timestamp extends Entity implements IEntity {
   use ToArray;
 
-  public const CREATED_AT = 'created_at';
-  public const UPDATED_AT = 'updated_at';
-  public const DELETED_AT = 'deleted_at';
+  public const CreatedAt = 'created_at';
+  public const UpdatedAt = 'updated_at';
+  public const DeletedAt = 'deleted_at';
 
   /** @var Carbon|mixed $created_at */
   protected Carbon $created_at;
@@ -67,14 +67,14 @@ class Timestamp extends Entity implements IEntity {
     $self = new self;
     $validate = $self->validate(
       [
-        self::CREATED_AT => $created_at,
-        self::UPDATED_AT => $updated_at,
-        self::DELETED_AT => $deleted_at
+        self::CreatedAt => $created_at,
+        self::UpdatedAt => $updated_at,
+        self::DeletedAt => $deleted_at
       ],
       [
-        self::CREATED_AT => ['required', 'date_format:Y-m-d H:i:s'],
-        self::UPDATED_AT => ['required', 'date_format:Y-m-d H:i:s'],
-        self::DELETED_AT => ['nullable', 'date_format:Y-m-d H:i:s'],
+        self::CreatedAt => ['required', 'date_format:Y-m-d H:i:s'],
+        self::UpdatedAt => ['required', 'date_format:Y-m-d H:i:s'],
+        self::DeletedAt => ['nullable', 'date_format:Y-m-d H:i:s'],
       ],
       [
         'created_at.required' => trans('validation.required', ['attribute' => 'created_at']),
@@ -85,9 +85,9 @@ class Timestamp extends Entity implements IEntity {
       ]
     );
 
-    $self->created_at = Carbon::parse(trim($validate[self::CREATED_AT]));
-    $self->updated_at = Carbon::parse(trim($validate[self::DELETED_AT]));
-    $self->deleted_at = Carbon::parse(trim($validate[self::DELETED_AT]));
+    $self->created_at = Carbon::parse(trim($validate[self::CreatedAt]));
+    $self->updated_at = Carbon::parse(trim($validate[self::DeletedAt]));
+    $self->deleted_at = Carbon::parse(trim($validate[self::DeletedAt]));
 
     return $self;
   }

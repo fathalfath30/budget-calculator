@@ -52,9 +52,9 @@ class TimestampTest extends TestCase {
           'message' => trans('validation.required', ['attribute' => 'created_at'])
         ],
         'payload' => [
-          Timestamp::CREATED_AT => '',
-          Timestamp::UPDATED_AT => '',
-          Timestamp::DELETED_AT => null
+          Timestamp::CreatedAt => '',
+          Timestamp::UpdatedAt => '',
+          Timestamp::DeletedAt => null
         ]
       ],
       [
@@ -63,9 +63,9 @@ class TimestampTest extends TestCase {
           'message' => trans('validation.regex', ['attribute' => 'created_at'])
         ],
         'payload' => [
-          Timestamp::CREATED_AT => 'lorem ipsum',
-          Timestamp::UPDATED_AT => '',
-          Timestamp::DELETED_AT => null
+          Timestamp::CreatedAt => 'lorem ipsum',
+          Timestamp::UpdatedAt => '',
+          Timestamp::DeletedAt => null
         ]
       ],
       [
@@ -74,9 +74,9 @@ class TimestampTest extends TestCase {
           'message' => trans('validation.required', ['attribute' => 'updated_at'])
         ],
         'payload' => [
-          Timestamp::CREATED_AT => $now,
-          Timestamp::UPDATED_AT => '',
-          Timestamp::DELETED_AT => null
+          Timestamp::CreatedAt => $now,
+          Timestamp::UpdatedAt => '',
+          Timestamp::DeletedAt => null
         ]
       ],
       [
@@ -85,9 +85,9 @@ class TimestampTest extends TestCase {
           'message' => trans('validation.regex', ['attribute' => 'updated_at'])
         ],
         'payload' => [
-          Timestamp::CREATED_AT => $now,
-          Timestamp::UPDATED_AT => 'lorem ipsum',
-          Timestamp::DELETED_AT => null
+          Timestamp::CreatedAt => $now,
+          Timestamp::UpdatedAt => 'lorem ipsum',
+          Timestamp::DeletedAt => null
         ]
       ],
       [
@@ -96,9 +96,9 @@ class TimestampTest extends TestCase {
           'message' => trans('validation.regex', ['attribute' => 'deleted_at'])
         ],
         'payload' => [
-          Timestamp::CREATED_AT => $now,
-          Timestamp::UPDATED_AT => $now,
-          Timestamp::DELETED_AT => 'lorem ipsum'
+          Timestamp::CreatedAt => $now,
+          Timestamp::UpdatedAt => $now,
+          Timestamp::DeletedAt => 'lorem ipsum'
         ]
       ],
     ];
@@ -106,8 +106,8 @@ class TimestampTest extends TestCase {
     foreach($testCase as $tc) {
       $exception = false;
       try {
-        Timestamp::create($tc['payload'][Timestamp::CREATED_AT], $tc['payload'][Timestamp::UPDATED_AT],
-          $tc['payload'][Timestamp::DELETED_AT]);
+        Timestamp::create($tc['payload'][Timestamp::CreatedAt], $tc['payload'][Timestamp::UpdatedAt],
+          $tc['payload'][Timestamp::DeletedAt]);
       } catch(Exception $e) {
         $this->assertStringMatchesFormat($tc['expected']['message'], $e->getMessage());
         $this->assertInstanceOf(EntityValidationException::class, $e);
@@ -138,8 +138,8 @@ class TimestampTest extends TestCase {
     $clsArray = $cls->toArray();
     $this->assertIsArray($clsArray);
 
-    $this->assertArrayHasKey(Timestamp::CREATED_AT, $clsArray);
-    $this->assertArrayHasKey(Timestamp::UPDATED_AT, $clsArray);
-    $this->assertArrayHasKey(Timestamp::DELETED_AT, $clsArray);
+    $this->assertArrayHasKey(Timestamp::CreatedAt, $clsArray);
+    $this->assertArrayHasKey(Timestamp::UpdatedAt, $clsArray);
+    $this->assertArrayHasKey(Timestamp::DeletedAt, $clsArray);
   }
 }

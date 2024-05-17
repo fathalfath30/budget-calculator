@@ -58,8 +58,8 @@ class EmailTest extends TestCase {
           'message' => trans('validation.required', ['attribute' => 'email'])
         ],
         'payload' => [
-          Email::EMAIL => '',
-          Email::EMAIL_VERIFIED_AT => null
+          Email::Email => '',
+          Email::EmailVerifiedAt => null
         ]
       ],
       [
@@ -68,8 +68,8 @@ class EmailTest extends TestCase {
           'message' => trans('validation.email', ['attribute' => 'email'])
         ],
         'payload' => [
-          Email::EMAIL => 'loem',
-          Email::EMAIL_VERIFIED_AT => null
+          Email::Email => 'loem',
+          Email::EmailVerifiedAt => null
         ]
       ],
     ];
@@ -77,7 +77,7 @@ class EmailTest extends TestCase {
     foreach($testCase as $tc) {
       $exception = false;
       try {
-        Email::create($tc['payload'][Email::EMAIL], $tc['payload'][Email::EMAIL_VERIFIED_AT]);
+        Email::create($tc['payload'][Email::Email], $tc['payload'][Email::EmailVerifiedAt]);
       } catch(Exception $e) {
         $this->assertStringMatchesFormat($tc['expected']['message'], $e->getMessage());
         $this->assertInstanceOf(EntityValidationException::class, $e);

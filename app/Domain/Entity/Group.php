@@ -41,7 +41,7 @@ class Group extends Entity implements IEntity {
   use ToArray;
   use HasId, HasName, HasTimestamp;
 
-  public const DESCRIPTION = 'description';
+  public const Description = 'description';
 
   /** @var null|string $description */
   private ?string $description;
@@ -59,21 +59,21 @@ class Group extends Entity implements IEntity {
   public static function create(string $id, string $name, ?string $description, Timestamp $timestamp) : Group {
     $validate = (new self)->validate(
       [
-        self::ID => $id,
-        self::NAME => $name,
-        self::DESCRIPTION => $description,
-        self::TIMESTAMP => $timestamp
+        self::Id => $id,
+        self::Name => $name,
+        self::Description => $description,
+        self::Timestamp => $timestamp
       ],
       [
-        self::ID => ['required', 'uuid'],
-        self::NAME => ['required', 'string', 'min:3', 'max:150'],
-        self::DESCRIPTION => ['nullable', 'string'],
-        self::TIMESTAMP => ['required']
+        self::Id => ['required', 'uuid'],
+        self::Name => ['required', 'string', 'min:3', 'max:150'],
+        self::Description => ['nullable', 'string'],
+        self::Timestamp => ['required']
       ]
     );
 
-    return self::rebuild($validate[self::ID], $validate[self::NAME], $validate[self::DESCRIPTION],
-      $validate[self::TIMESTAMP]);
+    return self::rebuild($validate[self::Id], $validate[self::Name], $validate[self::Description],
+      $validate[self::Timestamp]);
   }
 
   /**

@@ -28,7 +28,7 @@ namespace App\Domain\Entity\Traits;
  * @author Fathalfath30
  */
 trait HasName {
-  const NAME = 'name';
+  public const Name = 'name';
 
   /** @var string $name */
   private string $name;
