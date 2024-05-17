@@ -26,16 +26,16 @@ class RoleSeeder extends Seeder {
     Role::factory()
       ->createMany([
         [
-          Role::ID => DEFAULT_ROLE_SUPER_ADMIN_ID,
-          Role::NAME => DEFAULT_ROLE_SUPER_ADMIN_NAME,
-          Role::LEVEL => DEFAULT_ROLE_SUPER_ADMIN_LEVEL,
+          Role::ID => DefaultRoleSuperAdminId,
+          Role::NAME => DefaultRoleSuperAdminName,
+          Role::LEVEL => DefaultRoleSuperAdminLevel,
           Model::CREATED_AT => $now,
           Model::UPDATED_AT => $now
         ],
         [
-          Role::ID => DEFAULT_ROLE_GUEST_ID,
-          Role::NAME => DEFAULT_ROLE_GUEST_NAME,
-          Role::LEVEL => DEFAULT_ROLE_GUEST_LEVEL,
+          Role::ID => DefaultRoleGuestId,
+          Role::NAME => DefaultRoleGuestName,
+          Role::LEVEL => DefaultRoleGuestLevel,
           Model::CREATED_AT => $now,
           Model::UPDATED_AT => $now
         ]

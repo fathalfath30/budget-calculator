@@ -28,7 +28,7 @@ class UserSeeder extends Seeder {
     User::factory()
       ->createMany([
         [
-          User::ID => DEFAULT_USER_SUPER_ADMIN_ID,
+          User::ID => DefaultUserSuperAdminId,
           User::FIRST_NAME => 'Super',
           User::LAST_NAME => 'Admin',
           User::USERNAME => 'admin',
@@ -37,7 +37,7 @@ class UserSeeder extends Seeder {
           User::PASSWORD => '',
         ],
         [
-          User::ID => DEFAULT_USER_GUEST_ID,
+          User::ID => DefaultUserGuestId,
           User::FIRST_NAME => 'Guest',
           User::LAST_NAME => null,
           User::USERNAME => 'guest',
@@ -51,8 +51,8 @@ class UserSeeder extends Seeder {
     // super administrator
     UserRole::create([
       UserRole::ID => Uuid::uuid4()->toString(),
-      UserRole::USER_ID => DEFAULT_USER_SUPER_ADMIN_ID,
-      UserRole::ROLE_ID => DEFAULT_ROLE_SUPER_ADMIN_ID,
+      UserRole::USER_ID => DefaultUserSuperAdminId,
+      UserRole::ROLE_ID => DefaultRoleSuperAdminId,
       UserRole::ENABLED => 1,
       UserRole::CREATED_AT => $now,
       UserRole::UPDATED_AT => $now
@@ -61,8 +61,8 @@ class UserSeeder extends Seeder {
     // guest
     UserRole::create([
       UserRole::ID => Uuid::uuid4()->toString(),
-      UserRole::USER_ID => DEFAULT_USER_GUEST_ID,
-      UserRole::ROLE_ID => DEFAULT_ROLE_GUEST_ID,
+      UserRole::USER_ID => DefaultUserGuestId,
+      UserRole::ROLE_ID => DefaultRoleGuestId,
       UserRole::ENABLED => 1,
       UserRole::CREATED_AT => $now,
       UserRole::UPDATED_AT => $now
