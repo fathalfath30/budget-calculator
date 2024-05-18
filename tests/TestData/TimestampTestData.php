@@ -19,6 +19,7 @@
 namespace Tests\TestData;
 
 use App\Domain\Entity\Timestamp;
+use Illuminate\Support\Carbon;
 
 /**
  * TimestampTestData
@@ -30,7 +31,7 @@ use App\Domain\Entity\Timestamp;
  * @author Fathalfath30
  */
 trait TimestampTestData {
-  const SAMPLE_DATE_TIME = "2023-01-01 00:00:00";
+  const SampleStrDateTime = "2023-01-01 00:00:00";
 
   /**
    * Return valid sample timestamp entity
@@ -41,7 +42,7 @@ trait TimestampTestData {
    * @throws \App\Exceptions\EntityValidationException
    * @throws \Illuminate\Validation\ValidationException
    */
-  public function getValidTimestampEntity(string $value = self::SAMPLE_DATE_TIME) : Timestamp {
+  public function getSampleTimestampEntity(string $value = self::SampleStrDateTime) : Timestamp {
     return Timestamp::create($value, $value, $value);
   }
 
@@ -49,8 +50,21 @@ trait TimestampTestData {
    * Return valid timestamp with format Y-m-d H:i:s
    *
    * @return string
+   *
+   * @version 1.0.0
+   * @since 1.0.0
    */
-  public function getValidSampleTimestamp() : string {
-    return "2023-01-01 00:00:00";
+  public function getSampleStrDateTime() : string {
+    return self::SampleStrDateTime;
+  }
+
+  /**
+   * @return \Illuminate\Support\Carbon
+   *
+   * @version 1.0.0
+   * @since 1.0.0
+   */
+  public function getSampleDateTimeCarbon() : Carbon {
+    return Carbon::parse($this->getSampleStrDateTime());
   }
 }

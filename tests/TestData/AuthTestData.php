@@ -18,47 +18,32 @@
 
 namespace Tests\TestData;
 
-use App\Domain\Entity\Email;
-use Illuminate\Support\Carbon;
+use App\Domain\Entity\Auth;
 
 /**
- * @see \Tests\TestData\TimestampTestData
+ * AuthTestData
  *
  * @version 1.0.0
  * @since 1.0.0
+ *
+ * @see \App\Domain\Entity\Auth
+ * @author Fathalfath30
  */
-trait EmailTestData {
-  use TimestampTestData;
+trait AuthTestData {
+  use PasswordTestData, PinTestData;
 
   /**
-   * @return string
-   *
-   * @version 1.0.0
-   * @since 1.0.0
-   */
-  private function getSampleEmail() : string {
-    return "fathalfath30@gmail.com";
-  }
-
-  /**
-   * @return \Illuminate\Support\Carbon
-   *
-   * @version 1.0.0
-   * @since 1.0.0
-   */
-  private function getSampleEmailVerifiedAt() : Carbon {
-    return Carbon::parse(self::SampleStrDateTime);
-  }
-
-  /**
-   * @return \App\Domain\Entity\Email
+   * @return \App\Domain\Entity\Auth
    * @throws \App\Exceptions\EntityValidationException
    * @throws \Illuminate\Validation\ValidationException
    *
    * @version 1.0.0
    * @since 1.0.0
+   *
+   * @see \App\Domain\Entity\Password
+   * @see \App\Domain\Entity\Pin
    */
-  private function getSampleEmailEntity() : Email {
-    return Email::create($this->getSampleEmail(), $this->getSampleEmailVerifiedAt());
+  public function getSampleAuthEntity() : Auth {
+    return Auth::rebuild($this->getPasswordEntity(), $this->getSamplePinEntity());
   }
 }

@@ -18,6 +18,8 @@
 
 namespace Tests\TestData;
 
+use App\Domain\Entity\UserProfile;
+
 /**
  * @version 1.0.0
  * @since 1.0.0
@@ -53,5 +55,16 @@ trait UserProfileTestData {
    */
   public function getSampleUsername() : string {
     return "fathalfath30";
+  }
+
+  /**
+   * @return \App\Domain\Entity\UserProfile
+   * @throws \Exception
+   *
+   * @version 1.0.0
+   * @since 1.0.0
+   */
+  public function getSampleUserProfileEntity() : UserProfile {
+    return UserProfile::create($this->getSampleFirstname(), $this->getSampleLastname(), $this->getSampleUsername());
   }
 }

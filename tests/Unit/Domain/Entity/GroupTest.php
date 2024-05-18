@@ -79,7 +79,7 @@ class GroupTest extends TestCase {
           Group::Id => '',
           Group::Name => '',
           Group::Description => null,
-          Entity::Timestamp => $this->getValidTimestampEntity()
+          Entity::Timestamp => $this->getSampleTimestampEntity()
         ]
       ],
       [
@@ -91,7 +91,7 @@ class GroupTest extends TestCase {
           Group::Id => 'abcd',
           Group::Name => '',
           Group::Description => null,
-          Entity::Timestamp => $this->getValidTimestampEntity()
+          Entity::Timestamp => $this->getSampleTimestampEntity()
         ]
       ],
 
@@ -104,7 +104,7 @@ class GroupTest extends TestCase {
           Group::Id => $this->getValidGroupId(),
           Group::Name => '',
           Group::Description => null,
-          Entity::Timestamp => $this->getValidTimestampEntity()
+          Entity::Timestamp => $this->getSampleTimestampEntity()
         ]
       ],
       [
@@ -116,7 +116,7 @@ class GroupTest extends TestCase {
           Group::Id => $this->getValidGroupId(),
           Group::Name => 'a',
           Group::Description => null,
-          Entity::Timestamp => $this->getValidTimestampEntity()
+          Entity::Timestamp => $this->getSampleTimestampEntity()
         ]
       ],
       [
@@ -128,7 +128,7 @@ class GroupTest extends TestCase {
           Group::Id => $this->getValidGroupId(),
           Group::Name => join("", $this->faker->words(155)),
           Group::Description => null,
-          Entity::Timestamp => $this->getValidTimestampEntity()
+          Entity::Timestamp => $this->getSampleTimestampEntity()
         ]
       ],
     ];
@@ -161,7 +161,7 @@ class GroupTest extends TestCase {
   public function validateEntityGetter() {
     try {
       $result = Group::create($this->getValidGroupId(), $this->getValidGroupName(),
-        $this->getValidGroupDescription(), $this->getValidTimestampEntity());
+        $this->getValidGroupDescription(), $this->getSampleTimestampEntity());
       $this->assertNotNull($result);
       $this->assertInstanceOf(Group::class, $result);
       $this->assertEquals($this->getValidGroupId(), $result->getId());
@@ -169,7 +169,7 @@ class GroupTest extends TestCase {
       $this->assertEquals($this->getValidGroupDescription(), $result->getDescription());
       $this->assertNotNull($result->getTimestamp());
       $this->assertInstanceOf(Timestamp::class, $result->getTimestamp());
-      $this->assertEquals($this->getValidTimestampEntity(), $result->getTimestamp());
+      $this->assertEquals($this->getSampleTimestampEntity(), $result->getTimestamp());
 
     } catch(EntityValidationException|ValidationException $e) {
       $this->assertNull($e);

@@ -79,7 +79,7 @@ class RoleTest extends TestCase {
           Role::Id => '',
           Role::Name => '',
           Role::IsAdmin => false,
-          Entity::Timestamp => $this->getValidTimestampEntity()
+          Entity::Timestamp => $this->getSampleTimestampEntity()
         ]
       ],
       [
@@ -91,7 +91,7 @@ class RoleTest extends TestCase {
           Role::Id => 'abcd',
           Role::Name => '',
           Role::IsAdmin => false,
-          Entity::Timestamp => $this->getValidTimestampEntity()
+          Entity::Timestamp => $this->getSampleTimestampEntity()
         ]
       ],
 
@@ -104,7 +104,7 @@ class RoleTest extends TestCase {
           Role::Id => $this->getValidRoleId(),
           Role::Name => '',
           Role::IsAdmin => false,
-          Entity::Timestamp => $this->getValidTimestampEntity()
+          Entity::Timestamp => $this->getSampleTimestampEntity()
         ]
       ],
       [
@@ -116,7 +116,7 @@ class RoleTest extends TestCase {
           Role::Id => $this->getValidRoleId(),
           Role::Name => 'a',
           Role::IsAdmin => false,
-          Entity::Timestamp => $this->getValidTimestampEntity()
+          Entity::Timestamp => $this->getSampleTimestampEntity()
         ]
       ],
       [
@@ -128,7 +128,7 @@ class RoleTest extends TestCase {
           Role::Id => $this->getValidRoleId(),
           Role::Name => join("", $this->faker->words(155)),
           Role::IsAdmin => false,
-          Entity::Timestamp => $this->getValidTimestampEntity()
+          Entity::Timestamp => $this->getSampleTimestampEntity()
         ]
       ],
     ];
@@ -161,7 +161,7 @@ class RoleTest extends TestCase {
   public function validateEntityGetter() {
     try {
       $result = Role::create($this->getValidRoleId(), $this->getValidRoleName(), true,
-        $this->getValidTimestampEntity());
+        $this->getSampleTimestampEntity());
       $this->assertNotNull($result);
 
       $this->assertEquals($this->getValidRoleId(), $result->getId());

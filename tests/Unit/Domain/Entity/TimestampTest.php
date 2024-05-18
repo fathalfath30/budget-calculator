@@ -129,7 +129,7 @@ class TimestampTest extends TestCase {
    */
   public function createdAtAndUpdateAtMustReturnConstructedValue() {
     $now = date('Y-m-d H:i:s');
-    $cls = $this->getValidTimestampEntity($now);
+    $cls = $this->getSampleTimestampEntity($now);
 
     $this->assertSame($now, $cls->getCreatedAt()->format("Y-m-d H:i:s"));
     $this->assertSame($now, $cls->getUpdatedAt()->format("Y-m-d H:i:s"));
