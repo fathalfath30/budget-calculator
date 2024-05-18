@@ -101,7 +101,7 @@ class GroupTest extends TestCase {
           'message' => trans('validation.required', ['attribute' => 'name'])
         ],
         'payload' => [
-          Group::Id => $this->getValidGroupId(),
+          Group::Id => $this->getSampleGroupId(),
           Group::Name => '',
           Group::Description => null,
           Entity::Timestamp => $this->getSampleTimestampEntity()
@@ -113,7 +113,7 @@ class GroupTest extends TestCase {
           'message' => trans('validation.min.string', ['attribute' => 'name', 'min' => '3'])
         ],
         'payload' => [
-          Group::Id => $this->getValidGroupId(),
+          Group::Id => $this->getSampleGroupId(),
           Group::Name => 'a',
           Group::Description => null,
           Entity::Timestamp => $this->getSampleTimestampEntity()
@@ -125,7 +125,7 @@ class GroupTest extends TestCase {
           'message' => trans('validation.max.string', ['attribute' => 'name', 'max' => '150'])
         ],
         'payload' => [
-          Group::Id => $this->getValidGroupId(),
+          Group::Id => $this->getSampleGroupId(),
           Group::Name => join("", $this->faker->words(155)),
           Group::Description => null,
           Entity::Timestamp => $this->getSampleTimestampEntity()
@@ -160,13 +160,13 @@ class GroupTest extends TestCase {
    */
   public function validateEntityGetter() {
     try {
-      $result = Group::create($this->getValidGroupId(), $this->getValidGroupName(),
-        $this->getValidGroupDescription(), $this->getSampleTimestampEntity());
+      $result = Group::create($this->getSampleGroupId(), $this->getSampleGroupName(),
+        $this->getSampleGroupDescription(), $this->getSampleTimestampEntity());
       $this->assertNotNull($result);
       $this->assertInstanceOf(Group::class, $result);
-      $this->assertEquals($this->getValidGroupId(), $result->getId());
-      $this->assertEquals($this->getValidGroupName(), $result->getName());
-      $this->assertEquals($this->getValidGroupDescription(), $result->getDescription());
+      $this->assertEquals($this->getSampleGroupId(), $result->getId());
+      $this->assertEquals($this->getSampleGroupName(), $result->getName());
+      $this->assertEquals($this->getSampleGroupDescription(), $result->getDescription());
       $this->assertNotNull($result->getTimestamp());
       $this->assertInstanceOf(Timestamp::class, $result->getTimestamp());
       $this->assertEquals($this->getSampleTimestampEntity(), $result->getTimestamp());

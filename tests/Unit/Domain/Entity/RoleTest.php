@@ -101,7 +101,7 @@ class RoleTest extends TestCase {
           'message' => trans('validation.required', ['attribute' => 'name'])
         ],
         'payload' => [
-          Role::Id => $this->getValidRoleId(),
+          Role::Id => $this->getSampleRoleId(),
           Role::Name => '',
           Role::IsAdmin => false,
           Entity::Timestamp => $this->getSampleTimestampEntity()
@@ -113,7 +113,7 @@ class RoleTest extends TestCase {
           'message' => trans('validation.min.string', ['attribute' => 'name', 'min' => '3'])
         ],
         'payload' => [
-          Role::Id => $this->getValidRoleId(),
+          Role::Id => $this->getSampleRoleId(),
           Role::Name => 'a',
           Role::IsAdmin => false,
           Entity::Timestamp => $this->getSampleTimestampEntity()
@@ -125,7 +125,7 @@ class RoleTest extends TestCase {
           'message' => trans('validation.max.string', ['attribute' => 'name', 'max' => '150'])
         ],
         'payload' => [
-          Role::Id => $this->getValidRoleId(),
+          Role::Id => $this->getSampleRoleId(),
           Role::Name => join("", $this->faker->words(155)),
           Role::IsAdmin => false,
           Entity::Timestamp => $this->getSampleTimestampEntity()
@@ -160,12 +160,12 @@ class RoleTest extends TestCase {
    */
   public function validateEntityGetter() {
     try {
-      $result = Role::create($this->getValidRoleId(), $this->getValidRoleName(), true,
+      $result = Role::create($this->getSampleRoleId(), $this->getSampleRoleName(), true,
         $this->getSampleTimestampEntity());
       $this->assertNotNull($result);
 
-      $this->assertEquals($this->getValidRoleId(), $result->getId());
-      $this->assertEquals($this->getValidRoleName(), $result->getName());
+      $this->assertEquals($this->getSampleRoleId(), $result->getId());
+      $this->assertEquals($this->getSampleRoleName(), $result->getName());
       $this->assertTrue($result->is_admin());
       $this->assertInstanceOf(Timestamp::class, $result->getTimestamp());
     } catch(EntityValidationException|ValidationException $e) {

@@ -36,7 +36,7 @@ trait GroupTestData {
    *
    * @return string
    */
-  public function getValidGroupId() : string {
+  public function getSampleGroupId() : string {
     return "b6e91a90-c6e9-4612-8ee5-e79f612d6fa6";
   }
 
@@ -45,7 +45,7 @@ trait GroupTestData {
    *
    * @return string
    */
-  public function getValidGroupName() : string {
+  public function getSampleGroupName() : string {
     return "Lorem Ipsum";
   }
 
@@ -54,7 +54,7 @@ trait GroupTestData {
    *
    * @return null|string
    */
-  public function getValidGroupDescription() : ?string {
+  public function getSampleGroupDescription() : ?string {
     return "Lorem ipsum description";
   }
 }

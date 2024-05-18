@@ -40,7 +40,7 @@ trait RoleTestData {
    *
    * @return string
    */
-  public function getValidRoleId(bool $admin = false) : string {
+  public function getSampleRoleId(bool $admin = false) : string {
     return ($admin) ? '8723b59f-10a9-4b79-9b04-11cdd8bd164c' : '06a11a2f-3dc6-4455-9ab9-5003c5f66128';
   }
 
@@ -51,7 +51,7 @@ trait RoleTestData {
    *
    * @return string
    */
-  public function getValidRoleName(bool $admin = false) : string {
+  public function getSampleRoleName(bool $admin = false) : string {
     return "Test Role " . (($admin) ? "Admin" : "Guest");
   }
 
@@ -62,7 +62,7 @@ trait RoleTestData {
    *
    * @return null|string
    */
-  public function getValidRoleIcon(bool $nullable = false) : ?string {
+  public function getSampleRoleIcon(bool $nullable = false) : ?string {
     return (($nullable) ? null : "icon.jpg");
   }
 
@@ -75,9 +75,9 @@ trait RoleTestData {
    * @throws \App\Exceptions\EntityValidationException
    * @throws \Illuminate\Validation\ValidationException
    */
-  public function getValidRoleEntity(bool $admin = false) : Role {
-    return (new Role($this->getValidRoleId($admin), $this->getValidRoleName($admin),
-      ($admin ? Role::UserLevelSuperAdmin : Role::UserLevelGuest), $this->getValidRoleIcon(),
+  public function getSampleRoleEntity(bool $admin = false) : Role {
+    return (new Role($this->getSampleRoleId($admin), $this->getSampleRoleName($admin),
+      ($admin ? Role::UserLevelSuperAdmin : Role::UserLevelGuest), $this->getSampleRoleIcon(),
       $this->getSampleTimestampEntity()));
   }
 }
