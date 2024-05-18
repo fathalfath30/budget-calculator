@@ -52,6 +52,9 @@ class User extends Entity implements IEntity {
   /** @var \App\Domain\Entity\Auth $auth */
   private Auth $auth;
 
+  /** @var \App\Domain\Entity\Role $role */
+  private Role $role;
+
   /** @var null|\Illuminate\Support\Carbon $locked_at */
   private ?Carbon $locked_at;
 
@@ -62,6 +65,7 @@ class User extends Entity implements IEntity {
    * @param \App\Domain\Entity\UserProfile $profile
    * @param \App\Domain\Entity\Email $email
    * @param \App\Domain\Entity\Auth $auth
+   * @param \App\Domain\Entity\Role $role
    *
    * @return \App\Domain\Entity\User
    * @throws \App\Exceptions\EntityValidationException
@@ -70,15 +74,16 @@ class User extends Entity implements IEntity {
    * @version 1.0.0
    * @since 1.0.0
    */
-  public static function create(UserProfile $profile, Email $email, Auth $auth) : User {
+  public static function create(UserProfile $profile, Email $email, Auth $auth, Role $role) : User {
     $now = date('Y-m-d H:i:s');
-    return self::rebuild($profile, $email, $auth, null, Timestamp::create($now, $now));
+    return self::rebuild($profile, $email, $auth, $role, null, Timestamp::create($now, $now));
   }
 
   /**
    * @param \App\Domain\Entity\UserProfile $profile
    * @param \App\Domain\Entity\Email $email
    * @param \App\Domain\Entity\Auth $auth
+   * @param \App\Domain\Entity\Role $role
    * @param null|\Illuminate\Support\Carbon $locked_at
    * @param \App\Domain\Entity\Timestamp $timestamp
    *
@@ -87,13 +92,14 @@ class User extends Entity implements IEntity {
    * @version 1.0.0
    * @since 1.0.0
    */
-  public static function rebuild(UserProfile $profile, Email $email, Auth $auth, ?Carbon $locked_at,
+  public static function rebuild(UserProfile $profile, Email $email, Auth $auth, Role $role, ?Carbon $locked_at,
     Timestamp $timestamp) : User {
     $self = new self;
 
     $self->profile = $profile;
     $self->email = $email;
     $self->auth = $auth;
+    $self->role = $role;
     $self->locked_at = $locked_at;
     $self->timestamp = $timestamp;
 
@@ -119,6 +125,13 @@ class User extends Entity implements IEntity {
    */
   public function getAuth() : Auth {
     return $this->auth;
+  }
+
+  /**
+   * @return \App\Domain\Entity\Role
+   */
+  public function getRole() : Role {
+    return $this->role;
   }
 
   /**

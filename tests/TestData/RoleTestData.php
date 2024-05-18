@@ -75,9 +75,8 @@ trait RoleTestData {
    * @throws \App\Exceptions\EntityValidationException
    * @throws \Illuminate\Validation\ValidationException
    */
-  public function getSampleRoleEntity(bool $admin = false) : Role {
-    return (new Role($this->getSampleRoleId($admin), $this->getSampleRoleName($admin),
-      ($admin ? Role::UserLevelSuperAdmin : Role::UserLevelGuest), $this->getSampleRoleIcon(),
-      $this->getSampleTimestampEntity()));
+  public function getSampleRoleEntity(bool $admin = true) : Role {
+    return Role::create($this->getSampleRoleId($admin), $this->getSampleRoleName($admin), $admin,
+      $this->getSampleTimestampEntity());
   }
 }

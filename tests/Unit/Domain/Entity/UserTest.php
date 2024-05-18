@@ -21,6 +21,7 @@ namespace Domain\Entity;
 
 use App\Domain\Entity\Auth;
 use App\Domain\Entity\Email;
+use App\Domain\Entity\Role;
 use App\Domain\Entity\Timestamp;
 use App\Domain\Entity\User;
 use App\Domain\Entity\UserProfile;
@@ -28,6 +29,7 @@ use Illuminate\Support\Carbon;
 use Tests\TestCase;
 use Tests\TestData\AuthTestData;
 use Tests\TestData\EmailTestData;
+use Tests\TestData\RoleTestData;
 use Tests\TestData\TimestampTestData;
 use Tests\TestData\UserProfileTestData;
 
@@ -42,7 +44,7 @@ use Tests\TestData\UserProfileTestData;
  * @author Fathalfath30
  */
 class UserTest extends TestCase {
-  use UserProfileTestData, EmailTestData, AuthTestData, TimestampTestData;
+  use UserProfileTestData, EmailTestData, AuthTestData, RoleTestData, TimestampTestData;
 
   /**
    * @return void
@@ -57,7 +59,7 @@ class UserTest extends TestCase {
    */
   public function itCanCreateNewUser() {
     $result = User::create($this->getSampleUserProfileEntity(), $this->getSampleEmailEntity(),
-      $this->getSampleAuthEntity());
+      $this->getSampleAuthEntity(), $this->getSampleRoleEntity());
 
     $this->assertNotNull($result);
     $this->assertInstanceOf(User::class, $result);
@@ -67,6 +69,8 @@ class UserTest extends TestCase {
     $this->assertInstanceOf(Email::class, $result->getEmail());
     $this->assertNotNull($result->getAuth());
     $this->assertInstanceOf(Auth::class, $result->getAuth());
+    $this->assertNotNull($result->getRole());
+    $this->assertinstanceof(Role::class, $result->getRole());
     $this->assertNull($result->getLockedAt());
     $this->assertNotNull($result->getTimestamp());
     $this->assertInstanceOf(Timestamp::class, $result->getTimestamp());
@@ -85,7 +89,8 @@ class UserTest extends TestCase {
    */
   public function itCanRebuildUserEntity() {
     $result = User::rebuild($this->getSampleUserProfileEntity(), $this->getSampleEmailEntity(),
-      $this->getSampleAuthEntity(), $this->getSampleDateTimeCarbon(), $this->getSampleTimestampEntity());
+      $this->getSampleAuthEntity(), $this->getSampleRoleEntity(), $this->getSampleDateTimeCarbon(),
+      $this->getSampleTimestampEntity());
 
     $this->assertNotNull($result);
     $this->assertInstanceOf(User::class, $result);
@@ -95,6 +100,8 @@ class UserTest extends TestCase {
     $this->assertInstanceOf(Email::class, $result->getEmail());
     $this->assertNotNull($result->getAuth());
     $this->assertInstanceOf(Auth::class, $result->getAuth());
+    $this->assertNotNull($result->getRole());
+    $this->assertinstanceof(Role::class, $result->getRole());
     $this->assertNotNull($result->getLockedAt());
     $this->assertTrue($result->isLocked());
     $this->assertInstanceOf(Carbon::class, $result->getLockedAt());
